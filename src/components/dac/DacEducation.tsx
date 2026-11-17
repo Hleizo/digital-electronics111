@@ -13,9 +13,11 @@ interface Props {
   elapsed: number
   sample: SignalSample | null
   system: ReturnType<typeof useDacReconstruction>
+  view?: 'reference' | 'comparison'
+  showLadder?: boolean
 }
 
-export const DacEducation = memo(function DacEducation({ config, engine, status, elapsed, sample, system }: Props) {
+export const DacEducation = memo(function DacEducation({ config, engine, status, elapsed, sample, system, view, showLadder = true }: Props) {
   const { trace, measurements, comparisons, comparisonMeasurements } = system
   const model = trace.model
   const adcCode = measurements.result?.sourceCode ?? null
@@ -32,7 +34,7 @@ export const DacEducation = memo(function DacEducation({ config, engine, status,
   ]
   return <section className="dac-education" aria-labelledby="dac-education-title">
     <div className="measurements-heading"><h2 id="dac-education-title">Approach 12 · Biomedical Signal DAC Reconstruction</h2><span>ENDPOINT-MAPPED DAC</span></div>
-    <ol className="dac-pipeline" aria-label="Complete analog to ADC to DAC reconstruction sequence">{steps.map(([title, value, detail], index) => <li key={title}><span>{String(index + 1).padStart(2, '0')} / {title}</span><strong>{value}</strong><small>{detail}</small></li>)}</ol>
+    {view !== 'comparison' && <><ol className="dac-pipeline" aria-label="Complete analog to ADC to DAC reconstruction sequence">{steps.map(([title, value, detail], index) => <li key={title}><span>{String(index + 1).padStart(2, '0')} / {title}</span><strong>{value}</strong><small>{detail}</small></li>)}</ol>
     <section className="adc-theory dac-theory" aria-labelledby="dac-theory-title"><h3 id="dac-theory-title">Two conversion conventions, one connected signal chain</h3>
       <div className="adc-formulas"><div><span>ADC bin width</span><code>ΔADC = VrefADC / 2^NADC</code><strong>{(config.adc.referenceVoltage / 2 ** config.adc.resolution).toFixed(6)} V</strong><small>ADC midpoint equivalent: (Code + 0.5) × ΔADC</small></div>
         <div><span>DAC increment</span><code>ΔDAC = VrefDAC / (2^NDAC − 1)</code><strong>{model.increment.toFixed(6)} V / {(model.increment * 1000).toFixed(3)} mV</strong><small>Maximum code = {model.maximumCode}</small></div>
@@ -45,8 +47,8 @@ export const DacEducation = memo(function DacEducation({ config, engine, status,
       <p><strong>ADC quantization error:</strong> sampled Vin − ADC bin midpoint. <strong>DAC reconstruction error:</strong> original(t) − selected reconstructed(t), at the same acquisition time. Reconstruction error includes sample-and-hold error, endpoint/bin convention differences, clipping, reference mismatch and filter phase lag; it is not bounded by the ADC half-LSB limit.</p>
       <p>RMS is a time-uniform numerical estimate using 2,048 midpoint evaluations over the last 1 acquisition second (or the available startup interval). Filtering smooths steps and suppresses fast variations, but cannot undo aliasing or clipping, restore discarded quantization information, or increase ADC resolution. Lower cutoff usually adds more smoothing and more lag; RMS need not always improve.</p>
       {config.mode === 'esp32' && <p>In hardware mode the reference is the held received voltage estimate. Missing intervals are excluded from error/RMS calculations; the true sensor waveform between samples is unknown. The browser DAC is calculated software output and does not measure or control the optional physical GPIO25 DAC.</p>}
-    </section>
-    <section className="dac-resolution-comparison" aria-labelledby="dac-comparison-title"><div className="adc-section-heading"><h3 id="dac-comparison-title">4-bit versus 8-bit DAC reconstruction</h3><p>Same captured analog samples and timing. Paired 4-bit ADC → 4-bit DAC and 8-bit ADC → 8-bit DAC; ADC Vref {config.adc.referenceVoltage} V, DAC Vref {model.referenceVoltage} V. Shared voltage and time scales.</p></div>
+    </section></>}
+    {view !== 'reference' && <section className="dac-resolution-comparison" aria-labelledby="dac-comparison-title"><div className="adc-section-heading"><h3 id="dac-comparison-title">4-bit versus 8-bit DAC reconstruction</h3><p>Same captured analog samples and timing. Paired 4-bit ADC → 4-bit DAC and 8-bit ADC → 8-bit DAC; ADC Vref {config.adc.referenceVoltage} V, DAC Vref {model.referenceVoltage} V. Shared voltage and time scales.</p></div>
       <div className="comparison-grid">{comparisons.map((comparison, index) => {
         const data = comparisonMeasurements[index]
         return <article className="comparison-card accent-purple" key={index} aria-label={`${comparison.model.resolution}-bit DAC comparison`}><div className="comparison-heading"><h4>{comparison.model.resolution}-bit ADC → DAC</h4><span>DAC increment {(comparison.model.increment * 1000).toFixed(3)} mV</span></div><dl className="comparison-values">
@@ -56,7 +58,7 @@ export const DacEducation = memo(function DacEducation({ config, engine, status,
         </dl><OscilloscopePanel channel={`${comparison.model.resolution}D`} title={`${comparison.model.resolution}-bit DAC overlay`} subtitle="Original · ADC samples · DAC staircase · optional RC" accent="purple" legend="DAC staircase" emptyLabel="Start acquisition to reconstruct" footer="Same original input and acquisition clock" referenceVoltage={config.scope.inputMaximum} dac={{ engine, status, trace: comparison, scale: config.scope, settings: config.dac, referenceConfig: config.signal, animate: false, refreshTime: elapsed }} /></article>
       })}</div>
       <p className="measurement-explanation">At the same reference, DAC increment ratio Δ4 / Δ8 = {(comparisons[0].model.increment / comparisons[1].model.increment).toFixed(0)}. The ADC bin-width ratio is 16. Smoother appearance does not imply higher ADC resolution; compare the labeled errors and steps.</p>
-    </section>
-    <R2rLadder model={model} result={measurements.result} />
+    </section>}
+    {view !== 'comparison' && showLadder && <R2rLadder model={model} result={measurements.result} />}
   </section>
 })

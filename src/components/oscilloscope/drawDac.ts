@@ -77,7 +77,7 @@ export function drawDac(context: CanvasRenderingContext2D, width: number, height
   stairs.flush(); filtered.flush()
   context.save()
   context.beginPath(); context.rect(0, 0, width, height); context.clip()
-  context.strokeStyle = '#b19afa'; context.lineWidth = 1.2; context.stroke(stairs.path)
-  if (trace.enabled) { context.strokeStyle = '#f0bd67'; context.lineWidth = 1.5; context.stroke(filtered.path) }
+  context.strokeStyle = '#355db0'; context.lineWidth = 1.2; context.stroke(stairs.path)
+  if (trace.enabled) { context.strokeStyle = '#b36b38'; context.lineWidth = 1.5; context.stroke(filtered.path) }
   context.restore()
 }

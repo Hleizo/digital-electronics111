@@ -24,12 +24,15 @@ export function HardwarePanel({ bluetooth, raw, voltage, renderFps, onConnect }:
     }
   }, [data.notificationCount, ageSeconds])
   return <section className="hardware-panel" aria-labelledby="hardware-title">
-    <div className="hardware-heading"><h3 id="hardware-title">ESP32 live input · BLE GATT</h3><StatusIndicator label={data.status} tone={data.status === 'connected' ? 'cyan' : 'neutral'} /></div>
+    <section className="hardware-connection" aria-labelledby="hardware-title"><span className="section-index">01 / DEVICE CONNECTION</span>
+    <div className="hardware-heading"><h3 id="hardware-title">Establish the link.</h3><StatusIndicator label={data.status} tone={data.status === 'connected' ? 'cyan' : 'neutral'} /></div>
+    <p className="hardware-introduction">Classic ESP32 · GPIO34 / ADC1 · BLE GATT. Connection begins only when you select a device.</p>
     <div className="hardware-actions"><button className="primary-button" type="button" disabled={!support.supported || data.status !== 'disconnected'} onClick={onConnect}>{data.status === 'connecting' ? 'Selecting / connecting…' : 'Connect ESP32'}</button><button className="secondary-button" type="button" disabled={data.status === 'disconnected'} onClick={() => client.disconnect()}>Disconnect ESP32</button></div>
     <p className="hardware-device">Device: <strong>{data.deviceName ?? 'None selected'}</strong> · <StatusIndicator label={receiving ? 'Receiving' : 'Not receiving'} tone={receiving ? 'green' : 'amber'} /></p>
     {!support.supported && <p className="hardware-message" role="status">{support.message}</p>}
     {data.error && <p className="hardware-message" role="status">{data.error}</p>}
     {data.status === 'connected' && !receiving && <p className="hardware-message" role="status">{data.lastPacketAt === null ? 'No data received. Verify firmware, notification subscription and the advertised service UUID.' : 'No fresh data received. The last capture is frozen; check the ESP32 and BLE link.'}</p>}
+    </section><section className="hardware-acquisition" aria-labelledby="hardware-acquisition-title"><span className="section-index">02 / LIVE ACQUISITION</span><div className="hardware-heading"><h3 id="hardware-acquisition-title">Read what arrives.</h3><span className="acquisition-provenance">{data.receivedSamples > 0 ? 'RECEIVED DATA / CURRENT OR LAST SESSION' : 'AWAITING FIRST SAMPLE'}</span></div>
     <p className="hardware-calibration">{data.approximateVoltage ? 'APPROXIMATE VOLTAGE — ' : 'DEVICE CALIBRATION — '}{data.voltageSource}. Hardware ADC: 12-bit counts, 0–4095. Educational output: selected 4 or 8 bits. ESP32 internal ADC Vref is not a 3.3 V input full-scale reference.</p>
     {data.calibrationMessage && <p className="hardware-footnote">{data.calibrationMessage}</p>}
     <div className="hardware-values">
@@ -44,5 +47,6 @@ export function HardwarePanel({ bluetooth, raw, voltage, renderFps, onConnect }:
       <MeasurementCard label="Last packet age" value={ageSeconds?.toFixed(2) ?? null} unit="s" detail="Browser arrival age · not BLE latency" />
     </div>
     <p className="hardware-footnote">Invalid packets: {data.invalidPackets} · Duplicate / old packets: {data.duplicatePackets}. No generated waveform is used in this mode. Lines only connect received voltage estimates; gaps remain visible. Browser DAC output is calculated software output, separate from any optional physical GPIO25 voltage.</p>
+    </section>
   </section>
 }

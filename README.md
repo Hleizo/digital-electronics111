@@ -13,11 +13,28 @@ npm run dev
 
 Open the address printed by Vite. If PowerShell blocks `npm.ps1`, use `npm.cmd` instead of `npm`; no execution-policy change is needed. `npm run build` creates `dist/`, and `npm run preview` serves it locally.
 
+## Pages and navigation
+
+| Route | Workspace |
+| --- | --- |
+| `/` | Animated scientific journal and four-stage introduction |
+| `/signal` | Signal Studio: source, timing, scales and acquisition |
+| `/adc` | ADC Laboratory: codes, binary register, errors and transfer theory |
+| `/dac` | DAC Laboratory: held/filtered reconstruction and R-2R explanation |
+| `/comparison` | Synchronized chain and the existing 4-bit/8-bit comparisons |
+| `/hardware` | ESP32 connection, received data and calibration diagnostics |
+
+The shared session preserves settings, running acquisition, buffers and BLE connection across page navigation. Refreshing the browser starts a new session. Navigation uses browser History APIs without an added routing dependency. Production static hosting must serve `index.html` for these page paths while serving `/assets/` as real files; Vite development and preview servers handle this automatically. Deploy the complete `dist/` directory together so its HTML and hashed assets match.
+
+Each laboratory has its own instrument layout: a dominant analog scope and side controls in Signal Studio; a linked analog/transfer-characteristic/digital view with a binary register and measurement table in ADC; a wide held/filtered output bench and labeled static R-2R/RC schematic in DAC; aligned paired ADC/DAC traces and a numerical 4/8-bit comparison table; and separate device, acquisition, and source-gated received-signal areas in Hardware. Hardware plots appear only after real received samples enter the hardware source. Compact method disclosures retain transfer equations, representative conversions and signed-error traces without crowding the main experiment.
+
+The homepage is an independent, clearly labeled synthetic ECG illustration using the same pure models. It never starts laboratory acquisition or supplies hardware readings. Its hero supports pointer/keyboard inspection; scrolling reveals sampling, four-bit codes and RC reconstruction. Reduced-motion preferences stop automatic illustration and entry animations. The header hides downward and returns upward; mobile navigation supports Escape and keyboard focus.
+
 ## Simulation Mode
 
-1. Choose **Simulation**, select sine, triangle, square, ramp, DC, ECG-like or PPG-like, then **Start**.
+1. Open **Signal**, choose **Simulation**, select sine, triangle, square, ramp, DC, ECG-like or PPG-like, then **Start**.
 2. Adjust amplitude, frequency, offset, phase and optional reproducible noise. DC uses the virtual potentiometer/voltage slider; amplitude, phase and frequency do not affect pure DC.
-3. Change sampling frequency independently of display refresh and ADC resolution. Green is the continuous model, cyan marks captured samples, amber shows ADC codes, and purple shows DAC zero-order hold. The optional filtered reconstruction is amber in the DAC panel.
+3. Change sampling frequency independently of display refresh and ADC resolution. Green is the continuous model, teal marks captured samples, rust shows ADC codes, and blue shows DAC zero-order hold. The optional filtered reconstruction is rust in the DAC panel.
 4. Set time/voltage scales, ADC resolution/reference and filter cutoff. DAC settings follow ADC by default; independent settings show mismatch/overflow warnings. The comparisons use the same raw samples at 4 and 8 bits.
 5. **Pause/Resume** freezes/continues all stages together. Acquisition **Reset** clears history; **Reset configuration** also restores settings. Settings reset on reload.
 
@@ -88,7 +105,7 @@ npm run build
 
 The dependency-free Node suite covers signal generation, sampling/buffering, ADC/binary/clipping, DAC/filter/errors, shared frame ordering, BLE parsing/GATT lifecycle and hardware-source isolation. No lint tool/script is configured; whitespace can be checked with `git diff --check`.
 
-With the dev server running, `npm run test:browser` runs headless Chrome/Edge checks for the controls, plots, math, responsiveness, bounded memory and **explicitly mocked** BLE. Set `BIOSCOPE_CHROME` to a browser executable or `BIOSCOPE_BASE_URL` to another local URL if needed. It uses debugger port 9336 and saves screenshots under `.qa/final-browser/`.
+With the dev server running, `npm run test:browser` runs headless Chrome/Edge checks for all six routes, header/menu behavior, homepage motion, reduced motion, preserved sessions, controls, plots, math, responsiveness, bounded memory and **explicitly mocked** BLE. Set `BIOSCOPE_CHROME` to a browser executable or `BIOSCOPE_BASE_URL` to another local URL if needed. It uses debugger port 9336 and saves screenshots under `.qa/final-browser/`.
 
 Samples and three reconstruction buffers have fixed capacity (20,002 records); source history is time-pruned and capped. One acquisition-first animation scheduler keeps all panels aligned, caches grids and stops on pause; readouts refresh around 10 Hz. Rendering targets ~60 FPS on capable hardware. Dense 20,000-point/filter/comparison views and background tabs can reduce refresh; sampling remains timestamp-based. Extrema and RMS are numerical estimates, not exact analytical or laboratory measurements.
 
@@ -97,6 +114,9 @@ Both firmware variants compile with Arduino-ESP32 3.3.11; details are in the har
 ## Source layout
 
 - `src/components/`: instrument UI, Canvas rendering, ADC/DAC education, hardware panel and controls.
+- `src/pages/`, `src/navigation/`, `src/context/`: journal/laboratory pages, accessible History navigation and persistent shared acquisition session.
+- `src/pages/laboratory/`, `src/components/laboratory/`: dedicated experiment compositions, shared instrument primitives, readout formatting and technical tables. Scientific transfer functions are not duplicated here.
+- `src/styles/journal.css`: warm paper palette, editorial typography, shared page foundations, navigation and responsive layouts. System serif, sans and monospace fonts keep the site self-contained.
 - `src/core/signal/`, `src/core/adc/`, `src/core/dac/`: reusable signal/timing, quantization and reconstruction mathematics.
 - `src/services/bluetooth/`: strict packet/calibration parser and typed GATT transport.
 - `src/hooks/`, `src/utils/`: acquisition/readout lifecycles and shared frame scheduler.

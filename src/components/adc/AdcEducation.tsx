@@ -14,9 +14,10 @@ interface AdcEducationProps {
   elapsed: number
   timePerDivision: number
   samplingFrequency: number
+  view?: 'reference' | 'comparison'
 }
 
-export const AdcEducation = memo(function AdcEducation({ model, engine, status, sample, elapsed, timePerDivision, samplingFrequency }: AdcEducationProps) {
+export const AdcEducation = memo(function AdcEducation({ model, engine, status, sample, elapsed, timePerDivision, samplingFrequency, view }: AdcEducationProps) {
   const models = useMemo(() => ([4, 8] as const).map(resolution => createAdcModel({ resolution, referenceVoltage: model.referenceVoltage })), [model.referenceVoltage])
   const examples = [
     { label: 'Below range', voltage: -model.delta },
@@ -34,7 +35,7 @@ export const AdcEducation = memo(function AdcEducation({ model, engine, status, 
 
   return <section className="adc-education" aria-labelledby="adc-education-title">
     <div className="measurements-heading"><h2 id="adc-education-title">Approach 11 · Biomedical Sensor ADC System</h2><span>UNIFORM-BIN QUANTIZATION</span></div>
-    <section className="adc-theory" aria-labelledby="adc-theory-title">
+    {view !== 'comparison' && <section className="adc-theory" aria-labelledby="adc-theory-title">
       <h3 id="adc-theory-title">Ideal ADC transfer convention</h3>
       <div className="adc-formulas">
         <div><span>Digital levels</span><code>2^N = 2^{model.resolution} = {model.levels}</code></div>
@@ -45,8 +46,8 @@ export const AdcEducation = memo(function AdcEducation({ model, engine, status, 
       <p><code>Code = clamp(floor(Vin / Δ), 0, 2^N − 1)</code><br /><code>Vq = (Code + 0.5) × Δ</code><br /><code>Error = Vin − Vq</code></p>
       <p>Bin k covers [kΔ, (k + 1)Δ), and Vq is its midpoint. For 0 ≤ Vin &lt; Vref, the error stays within approximately ±½ LSB. Vin &lt; 0 and Vin ≥ Vref saturate and are flagged as clipping. Total conversion error and range excess are reported separately for these inputs; the normal quantization-error bound does not apply.</p>
       <p>ADC settings apply to the displayed raw samples. Changing resolution or Vref never changes the original sample voltages, timestamps or sampling frequency. The staircase represents digital codes; Vq is a calculated bin midpoint, not a DAC output.</p>
-    </section>
-    <section className="resolution-comparison" aria-labelledby="comparison-title">
+    </section>}
+    {view !== 'reference' && <section className="resolution-comparison" aria-labelledby="comparison-title">
       <div className="adc-section-heading"><h3 id="comparison-title">4-bit versus 8-bit resolution</h3><p>Same raw samples · Vref {model.referenceVoltage} V · {samplingFrequency} Sa/s · synchronized {10 * timePerDivision} s windows</p></div>
       <div className="comparison-grid">{models.map(comparison => {
         const result = sample ? comparison.convert(sample.voltage) : null
@@ -65,13 +66,13 @@ export const AdcEducation = memo(function AdcEducation({ model, engine, status, 
         </article>
       })}</div>
       <p className="measurement-explanation">8-bit Δ and its worst-case normal error bound are {models[0].delta / models[1].delta}× smaller than 4-bit at the same Vref. An individual voltage may coincide with a 4-bit midpoint, so its particular error need not always be smaller at 8 bits. Red clipped samples are excluded from normal error traces.</p>
-    </section>
-    <section className="conversion-examples" aria-labelledby="conversion-table-title"><div className="adc-section-heading"><h3 id="conversion-table-title">Educational conversion table</h3><p>Calculated using the selected {model.resolution}-bit ADC and Vref {model.referenceVoltage} V.</p></div>
+    </section>}
+    {view !== 'comparison' && <section className="conversion-examples" aria-labelledby="conversion-table-title"><div className="adc-section-heading"><h3 id="conversion-table-title">Educational conversion table</h3><p>Calculated using the selected {model.resolution}-bit ADC and Vref {model.referenceVoltage} V.</p></div>
       <div className="adc-table-scroll" tabIndex={0} role="region" aria-label="ADC conversion examples, scroll horizontally on small screens"><table className="adc-table"><caption>Representative raw input voltages and actual ADC results</caption><thead><tr><th scope="col">Input example</th><th scope="col">Vin (V)</th><th scope="col">Decimal code</th><th scope="col">Binary code</th><th scope="col">Vq (V)</th><th scope="col">Vin − Vq (V)</th><th scope="col">Vin − Vq (mV)</th><th scope="col">Error classification</th></tr></thead><tbody>{examples.map((example, index) => {
         const result = model.convert(example.voltage)
         return <tr key={example.label} className={`${result.clipped ? 'adc-row--clipped' : ''}${sample && index === 0 ? ' adc-row--current' : ''}`}><th scope="row">{example.label}</th><td>{example.voltage.toFixed(6)}</td><td>{result.code}</td><td className="table-binary">{result.binary}</td><td>{result.quantizedVoltage.toFixed(6)}</td><td>{signed(result.conversionError)}</td><td>{signed(result.conversionError * 1000, 3)}</td><td>{result.clipped ? `${result.clipping === 'low' ? 'Low' : 'High'} clipping · overrange total` : 'Normal quantization'}</td></tr>
       })}</tbody></table></div>
       <p className="measurement-explanation">Voltages and errors are rounded for display; conversion uses the full input precision.</p>
-    </section>
+    </section>}
   </section>
 })

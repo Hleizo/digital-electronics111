@@ -30,7 +30,7 @@ function render(enabled: boolean, duplicateTimestamps = false) {
       strokeStyle: '', fillStyle: '', lineWidth: 0,
       save() {}, restore() {}, beginPath() {}, rect() {}, clip() {}, setLineDash() {}, moveTo() {}, lineTo() {}, fill() {},
       arc() { sampleDots++ },
-      stroke(path?: RecordedPath) { if (path) strokes.push({ color: this.strokeStyle, path: path.commands }); else if (this.strokeStyle === '#50dca0') greenSegments++ },
+      stroke(path?: RecordedPath) { if (path) strokes.push({ color: this.strokeStyle, path: path.commands }); else if (this.strokeStyle === '#30765d') greenSegments++ },
     }
     drawDac(context as unknown as CanvasRenderingContext2D, 100, 200, engine, trace, DEFAULT_CONFIG.scope)
     return { strokes, greenSegments, sampleDots }
@@ -45,7 +45,7 @@ test('DAC overlay preserves original analog/sample layers and staircase transiti
   assert.ok(greenSegments > 0)
   assert.equal(sampleDots, 3)
   assert.equal(strokes.length, 1)
-  assert.equal(strokes[0].color, '#b19afa')
+  assert.equal(strokes[0].color, '#355db0')
   const points = strokes[0].path.map(([c, x, y]) => [c, Number(x.toFixed(6)), Number(y.toFixed(6))])
   assert.ok(points.some(([c, x, y]) => c === 'L' && x === 50 && y === 182.5))
   assert.ok(points.some(([c, x, y]) => c === 'L' && x === 50 && y === 94.5))
@@ -55,7 +55,7 @@ test('DAC overlay preserves original analog/sample layers and staircase transiti
 test('enabled filter draws an exponential response on the shared voltage/time map', () => {
   const { strokes } = render(true)
   assert.equal(strokes.length, 2)
-  assert.equal(strokes[1].color, '#f0bd67')
+  assert.equal(strokes[1].color, '#b36b38')
   const atSixty = strokes[1].path.find(([, x]) => Math.abs(x - 60) < 1e-8)
   assert.ok(atSixty)
   const expectedVoltage = 1.76 * (1 - Math.exp(-2 * Math.PI * .1))

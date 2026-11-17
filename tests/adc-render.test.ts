@@ -55,7 +55,7 @@ test('normal error plot uses the model error and its half-LSB scale', () => {
 test('clipped codes are red and overrange samples are excluded from the normal error path', () => {
   const code = render([[0, -1], [0.5, 4], [1, 5]], 'code')
   assert.equal(code[0].commands.length, 0)
-  assert.equal(code[1].color, '#fb8585')
+  assert.equal(code[1].color, '#a04431')
   assert.ok(code[1].commands.some(([, , y]) => y === 150))
   assert.ok(code[1].commands.some(([, , y]) => y === 0))
   const error = render([[0, -1], [0.5, 4], [1, 5]], 'error')

@@ -94,6 +94,6 @@ export function drawAdc(context: CanvasRenderingContext2D, width: number, height
   context.beginPath(); context.rect(0, 0, width, height); context.clip()
   context.lineWidth = 1.2
   context.strokeStyle = color; context.stroke(normal)
-  context.strokeStyle = '#fb8585'; context.stroke(clipped)
+  context.strokeStyle = '#a04431'; context.stroke(clipped)
   context.restore()
 }

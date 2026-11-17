@@ -74,7 +74,7 @@ export function OscilloscopePanel({ channel, title, subtitle, accent, legend, em
       if (gridContext) context.drawImage(grid, 0, 0, width, height)
       else drawGrid(context, width, height)
       if (analog) drawAnalog(context, width, height, analog.engine, analog.scale, referenceVoltage)
-      if (adc) drawAdc(context, width, height, adc.engine, adc.model, 10 * adc.timePerDivision, adc.metric ?? 'code', accent === 'cyan' ? '#4ddbd1' : '#f0bd67')
+      if (adc) drawAdc(context, width, height, adc.engine, adc.model, 10 * adc.timePerDivision, adc.metric ?? 'code', accent === 'cyan' ? '#317a86' : '#b36b38')
       if (dac) drawDac(context, width, height, dac.engine, dac.trace, dac.scale)
     }
     const resize = () => {

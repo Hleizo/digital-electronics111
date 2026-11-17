@@ -1,0 +1,389 @@
+/* Dedicated experiments: shared paper/ink foundations, distinct instruments. */
+.lab-page { padding-top: 44px; }
+.lab-heading h1 { max-width: 950px; font-size: clamp(43px,5.1vw,76px); }
+.lab-heading .section-index { letter-spacing: .09em; }
+.lab-heading { padding-bottom: 32px; margin-bottom: 26px; }
+.lab-session { align-self: flex-end; }
+.quiet-button { display: inline-flex; gap: 22px; justify-content: space-between; background: none; border: 0; border-bottom: 1px solid var(--border); padding: 12px 0; margin-top: 15px; color: var(--secondary); font-size: 11px; }
+.quiet-button:hover { color: var(--ink); border-color: var(--ink); }
+.experiment-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+.experiment-toolbar .lab-transport { margin: 0; }
+.experiment-note, .scope-annotations { color: var(--secondary); font: 9px/1.8 var(--mono); letter-spacing: .04em; }
+.lab-transport .acquisition-buttons { grid-template-columns: 91px 82px; }
+.lab-settings .controls-body { scroll-padding-block: 15px; }
+.lab-settings .route-note { max-width: 230px; }
+.method-notes { margin-top: 38px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--border); }
+.method-notes > summary { display: flex; justify-content: space-between; gap: 20px; padding: 19px 0; font-size: 13px; cursor: pointer; list-style: none; }
+.method-notes > summary::-webkit-details-marker { display: none; }
+.method-notes > summary > span { font: 17px var(--mono); transition: transform 160ms; }
+.method-notes[open] > summary > span { transform: rotate(45deg); }
+.method-notes .adc-education, .method-notes .dac-education { margin-top: 20px; }
+.technical-table-scroll { min-width: 0; overflow-x: auto; margin-top: 36px; scrollbar-width: thin; }
+.technical-table { width: 100%; border-collapse: collapse; border-block: 1px solid var(--ink); text-align: left; }
+.technical-table caption { text-align: left; padding: 0 0 16px; color: var(--secondary); font: 10px/1.7 var(--mono); }
+.technical-table thead { border-bottom: 1px solid var(--ink); }
+.technical-table th, .technical-table td { padding: 14px 18px 14px 0; border-bottom: 1px solid var(--border); vertical-align: baseline; }
+.technical-table thead th { color: var(--secondary); font: 10px/1.7 var(--mono); font-weight: 400; }
+.technical-table tbody th { font: 12px/1.7 'Segoe UI',sans-serif; font-weight: 400; color: #465148; }
+.technical-table .measurement-value { display: inline-flex; flex-wrap: nowrap; font: 13px/1.7 var(--mono); font-variant-numeric: tabular-nums; margin: 0; min-height: 0; gap: 7px; color: var(--accent); white-space: nowrap; }
+.technical-table .measurement-value > span { font-size: 10px; }
+.technical-table .measurement-detail { font-size: 10px; min-width: 210px; line-height: 1.8; }
+.measurement-record--warning { background: #f5e5df; }
+.measurement-record--warning .measurement-value { color: #893e2b; }
+.measurement-record--warning th { padding-left: 8px; }
+.technical-table tbody tr:last-child > * { border-bottom: 0; }
+
+/* 01 — The signal occupies the instrument, with controls kept at the edge. */
+.signal-bench { display: grid; grid-template-columns: minmax(0,1fr) 284px; gap: 38px; align-items: start; }
+.signal-instrument { min-width: 0; }
+.instrument-topline { display: flex; align-items: flex-end; justify-content: space-between; gap: 25px; padding-bottom: 14px; }
+.instrument-topline > div:first-child > .section-index { display: block; margin-bottom: 14px; }
+.instrument-topline .lab-transport { margin-bottom: 0; }
+.instrument-topline > .measurement-card { border: 0; padding: 0; min-width: 220px; text-align: right; }
+.instrument-topline .measurement-label { justify-content: flex-end; min-height: 0; font-size: 10px; }
+.instrument-topline .measurement-value { display: block; font-size: clamp(28px,3.1vw,44px); line-height: 1.2; letter-spacing: -.06em; margin: 5px 0 0; }
+.instrument-topline .measurement-value > span { font-size: 13px; margin-left: 8px; }
+.instrument-topline .measurement-detail { font-size: 9px; }
+.signal-instrument .plot-canvas--analog { height: clamp(330px,48vh,560px); }
+.signal-instrument .scope-heading { padding-top: 15px; }
+.scope-annotations { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px 20px; border-top: 1px solid var(--border); padding: 12px 0; font-size: 8px; }
+.signal-page .signal-readings { grid-template-columns: repeat(4,minmax(0,1fr)); margin-top: 8px; }
+.signal-page .lab-settings { top: 90px; }
+.signal-page .lab-settings .control-panel { padding-left: 20px; }
+.signal-page .lab-settings .controls-body { max-height: calc(100dvh - 280px); }
+.signal-page .lab-next { margin-top: 32px; }
+
+/* 02 — The ADC is a readable left-to-right transformation, not a metric grid. */
+.adc-setting-strip { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 24px 38px; padding: 20px 0 23px; border-block: 1px solid var(--border); margin: 0 0 18px; }
+.adc-setting-strip .resolution-field { min-width: 215px; margin: 0; }
+.adc-setting-strip .resolution-selector button { min-height: 34px; }
+.adc-setting-strip .select-field { min-width: 170px; }
+.adc-setting-strip select { background: none; border: 1px solid #c5cdc1; border-radius: 1px; padding: 9px 12px; color: var(--ink); color-scheme: light; font-size: 11px; min-height: 40px; }
+.adc-setting-strip > .quiet-link { margin-left: auto; font-size: 11px; }
+.strip-equation { margin: 0; font: 10px/1.7 var(--mono); color: var(--secondary); }
+.strip-equation strong { display: block; font-size: 13px; color: var(--amber); font-weight: 400; margin-top: 8px; }
+.adc-page > .clipping-indicator { display: inline-flex; margin-bottom: 22px; max-width: 100%; }
+.adc-conversion-bench { display: grid; grid-template-columns: minmax(0,1fr) 218px minmax(0,1fr); gap: 26px; align-items: start; }
+.adc-conversion-bench > section { min-width: 0; }
+.adc-conversion-bench > section > .section-index { display: block; margin-bottom: 14px; }
+.adc-conversion-bench .scope-panel { border-top: 0; }
+.adc-conversion-bench .scope-heading { min-height: 76px; align-items: start; }
+.adc-conversion-bench .scope-heading h3 { font-size: 13px; }
+.adc-conversion-bench .scope-heading p { font-size: 9px; }
+.adc-conversion-bench .plot-canvas { height: 275px; }
+.adc-conversion-bench .scope-plot { padding-left: 57px; padding-right: 14px; }
+.adc-conversion-bench .voltage-ticks { left: 14px; width: 34px; }
+.adc-conversion-bench .time-ticks { left: 57px; right: 14px; font-size: 8px; }
+.adc-conversion-bench .axis-label { font-size: 9px; }
+.adc-conversion-bench .scope-footer { font-size: 8px; gap: 6px 10px; }
+.adc-conversion-bench .scope-footer .division-label { width: 100%; }
+.quantization-figure { margin: 0; padding: 0 20px; border-inline: 1px solid var(--border); color: var(--amber); min-width: 0; }
+.quantization-figure figcaption > span { color: var(--secondary); font: 9px/1.8 var(--mono); }
+.quantization-figure figcaption strong { display: block; font: 400 27px/1.15 var(--display); color: var(--ink); margin: 22px 0 0; }
+.quantization-figure svg { width: 100%; display: block; margin: 5px 0 0; }
+.transfer-grid { stroke: var(--border); stroke-width: .65; fill: none; }
+.transfer-path { stroke: var(--amber); stroke-width: 1.3; fill: none; }
+.transfer-marker { stroke: var(--ink); stroke-width: 1; fill: var(--ink); }
+.transfer-marker > path:first-child { stroke-dasharray: 3 4; fill: none; }
+.transfer-marker > path:last-child { fill: none; }
+.quantization-figure--clipped .transfer-marker { stroke: #a04431; fill: #a04431; }
+.transfer-label { fill: var(--secondary); font: 14px var(--mono); }
+.quantization-figure > p { font: 9px/1.7 var(--mono); color: var(--amber); }
+.quantization-figure > small { display: block; color: var(--secondary); font-size: 10px; line-height: 1.8; margin-top: 9px; }
+.binary-instrument { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; align-items: center; padding: 29px 0; margin-top: 22px; border-block: 1px solid var(--ink); }
+.binary-introduction h2 { font: 400 32px/1.2 var(--display); margin: 13px 0; letter-spacing: -.025em; }
+.binary-introduction p { font-size: 12px; color: var(--secondary); line-height: 1.85; max-width: 350px; }
+.binary-instrument .binary-output { padding: 0; border: 0; }
+.binary-instrument .binary-heading { gap: 8px; }
+.binary-instrument .binary-heading h4 { font-size: 10px; }
+.binary-instrument .binary-leds { margin-top: 18px; gap: 10px; justify-content: space-between; }
+.binary-instrument .binary-bit { max-width: none; gap: 8px; padding: 8px 0; border-bottom: 2px solid var(--border); }
+.binary-instrument .binary-bit[data-bit='1'] { border-color: var(--amber); }
+.binary-instrument .binary-bit strong { font-size: 27px; color: var(--ink); order: 1; }
+.binary-instrument .bit-name { order: 0; font-size: 9px; }
+.binary-instrument .bit-order { order: 3; font-size: 8px; }
+.binary-instrument .binary-led { display: none; }
+.adc-page .adc-conversion-summary { margin-top: 22px; }
+.adc-page .conversion-pipeline { margin: 0; }
+
+/* 03 — A full-width output bench, with filtering as an intentional intervention. */
+.dac-instrument { border-top: 1px solid var(--ink); }
+.dac-input-strip { display: grid; grid-template-columns: 1fr .7fr 1fr; gap: 30px; align-items: end; padding: 25px 0; }
+.dac-word { display: block; font: 28px/1.4 var(--mono); color: var(--purple); letter-spacing: .08em; margin: 8px 0 3px; }
+.dac-input-strip small { display: block; color: var(--secondary); font: 9px/1.9 var(--mono); }
+.dac-clock-note { text-align: center; padding-bottom: 4px; color: var(--secondary); }
+.dac-clock-note > span { font: 8px var(--mono); letter-spacing: .08em; }
+.dac-clock-note strong { display: block; font: 14px var(--mono); color: var(--ink); margin: 12px 0 6px; }
+.dac-output-reading { text-align: right; }
+.dac-output-reading output { display: block; font: clamp(28px,3.2vw,45px)/1.3 var(--mono); color: var(--purple); letter-spacing: -.055em; margin: 3px 0; }
+.dac-output-reading output > span { font-size: 13px; letter-spacing: 0; }
+.dac-instrument .plot-canvas--dac { height: clamp(340px,44vh,500px); }
+.dac-instrument .scope-panel { border-top: 0; }
+.filter-bench { display: grid; grid-template-columns: .8fr 1.2fr; gap: 6vw; margin-top: 36px; padding: 28px 0 32px; border-block: 1px solid var(--ink); align-items: center; }
+.filter-bench h2 { font: 400 37px/1.15 var(--display); margin: 12px 0; letter-spacing: -.025em; }
+.filter-bench p { color: var(--secondary); font-size: 12px; line-height: 1.9; max-width: 390px; }
+.filter-bench .dac-filter-fields { display: grid; grid-template-columns: 1fr 1.1fr; gap: 22px; align-items: center; }
+.filter-bench .toggle-field { margin: 0; }
+.filter-bench .toggle-field label { font-size: 12px; }
+.filter-bench .toggle-field p { font-size: 10px; }
+.filter-bench .slider-field { margin: 0; }
+.filter-bench .dac-filter-fields > .control-hint { grid-column: 1/-1; margin-top: 0; font-size: 10px; max-width: none; }
+.filter-bench .numeric-entry input { width: 86px; }
+.filter-bench .toggle { width: 36px; height: 20px; padding: 3px; }
+.filter-bench .toggle > span { height: 11px; width: 11px; }
+.filter-bench .toggle[aria-checked='true'] > span { transform: translateX(16px); }
+.filter-bench .toggle-state { font-size: 10px; min-width: 22px; }
+.dac-results-layout { display: grid; grid-template-columns: minmax(0,1fr) 280px; gap: 60px; margin-top: 16px; align-items: start; }
+.dac-transfer-setup { margin-top: 36px; padding-left: 24px; border-left: 1px solid var(--border); }
+.dac-transfer-setup h2 { font: 400 28px/1.2 var(--display); margin: 15px 0 25px; }
+.dac-transfer-setup .dac-transfer-fields > .select-field { margin-top: 17px; }
+.dac-transfer-setup select { border: 1px solid #c5cdc1; border-radius: 1px; background: none; color: var(--ink); color-scheme: light; min-height: 35px; }
+.dac-transfer-setup .dac-transfer-fields > .control-hint:last-child { margin-top: 18px; }
+.dac-page .r2r-panel { display: grid; grid-template-columns: .6fr 1.4fr; gap: 16px 50px; margin-top: 65px; padding-top: 32px; border-top: 1px solid var(--ink); }
+.dac-page .r2r-panel > .adc-section-heading { grid-row: 1/3; margin: 0; }
+.dac-page .r2r-panel h3 { font: 400 38px/1.15 var(--display); letter-spacing: -.025em; margin: 18px 0; }
+.dac-page .r2r-schematic { padding: 18px 0; color: #35527e; background: none; grid-column: 2; }
+.dac-page .r2r-schematic svg { min-width: 620px; }
+.dac-page .r2r-explanation { grid-column: 2; }
+.dac-page .r2r-explanation p { font-size: 11px; line-height: 1.9; }
+.dac-page .r2r-panel > .adc-table-scroll { grid-column: 1/-1; margin-top: 18px; }
+.schematic-note { font: 10px var(--mono); color: var(--secondary); }
+.schematic-scroll-hint { display: none; font: 9px/1.8 var(--mono); color: var(--secondary); margin-top: 14px; }
+
+/* 04 — The comparison is a paired experiment, with identical voltage scales. */
+.resolution-experiment { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 54px; padding-top: 15px; }
+.resolution-column { min-width: 0; }
+.resolution-column + .resolution-column { border-left: 1px solid var(--border); padding-left: 42px; }
+.resolution-column-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; padding-bottom: 24px; }
+.resolution-column-heading > div { display: flex; gap: 15px; align-items: end; }
+.resolution-numeral { font: 400 90px/.9 var(--display); color: var(--amber); letter-spacing: -.065em; }
+.resolution-column--8 .resolution-numeral { color: var(--cyan); }
+.resolution-column-heading h2 { font: 400 24px/1.15 var(--display); max-width: 120px; padding-bottom: 4px; }
+.resolution-column-heading > span { font: 8px/1.9 var(--mono); color: var(--secondary); text-align: right; }
+.comparison-register { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 0; border-top: 1px solid var(--ink); }
+.comparison-register > span { font: 8px var(--mono); color: var(--secondary); }
+.comparison-register output { font: 20px var(--mono); color: var(--ink); }
+.resolution-column .plot-canvas { height: 245px; }
+.resolution-column .scope-panel + .scope-panel { margin-top: 22px; }
+.resolution-column .scope-heading { min-height: 81px; align-items: start; }
+.resolution-column .scope-heading h3 { font-size: 13px; }
+.resolution-column .scope-heading p { font-size: 9px; }
+.resolution-column .scope-plot { padding-left: 68px; }
+.resolution-column .time-ticks { left: 68px; font-size: 9px; }
+.resolution-column .voltage-ticks { left: 22px; width: 36px; }
+.resolution-column .scope-footer { font-size: 9px; gap: 8px 12px; }
+.resolution-column .scope-footer .division-label { width: 100%; }
+.comparison-scale-note { margin-top: 20px; color: var(--secondary); font-size: 11px; line-height: 1.9; max-width: 900px; }
+.comparison-table td { font: 12px/1.9 var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.comparison-table thead th { min-width: 175px; }
+.comparison-table thead th:not(:first-child), .comparison-table td { padding-left: 22px; }
+.comparison-table tr > :last-child { border-left: 1px solid var(--border); }
+.comparison-conclusion { display: grid; grid-template-columns: .7fr 1.3fr; gap: 30px 90px; align-items: start; border-top: 1px solid var(--ink); margin-top: 50px; padding-top: 28px; }
+.comparison-conclusion > .section-index { grid-column: 1/-1; }
+.comparison-conclusion h2 { font: 400 43px/1.15 var(--display); letter-spacing: -.03em; }
+.comparison-conclusion p { font-size: 13px; color: var(--secondary); line-height: 1.95; max-width: 640px; }
+.comparison-error-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 50px; padding-bottom: 20px; }
+.comparison-error-grid .plot-canvas { height: 160px; }
+
+/* 05 — Connection, acquisition, and source-gated hardware traces. */
+.hardware-page .hardware-panel { display: grid; grid-template-columns: .72fr 1.28fr; gap: 5vw; border: 0; padding: 0; }
+.hardware-connection { border-top: 1px solid var(--ink); padding-top: 20px; min-width: 0; }
+.hardware-acquisition { border-top: 1px solid var(--ink); padding-top: 20px; min-width: 0; }
+.hardware-page .hardware-heading { margin-top: 14px; gap: 12px; }
+.hardware-page .hardware-heading h3 { font: 400 32px/1.2 var(--display); letter-spacing: -.025em; }
+.hardware-introduction { font-size: 12px; line-height: 1.9; color: var(--secondary); margin-top: 18px; }
+.hardware-page .hardware-actions { margin-block: 24px 18px; }
+.hardware-page .hardware-actions button { padding: 11px 15px; }
+.hardware-page .hardware-device { padding-block: 13px; border-block: 1px solid var(--border); }
+.hardware-page .hardware-calibration { font-size: 10px; margin-top: 20px; }
+.hardware-page .hardware-values { grid-template-columns: repeat(3,minmax(0,1fr)); margin-top: 22px; }
+.hardware-page .hardware-values .measurement-card { padding-right: 12px; }
+.hardware-page .hardware-values .measurement-value { font-size: 20px; }
+.acquisition-provenance { color: var(--secondary); font: 8px/1.8 var(--mono); }
+.hardware-page .hardware-footnote { font-size: 10px; }
+.hardware-visualization { margin-top: 50px; border-top: 1px solid var(--ink); padding-top: 22px; }
+.hardware-visual-heading { display: flex; justify-content: space-between; align-items: end; gap: 25px; margin-bottom: 25px; }
+.hardware-visual-heading h2 { font: 400 36px/1.2 var(--display); margin-top: 16px; letter-spacing: -.025em; }
+.hardware-empty { display: grid; grid-template-columns: 1fr 1fr; gap: 7vw; align-items: center; min-height: 275px; padding: 30px 0; border-block: 1px solid var(--border); }
+.waiting-graticule { position: relative; min-height: 200px; color: #7c887a; padding: 15px; background-image: linear-gradient(var(--border) .6px,transparent .6px),linear-gradient(90deg,var(--border) .6px,transparent .6px); background-size: 20% 25%; font: 10px var(--mono); }
+.waiting-graticule b { position: absolute; inset: 0; display: grid; place-items: center; font-weight: 400; background: #f7f7f340; }
+.waiting-graticule > span:last-child { position: absolute; bottom: 10px; right: 14px; }
+.hardware-empty h3 { font: 400 30px/1.2 var(--display); margin: 14px 0; }
+.hardware-empty p { font-size: 12px; color: var(--secondary); line-height: 1.95; max-width: 480px; margin-bottom: 12px; }
+.hardware-chain { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 25px; }
+.hardware-chain .scope-heading { min-height: 86px; align-items: start; }
+.hardware-chain .scope-heading h3 { font-size: 12px; }
+.hardware-chain .scope-heading p { font-size: 9px; }
+.hardware-chain .plot-canvas { height: 220px; }
+.hardware-chain .scope-plot { padding-left: 62px; padding-right: 15px; }
+.hardware-chain .voltage-ticks { left: 18px; width: 35px; }
+.hardware-chain .time-ticks { left: 62px; right: 15px; font-size: 8px; }
+.hardware-chain .scope-footer { font-size: 8px; }
+.hardware-chain .clipping-indicator, .hardware-chain .dac-status { min-height: 60px; }
+.hardware-chain .dac-link-status { font-size: 9px; }
+.hardware-chain .dac-link-status strong { font-size: 9px; }
+.hardware-chain .analog-notice { font-size: 9px; }
+.hardware-page .hardware-primer { gap: 7vw; }
+.wiring-schematic { display: block; width: 100%; max-width: 460px; margin-top: 28px; color: var(--green); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .signal-instrument, .adc-conversion-bench, .dac-instrument, .resolution-experiment, .hardware-panel { animation: bench-arrival 420ms ease both; }
+  .signal-page .signal-readings, .adc-page .binary-instrument, .filter-bench { animation: bench-arrival 420ms ease 90ms both; }
+  @keyframes bench-arrival { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+  .binary-instrument .binary-bit strong { transition: color 100ms; }
+  .binary-instrument .binary-bit[data-bit='1'] strong { color: var(--amber); }
+  .transfer-marker circle { transition: r 120ms; }
+  .quantization-figure:hover .transfer-marker circle { r: 5; }
+}
+@media (max-width: 1200px) {
+  .signal-bench { grid-template-columns: minmax(0,1fr) 255px; gap: 25px; }
+  .instrument-topline > .measurement-card { min-width: 180px; }
+  .adc-conversion-bench { grid-template-columns: minmax(0,1fr) 170px minmax(0,1fr); gap: 15px; }
+  .quantization-figure { padding-inline: 12px; }
+  .quantization-figure figcaption strong { font-size: 23px; }
+  .adc-conversion-bench .plot-canvas { height: 250px; }
+  .binary-instrument { gap: 35px; }
+  .resolution-experiment { gap: 32px; }
+  .resolution-column + .resolution-column { padding-left: 28px; }
+  .resolution-column-heading > div { gap: 10px; }
+  .resolution-numeral { font-size: 76px; }
+  .resolution-column-heading h2 { font-size: 22px; }
+  .dac-results-layout { grid-template-columns: minmax(0,1fr) 245px; gap: 35px; }
+  .dac-page .r2r-panel { grid-template-columns: .7fr 1.3fr; gap: 20px 30px; }
+  .hardware-page .hardware-panel { grid-template-columns: .8fr 1.2fr; gap: 35px; }
+  .hardware-chain { grid-template-columns: 1fr; }
+  .hardware-chain .clipping-indicator, .hardware-chain .dac-status { min-height: 0; }
+  .hardware-chain .plot-canvas { height: 180px; }
+  .hardware-chain .scope-heading { min-height: 0; }
+}
+@media (max-width: 1000px) {
+  .adc-conversion-bench { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 25px; }
+  .quantization-figure { grid-row: 2; grid-column: 1/-1; display: grid; grid-template-columns: 1fr 220px 1fr; gap: 0 30px; align-items: center; border-inline: 0; border-block: 1px solid var(--border); padding: 15px 0; }
+  .quantization-figure svg { grid-column: 2; grid-row: 1/3; max-height: 220px; margin: 0; }
+  .quantization-figure > p { grid-column: 3; }
+  .quantization-figure > small { grid-column: 3; }
+  .quantization-figure figcaption { grid-row: 1/3; }
+  .quantization-figure figcaption strong { margin-top: 12px; }
+  .filter-bench { gap: 35px; grid-template-columns: .8fr 1.2fr; }
+  .filter-bench .dac-filter-fields { grid-template-columns: 1fr; gap: 18px; }
+  .dac-filter-fields .toggle-field { max-width: 300px; }
+  .technical-table .measurement-detail { min-width: 170px; }
+  .signal-page .signal-readings { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .resolution-column-heading { flex-wrap: wrap; align-items: start; }
+  .resolution-column-heading > span { text-align: left; }
+}
+@media (max-width: 800px) {
+  .lab-session { align-self: flex-start; }
+  .signal-bench { grid-template-columns: minmax(0,1fr); gap: 30px; }
+  .signal-page .lab-settings { position: static; }
+  .signal-page .lab-settings .control-panel { padding-left: 0; }
+  .signal-page .lab-settings .controls-body { max-height: none; }
+  .signal-instrument .plot-canvas--analog { height: 365px; }
+  .instrument-topline .measurement-value { font-size: 34px; }
+  .adc-setting-strip { gap: 20px 30px; }
+  .adc-setting-strip > .quiet-link { margin-left: 0; }
+  .binary-instrument { grid-template-columns: 1fr; gap: 22px; }
+  .binary-introduction { display: grid; grid-template-columns: 1fr 1fr; column-gap: 30px; }
+  .binary-introduction > .section-index { grid-column: 1/-1; }
+  .binary-introduction p { align-self: center; }
+  .dac-results-layout { grid-template-columns: 1fr; gap: 20px; }
+  .dac-transfer-setup { margin-top: 8px; padding: 22px 0 0; border-left: 0; border-top: 1px solid var(--border); }
+  .dac-transfer-setup .dac-transfer-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 25px; }
+  .dac-transfer-setup .dac-transfer-fields > p { grid-column: 1/-1; }
+  .dac-transfer-setup .dac-transfer-fields .toggle-field { margin-top: 0; }
+  .dac-page .r2r-panel { grid-template-columns: 1fr; }
+  .dac-page .r2r-panel > .adc-section-heading { grid-row: auto; display: grid; grid-template-columns: 1fr 1fr; column-gap: 30px; }
+  .dac-page .r2r-panel > .adc-section-heading > .section-index { grid-column: 1/-1; }
+  .dac-page .r2r-panel h3 { grid-row: 2/4; }
+  .dac-page .r2r-schematic, .dac-page .r2r-explanation, .dac-page .r2r-panel > .adc-table-scroll { grid-column: 1; }
+  .schematic-scroll-hint { display: block; }
+  .hardware-page .hardware-panel { grid-template-columns: 1fr; gap: 35px; }
+  .hardware-page .hardware-values { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .hardware-empty { gap: 30px; }
+  .comparison-conclusion { gap: 22px 40px; }
+}
+@media (max-width: 600px) {
+  .lab-heading h1 { font-size: clamp(40px,11vw,55px); }
+  .lab-heading { padding-bottom: 24px; margin-bottom: 22px; }
+  .instrument-topline { display: block; }
+  .instrument-topline > .measurement-card { margin-top: 25px; text-align: left; }
+  .instrument-topline .measurement-label { justify-content: flex-start; }
+  .instrument-topline .measurement-value { font-size: 43px; }
+  .signal-instrument .plot-canvas--analog { height: 320px; }
+  .signal-page .signal-readings { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .scope-annotations { gap: 8px; font-size: 7px; }
+  .experiment-note { font-size: 8px; }
+  .adc-setting-strip { gap: 22px; align-items: start; }
+  .adc-setting-strip .resolution-field, .adc-setting-strip .select-field { min-width: 0; width: 100%; }
+  .adc-setting-strip .strip-equation { flex: 1; }
+  .adc-conversion-bench { grid-template-columns: 1fr; gap: 22px; }
+  .quantization-figure { grid-column: 1; grid-row: auto; grid-template-columns: .9fr 1.1fr; gap: 10px 15px; }
+  .quantization-figure figcaption { grid-row: 1; }
+  .quantization-figure svg { grid-column: 2; grid-row: 1/4; }
+  .quantization-figure > p, .quantization-figure > small { grid-column: 1; }
+  .adc-conversion-bench .plot-canvas { height: 230px; }
+  .adc-conversion-bench .scope-heading { min-height: 0; }
+  .binary-introduction { display: block; }
+  .binary-introduction h2 { font-size: 31px; }
+  .binary-instrument .binary-leds { gap: 6px; }
+  .binary-instrument .binary-bit strong { font-size: 24px; }
+  .technical-table .measurement-detail { display: none; }
+  .technical-table thead th:last-child { display: none; }
+  .technical-table th, .technical-table td { padding-right: 8px; }
+  .technical-table th { min-width: 105px; }
+  .technical-table .measurement-value { font-size: 12px; gap: 4px; }
+  .dac-input-strip { grid-template-columns: 1fr 1fr; gap: 22px 15px; padding-block: 20px; }
+  .dac-clock-note { grid-column: 1/-1; grid-row: 2; display: flex; justify-content: space-between; align-items: center; gap: 14px; text-align: left; }
+  .dac-clock-note strong { font-size: 12px; margin: 0; }
+  .dac-clock-note small { display: none; }
+  .dac-word { font-size: 20px; letter-spacing: .025em; }
+  .dac-output-reading output { font-size: 25px; }
+  .dac-input-strip .section-index { font-size: 8px; }
+  .dac-input-strip small { font-size: 8px; }
+  .dac-instrument .plot-canvas--dac { height: 280px; }
+  .filter-bench { grid-template-columns: 1fr; gap: 25px; padding-block: 24px; }
+  .filter-bench h2 { font-size: 34px; }
+  .filter-bench .dac-filter-fields { gap: 22px; }
+  .dac-transfer-setup .dac-transfer-fields { display: block; }
+  .dac-page .r2r-panel > .adc-section-heading { display: block; }
+  .dac-page .r2r-panel { margin-top: 42px; }
+  .dac-page .r2r-panel h3 { font-size: 36px; }
+  .resolution-experiment { grid-template-columns: minmax(0,1fr); gap: 35px; }
+  .resolution-column + .resolution-column { padding: 30px 0 0; border-left: 0; border-top: 1px solid var(--ink); }
+  .resolution-numeral { font-size: 70px; }
+  .resolution-column-heading > div { display: flex; }
+  .resolution-column-heading h2 { font-size: 24px; margin-top: 7px; }
+  .resolution-column-heading > span { font-size: 7px; }
+  .comparison-register { gap: 10px; min-height: 0; }
+  .comparison-register output { width: auto; font-size: 20px; letter-spacing: -.4px; }
+  .comparison-register > span { font-size: 7px; }
+  .resolution-column .scope-heading { min-height: 70px; }
+  .resolution-column .scope-heading h3 { font-size: 13px; }
+  .resolution-column .scope-heading p { font-size: 9px; }
+  .resolution-column .plot-canvas { height: 220px; }
+  .resolution-column .scope-plot { padding-left: 65px; padding-right: 16px; }
+  .resolution-column .voltage-ticks { left: 20px; width: 36px; font-size: 9px; }
+  .resolution-column .time-ticks { left: 65px; right: 16px; font-size: 8px; }
+  .resolution-column .axis-label--time { font-size: 9px; left: calc(50% + 26px); }
+  .resolution-column .scope-footer { font-size: 9px; gap: 8px; }
+  .resolution-column .scope-footer .division-label { text-align: left; }
+  .resolution-column .legend-line { width: 9px; }
+  .resolution-column .scope-panel + .scope-panel { margin-top: 15px; }
+  .comparison-table thead th:last-child { display: table-cell; }
+  .comparison-table thead th { min-width: 140px; }
+  .comparison-table tbody td { min-width: 190px; font-size: 11px; }
+  .comparison-table tr > :last-child { border-left: 1px solid var(--border); }
+  .comparison-conclusion { grid-template-columns: 1fr; gap: 20px; }
+  .comparison-conclusion h2 { font-size: 38px; }
+  .comparison-error-grid { grid-template-columns: 1fr; gap: 20px; }
+  .hardware-page .hardware-heading h3 { font-size: 29px; }
+  .hardware-page .hardware-values { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .hardware-page .hardware-values .measurement-value { font-size: 18px; }
+  .hardware-visual-heading { display: block; }
+  .hardware-visual-heading h2 { font-size: 31px; margin-bottom: 15px; }
+  .hardware-empty { grid-template-columns: 1fr; gap: 25px; }
+  .waiting-graticule { min-height: 150px; }
+  .hardware-empty h3 { font-size: 28px; }
+  .hardware-chain .plot-canvas { height: 220px; }
+  .hardware-page .hardware-primer { margin-top: 32px; }
+}
