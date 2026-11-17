@@ -290,6 +290,26 @@ input[type='range']:disabled { cursor: not-allowed; }
   .app-footer { padding-inline: 16px; font-size: 7px; }
 }
 
+/* Readable instrument annotations at normal browser zoom on small screens. */
+.scope-plot { padding-left: 76px; }
+.voltage-ticks { left: 28px; width: 40px; font-size: 10px; }
+.time-ticks { left: 76px; font-size: 10px; }
+.axis-label { font-size: 10px; }
+.axis-label--time { left: calc(50% + 28px); }
+.scope-footer { font-size: 10px; flex-wrap: wrap; }
+.scope-heading p, .control-hint, .measurement-detail, .controls-note p { font-size: 10px; }
+.scope-heading h3 { font-size: 13px; }
+.select-field > label, .field-heading > label, .resolution-field legend, .toggle-field label { font-size: 11px; }
+.measurement-label { font-size: 11px; }
+.measurement-value { font-size: clamp(18px, 1.4vw, 22px); }
+.range-limits, .field-heading output { font-size: 10px; }
+
+@media (max-width: 480px) {
+  /* Give the dial, voltage output and acquisition buttons a full control row. */
+  .controls-body { display: block; }
+  .control-section:nth-child(n) { border-right: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
 }

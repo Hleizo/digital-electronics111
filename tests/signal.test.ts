@@ -70,6 +70,16 @@ test('aliasing accounts for infinite harmonic tails, noise, zero amplitude, and 
   assert.equal(getSpectrum({ ...base, noiseAmplitude: 0.1 }, 200).highestFrequency, 89)
 })
 
+test('below-Nyquist sampling aliases an 8 Hz sine to a phase-inverted 2 Hz sine at 10 samples/s', () => {
+  const original = { ...base, frequency: 8 }
+  const apparent = { ...base, frequency: 2, phaseDegrees: 180 }
+  assert.equal(getSpectrum(original, 10).aliasing, true)
+  assert.equal(getSpectrum(original, 20).aliasing, false)
+  for (let sample = 0; sample < 30; sample++) close(evaluateSignal(original, sample / 10), evaluateSignal(apparent, sample / 10), 1e-10)
+  // Between sample instants the underlying analog models remain different.
+  assert.ok(Math.abs(evaluateSignal(original, .025) - evaluateSignal(apparent, .025)) > .5)
+})
+
 test('noise is reproducible, continuous, and bounded by its amplitude', () => {
   const config = { ...base, amplitude: 0, noiseAmplitude: 0.2 }
   for (let i = 0; i < 1000; i++) {

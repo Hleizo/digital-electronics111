@@ -4,7 +4,7 @@ export const DEFAULT_CONFIG: DashboardConfig = {
   mode: 'simulation',
   signal: { source: 'sine', amplitude: 1, frequency: 2, offset: 1.65, phaseDegrees: 0, noiseAmplitude: 0 },
   adc: { resolution: 8, referenceVoltage: 3.3, samplingFrequency: 100 },
-  dac: { reconstruction: 'zero-order-hold', smoothing: false },
+  dac: { reconstruction: 'zero-order-hold', smoothing: false, followAdc: true, resolution: 8, referenceVoltage: 3.3, cutoffFrequency: 10 },
   scope: { timePerDivision: 0.1, voltsPerDivision: 1, inputMaximum: 3.3 },
 }
 

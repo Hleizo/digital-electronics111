@@ -66,6 +66,7 @@
 .adc-table .adc-row--clipped td:last-child { color: #ffb3b3; }
 .adc-table .adc-row--current th { color: var(--cyan); }
 .adc-table tbody tr:last-child td, .adc-table tbody tr:last-child th { border-bottom: 0; }
+.adc-table td, .adc-table thead th { font-size: 11px; }
 
 @media (max-width: 1000px) {
   .conversion-pipeline { grid-template-columns: 1fr; gap: 12px; }

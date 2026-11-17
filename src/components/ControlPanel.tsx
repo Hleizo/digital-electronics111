@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react'
 import type { AcquisitionStatus, DashboardConfig, Resolution } from '../types'
 import { getSpectrum, SIGNAL_OPTIONS } from '../core/signal'
-import { BLUETOOTH_AVAILABLE } from '../services/bluetooth'
 import { Icon } from './Icon'
 import { InputSlider } from './controls/InputSlider'
 import { SelectControl } from './controls/SelectControl'
-import { ToggleSwitch } from './controls/ToggleSwitch'
 import { Potentiometer } from './controls/Potentiometer'
 import { AcquisitionControls } from './AcquisitionControls'
 import { createAdcModel } from '../core/adc'
+import { DacControls } from './dac/DacControls'
 
 function ControlSection({ title, number, children }: { title: string; number: string; children: ReactNode }) {
   return <section className="control-section"><h3><span>{number}</span>{title}</h3>{children}</section>
@@ -27,7 +26,6 @@ interface ControlPanelProps {
 export function ControlPanel({ config, status, onChange, onReset, onStart, onPause, onAcquisitionReset }: ControlPanelProps) {
   const setSignal = (values: Partial<DashboardConfig['signal']>) => onChange({ ...config, signal: { ...config.signal, ...values } })
   const setAdc = (values: Partial<DashboardConfig['adc']>) => onChange({ ...config, adc: { ...config.adc, ...values } })
-  const setDac = (values: Partial<DashboardConfig['dac']>) => onChange({ ...config, dac: { ...config.dac, ...values } })
   const simulation = config.mode === 'simulation'
   const dc = config.signal.source === 'dc'
   const synthetic = config.signal.source === 'ecg' || config.signal.source === 'ppg'
@@ -40,7 +38,7 @@ export function ControlPanel({ config, status, onChange, onReset, onStart, onPau
     <div className="controls-body">
       <ControlSection number="01" title="Signal Source">
         <SelectControl label="Waveform" value={config.signal.source} onChange={source => setSignal({ source })} options={SIGNAL_OPTIONS} disabled={!simulation} />
-        <p className="control-hint">{!simulation ? 'ESP32 input is unavailable; Bluetooth is not implemented.' : synthetic ? 'Educational synthetic signal. Not an actual patient measurement.' : 'Continuous-time educational simulation.'}</p>
+        <p className="control-hint">{!simulation ? 'Real GPIO34 measurements via BLE. Virtual waveform controls are disabled.' : synthetic ? 'Educational synthetic signal. Not an actual patient measurement.' : 'Continuous-time educational simulation.'}</p>
         <SelectControl label="Educational input range" value={String(config.scope.inputMaximum)} disabled={!simulation} onChange={value => {
           const maximum = Number(value)
           onChange({ ...config, signal: { ...config.signal, offset: Math.min(config.signal.offset, maximum), amplitude: Math.min(config.signal.amplitude, maximum) }, scope: { ...config.scope, inputMaximum: maximum, voltsPerDivision: maximum === 5 ? 1.5 : 1 } })
@@ -60,7 +58,7 @@ export function ControlPanel({ config, status, onChange, onReset, onStart, onPau
           <SelectControl label="Voltage (V/div)" value={String(config.scope.voltsPerDivision)} onChange={value => setScale({ voltsPerDivision: Number(value) })} options={[0.1, 0.25, 0.5, 1, 1.5, 2].map(value => ({ value: String(value), label: `${value} V/div` }))} />
         </div>
         <p className="control-hint">Display refresh follows the browser (~60 FPS); it does not set the sampling frequency.</p>
-        <div className={`sampling-notice${spectrum.aliasing ? ' sampling-notice--warning' : ''}`} role="status"><strong>Nyquist: {spectrum.nyquist.toLocaleString()} Hz</strong><p>{spectrum.aliasing ? 'Aliasing warning: signal components reach or exceed fs/2.' : 'Known signal components are below fs/2.'} {spectrum.description}.</p></div>
+        <div className={`sampling-notice${simulation && spectrum.aliasing ? ' sampling-notice--warning' : ''}`} role="status"><strong>Nyquist: {spectrum.nyquist.toLocaleString()} Hz</strong><p>{simulation ? `${spectrum.aliasing ? 'Aliasing warning: signal components reach or exceed fs/2.' : 'Known signal components are below fs/2.'} ${spectrum.description}.` : 'Real sensor bandwidth is unknown. Aliasing may occur; the virtual waveform spectrum does not describe hardware input.'}</p></div>
       </ControlSection>
       <ControlSection number="03" title="ADC Configuration">
         <fieldset className="resolution-field"><legend>Resolution</legend><div className="segmented resolution-selector">{([4, 8] as Resolution[]).map(resolution => <button key={resolution} type="button" aria-pressed={config.adc.resolution === resolution} onClick={() => setAdc({ resolution })}>{resolution}-bit<span>{2 ** resolution} levels</span></button>)}</div></fieldset>
@@ -68,16 +66,15 @@ export function ControlPanel({ config, status, onChange, onReset, onStart, onPau
         <p className="control-hint">{adc.levels} levels · codes 0–{adc.maximumCode}<br />LSB: {adc.delta.toFixed(6)} V / {(adc.delta * 1000).toFixed(3)} mV.<br />Vref changes quantization, not the signal or sample clock. Uniform bins use midpoint voltages.</p>
       </ControlSection>
       <ControlSection number="04" title="DAC Configuration">
-        <SelectControl label="Reconstruction method" value={config.dac.reconstruction} onChange={reconstruction => setDac({ reconstruction })} options={[{ value: 'zero-order-hold', label: 'Zero-order hold' }, { value: 'linear', label: 'Linear interpolation' }]} />
-        <ToggleSwitch label="Output smoothing" description="Configuration only" checked={config.dac.smoothing} onChange={smoothing => setDac({ smoothing })} />
+        <DacControls config={config} onChange={onChange} />
       </ControlSection>
       <ControlSection number="05" title="Acquisition Controls">
         <AcquisitionControls status={status} available={simulation} onStart={onStart} onPause={onPause} onReset={onAcquisitionReset} />
-        {config.mode === 'esp32' && <button className="secondary-button connection-button" type="button" disabled={!BLUETOOTH_AVAILABLE}><Icon name="bluetooth" size={15} />Connect ESP32 · unavailable</button>}
+        {config.mode === 'esp32' && <p className="control-hint">Use Connect / Disconnect in the ESP32 input panel. Sampling is controlled by firmware, not the virtual generator.</p>}
         <button className="secondary-button reset-button" type="button" onClick={onReset}><Icon name="reset" size={14} />Reset configuration</button>
-        <p className="control-hint">{simulation ? 'Analog acquisition and ADC conversion. Pause freezes the clock and traces; reset clears acquisition history.' : 'Switch to Simulation to start. No device data is available.'}</p>
+        <p className="control-hint">{simulation ? 'Analog → ADC → DAC simulation. Pause freezes the clock and all traces; reset clears acquisition history.' : 'Acquisition begins when real BLE samples arrive. Reset clears the displayed history; packet/session diagnostics continue.'}</p>
       </ControlSection>
     </div>
-    <div className="controls-note"><Icon name="info" size={15} /><p>Educational analog and ADC simulation. DAC and Bluetooth remain unimplemented.</p></div>
+    <div className="controls-note"><Icon name="info" size={15} /><p>Simulation or real BLE input. Educational ADC/DAC processing runs in the browser. Physical GPIO25 output is separate.</p></div>
   </aside>
 }

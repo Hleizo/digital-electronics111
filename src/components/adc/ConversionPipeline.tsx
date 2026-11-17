@@ -1,10 +1,10 @@
 import type { AdcResult, SignalSample } from '../../types'
 import { signed, volts } from './format'
 
-export function ConversionPipeline({ inputVoltage, sample, result, samplingFrequency }: { inputVoltage: number | null; sample: SignalSample | null; result: AdcResult | null; samplingFrequency: number }) {
+export function ConversionPipeline({ inputVoltage, sample, result, samplingFrequency, hardwareMode = false }: { inputVoltage: number | null; sample: SignalSample | null; result: AdcResult | null; samplingFrequency: number; hardwareMode?: boolean }) {
   return <div className="adc-conversion-summary">
     <ol className="conversion-pipeline" aria-label="Analog input to sampled binary code">
-      <li><span>Analog Input</span><strong>{volts(inputVoltage)}</strong><small>Continuous-time value</small></li>
+      <li><span>Analog Input</span><strong>{volts(inputVoltage)}</strong><small>{hardwareMode ? 'Latest received voltage estimate' : 'Continuous-time value'}</small></li>
       <li><span>Sampling</span><strong>{volts(sample?.voltage)}</strong><small>{sample ? `t = ${sample.timeSeconds.toFixed(4)} s · ${samplingFrequency} Sa/s` : 'Waiting for a timestamp'}</small></li>
       <li><span>Quantization</span><strong>{volts(result?.quantizedVoltage)}</strong><small>{result ? `Code ${result.code} · bin midpoint` : 'Uniform ADC bins'}</small></li>
       <li><span>Binary Code</span><strong>{result?.binary ?? '—'}</strong><small>MSB → LSB</small></li>

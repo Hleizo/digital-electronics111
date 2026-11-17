@@ -3,4 +3,5 @@ node_modules/
 dist/
 *.local
 *.tsbuildinfo
+.qa/final-browser/
 .DS_Store

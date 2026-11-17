@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { createAdcModel } from '../../core/adc'
 import type { AdcModel } from '../../core/adc'
 import type { AnalogAcquisition } from '../../core/signal'
@@ -16,7 +16,7 @@ interface AdcEducationProps {
   samplingFrequency: number
 }
 
-export function AdcEducation({ model, engine, status, sample, elapsed, timePerDivision, samplingFrequency }: AdcEducationProps) {
+export const AdcEducation = memo(function AdcEducation({ model, engine, status, sample, elapsed, timePerDivision, samplingFrequency }: AdcEducationProps) {
   const models = useMemo(() => ([4, 8] as const).map(resolution => createAdcModel({ resolution, referenceVoltage: model.referenceVoltage })), [model.referenceVoltage])
   const examples = [
     { label: 'Below range', voltage: -model.delta },
@@ -74,4 +74,4 @@ export function AdcEducation({ model, engine, status, sample, elapsed, timePerDi
       <p className="measurement-explanation">Voltages and errors are rounded for display; conversion uses the full input precision.</p>
     </section>
   </section>
-}
+})

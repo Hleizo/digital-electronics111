@@ -8,6 +8,18 @@ import { evaluateSignal } from '../src/core/signal/model.ts'
 
 const close = (actual: number, expected: number, tolerance = 1e-12) => assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} ≈ ${expected}`)
 
+test('3.3 V reference gives the specified 8-bit and 4-bit LSB values exactly', () => {
+  const eight = createAdcModel({ resolution: 8, referenceVoltage: 3.3 })
+  const four = createAdcModel({ resolution: 4, referenceVoltage: 3.3 })
+  assert.equal(eight.levels, 256)
+  assert.equal(eight.maximumCode, 255)
+  assert.equal(eight.delta, 0.012890625)
+  assert.equal(eight.delta * 1000, 12.890625)
+  assert.equal(four.levels, 16)
+  assert.equal(four.maximumCode, 15)
+  assert.equal(four.delta, .20625)
+})
+
 for (const resolution of [4, 8] as const) {
   test(`${resolution}-bit endpoints, saturation, midpoint voltage, and fixed binary width`, () => {
     const adc = createAdcModel({ resolution, referenceVoltage: 3.3 })
@@ -129,6 +141,22 @@ test('ADC conversion preserves raw sample timestamps and sampling remains indepe
   assert.deepEqual(samples, before)
   assert.equal(engine.samples.size, 275)
   assert.equal(engine.elapsed, 2)
+})
+
+test('floating-point sample-rate boundaries never expose an ADC sample ahead of the shared clock', () => {
+  const signal = { ...DEFAULT_CONFIG.signal, frequency: 1 }
+  const engine = new AnalogAcquisition(signal, 10)
+  engine.advance(1.1)
+  engine.configure(signal, 20)
+  engine.advance(1.15)
+  const latest = engine.snapshot().latestSample!
+  assert.ok(latest.timeSeconds <= engine.elapsed)
+  const visible: number[] = []
+  engine.samples.forEach(0, engine.elapsed, time => visible.push(time))
+  assert.equal(latest.timeSeconds, visible.at(-1))
+  // The deferred index is emitted on the next frame, not skipped forever.
+  engine.advance(1.16)
+  assert.equal(engine.snapshot().latestSample!.timeSeconds, 1.1 + 1 / 20)
 })
 
 test('latest sampled value stays captured when paused parameters change and clears on reset', () => {

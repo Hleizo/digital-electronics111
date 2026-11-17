@@ -1,0 +1,12 @@
+.hardware-panel { padding: 13px 17px; border-block: 1px solid var(--border); background: #101b28; }
+.hardware-heading { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 10px; }
+.hardware-heading h3 { font-size: 12px; color: #dbe6f5; }
+.hardware-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-block: 12px; }
+.hardware-device, .hardware-calibration, .hardware-footnote { font-size: 10px; line-height: 1.8; color: #9eafc7; margin-top: 9px; }
+.hardware-device strong { color: #dce7f5; }
+.hardware-calibration { color: #d5bb8e; }
+.hardware-message { color: #ffcccc; background: #30202a; border: 1px solid #754852; padding: 9px; border-radius: 4px; font-size: 11px; line-height: 1.7; margin-top: 9px; }
+.hardware-values { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+.hardware-values .measurement-card { padding: 10px; }
+.hardware-values .measurement-value { font-size: 18px; }
+@media (max-width: 1100px) { .hardware-values { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

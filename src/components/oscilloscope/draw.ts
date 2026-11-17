@@ -1,5 +1,5 @@
 import type { AnalogAcquisition } from '../../core/signal'
-import { evaluateSignal, getSpectrum } from '../../core/signal'
+import { evaluateSignal, getSpectrum } from '../../core/signal/model.ts'
 import type { ScopeConfig } from '../../types'
 
 export function drawGrid(context: CanvasRenderingContext2D, width: number, height: number) {
@@ -17,7 +17,7 @@ export function drawGrid(context: CanvasRenderingContext2D, width: number, heigh
   }
 }
 
-export function drawAnalog(context: CanvasRenderingContext2D, width: number, height: number, engine: AnalogAcquisition, scale: ScopeConfig, inputMaximum: number) {
+export function drawAnalog(context: CanvasRenderingContext2D, width: number, height: number, engine: AnalogAcquisition, scale: ScopeConfig, inputMaximum: number, reduceDensePoints = true) {
   const windowSeconds = 10 * scale.timePerDivision
   const windowStart = engine.elapsed - windowSeconds
   const voltageSpan = 4 * scale.voltsPerDivision
@@ -39,6 +39,16 @@ export function drawAnalog(context: CanvasRenderingContext2D, width: number, hei
   if (engine.active) {
     context.strokeStyle = '#50dca0'
     context.lineWidth = 1.6
+    if (engine.inputSource === 'hardware') {
+      let previous = -Infinity
+      context.beginPath()
+      engine.samples.forEach(windowStart, engine.elapsed, (time, voltage) => {
+        if (time - previous > 1.5 / engine.hardwareSampleRate) context.moveTo(xAt(time), yAt(voltage))
+        else context.lineTo(xAt(time), yAt(voltage))
+        previous = time
+      }, true)
+      context.stroke()
+    } else {
     for (let index = 0; index < engine.segments.length; index++) {
       const segment = engine.segments[index]
       const start = Math.max(0, windowStart, segment.start)
@@ -57,14 +67,43 @@ export function drawAnalog(context: CanvasRenderingContext2D, width: number, hei
       }
       context.stroke()
     }
+    }
     context.fillStyle = '#4ddbd1'
     context.beginPath()
-    engine.samples.forEach(windowStart, engine.elapsed, (time, voltage) => {
+    const dot = (time: number, voltage: number) => {
       const x = xAt(time)
       const y = yAt(voltage)
       context.moveTo(x + 2.3, y)
       context.arc(x, y, 2.3, 0, Math.PI * 2)
-    })
+    }
+    if (!reduceDensePoints) engine.samples.forEach(windowStart, engine.elapsed, dot)
+    else {
+      // Every voltage plot retains actual first/min/max/last samples per pixel.
+      // This affects only redundant dot drawing; raw samples remain unchanged.
+      let column = -Infinity, count = 0
+      let firstTime = 0, firstValue = 0, minimumTime = 0, minimumValue = 0, maximumTime = 0, maximumValue = 0, lastTime = 0, lastValue = 0
+      const flush = () => {
+        if (!count) return
+        dot(firstTime, firstValue)
+        if (minimumTime !== firstTime || minimumValue !== firstValue) dot(minimumTime, minimumValue)
+        if ((maximumTime !== firstTime || maximumValue !== firstValue) && (maximumTime !== minimumTime || maximumValue !== minimumValue)) dot(maximumTime, maximumValue)
+        if ((lastTime !== firstTime || lastValue !== firstValue) && (lastTime !== minimumTime || lastValue !== minimumValue) && (lastTime !== maximumTime || lastValue !== maximumValue)) dot(lastTime, lastValue)
+        count = 0
+      }
+      engine.samples.forEach(windowStart, engine.elapsed, (time, voltage) => {
+        const nextColumn = Math.floor(xAt(time))
+        if (nextColumn !== column) { flush(); column = nextColumn }
+        if (!count) {
+          firstTime = minimumTime = maximumTime = time
+          firstValue = minimumValue = maximumValue = voltage
+        } else {
+          if (voltage < minimumValue) { minimumTime = time; minimumValue = voltage }
+          if (voltage > maximumValue) { maximumTime = time; maximumValue = voltage }
+        }
+        lastTime = time; lastValue = voltage; count++
+      })
+      flush()
+    }
     context.fill()
   }
   context.restore()

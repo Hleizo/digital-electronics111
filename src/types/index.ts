@@ -26,8 +26,32 @@ export interface AdcConfig {
 }
 
 export interface DacConfig {
-  reconstruction: 'zero-order-hold' | 'linear'
+  reconstruction: 'zero-order-hold'
   smoothing: boolean
+  followAdc: boolean
+  resolution: Resolution
+  referenceVoltage: number
+  cutoffFrequency: number
+}
+
+export interface DacResult {
+  sourceCode: number
+  code: number
+  binary: string
+  outputVoltage: number
+  inputSaturated: boolean
+}
+
+export interface ReconstructionMeasurements {
+  result: DacResult | null
+  originalVoltage: number | null
+  reconstructedVoltage: number | null
+  filteredVoltage: number | null
+  error: number | null
+  absoluteError: number | null
+  rmsError: number | null
+  rmsWindowSeconds: number
+  rmsEvaluations: number
 }
 
 export interface DashboardConfig {
