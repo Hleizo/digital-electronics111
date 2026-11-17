@@ -1,0 +1,195 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/hardware/HardwarePanel.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=759d7589"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+var _s = $RefreshSig$();
+import __vite__cjsImport1_react from "/node_modules/.vite/deps/react.js?v=759d7589"; const useEffect = __vite__cjsImport1_react["useEffect"]; const useRef = __vite__cjsImport1_react["useRef"]; const useState = __vite__cjsImport1_react["useState"];
+import { MeasurementCard } from "/src/components/MeasurementCard.tsx";
+import { StatusIndicator } from "/src/components/StatusIndicator.tsx";
+import "/src/components/hardware/hardware.css";
+export function HardwarePanel({ bluetooth, raw, voltage, renderFps, onConnect }) {
+  _s();
+  const { snapshot: data, support, ageSeconds, receiving, client } = bluetooth;
+  const [notificationHz, setNotificationHz] = useState(0);
+  const previous = useRef({ count: data.notificationCount, time: performance.now() });
+  useEffect(() => {
+    const now = performance.now(), elapsed = (now - previous.current.time) / 1e3;
+    if (elapsed >= 1) {
+      setNotificationHz(Math.max(0, (data.notificationCount - previous.current.count) / elapsed));
+      previous.current = { count: data.notificationCount, time: now };
+    }
+  }, [data.notificationCount, ageSeconds]);
+  return /* @__PURE__ */ jsxDEV("section", { className: "hardware-panel", "aria-labelledby": "hardware-title", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "hardware-heading", children: [
+      /* @__PURE__ */ jsxDEV("h3", { id: "hardware-title", children: "ESP32 live input · BLE GATT" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 27,
+        columnNumber: 39
+      }, this),
+      /* @__PURE__ */ jsxDEV(StatusIndicator, { label: data.status, tone: data.status === "connected" ? "cyan" : "neutral" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 27,
+        columnNumber: 95
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 27,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "hardware-actions", children: [
+      /* @__PURE__ */ jsxDEV("button", { className: "primary-button", type: "button", disabled: !support.supported || data.status !== "disconnected", onClick: onConnect, children: data.status === "connecting" ? "Selecting / connecting…" : "Connect ESP32" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 28,
+        columnNumber: 39
+      }, this),
+      /* @__PURE__ */ jsxDEV("button", { className: "secondary-button", type: "button", disabled: data.status === "disconnected", onClick: () => client.disconnect(), children: "Disconnect ESP32" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 28,
+        columnNumber: 257
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 28,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("p", { className: "hardware-device", children: [
+      "Device: ",
+      /* @__PURE__ */ jsxDEV("strong", { children: data.deviceName ?? "None selected" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 29,
+        columnNumber: 44
+      }, this),
+      " · ",
+      /* @__PURE__ */ jsxDEV(StatusIndicator, { label: receiving ? "Receiving" : "Not receiving", tone: receiving ? "green" : "amber" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 29,
+        columnNumber: 100
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 29,
+      columnNumber: 5
+    }, this),
+    !support.supported && /* @__PURE__ */ jsxDEV("p", { className: "hardware-message", role: "status", children: support.message }, void 0, false, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 30,
+      columnNumber: 28
+    }, this),
+    data.error && /* @__PURE__ */ jsxDEV("p", { className: "hardware-message", role: "status", children: data.error }, void 0, false, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 31,
+      columnNumber: 20
+    }, this),
+    data.status === "connected" && !receiving && /* @__PURE__ */ jsxDEV("p", { className: "hardware-message", role: "status", children: data.lastPacketAt === null ? "No data received. Verify firmware, notification subscription and the advertised service UUID." : "No fresh data received. The last capture is frozen; check the ESP32 and BLE link." }, void 0, false, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 32,
+      columnNumber: 51
+    }, this),
+    /* @__PURE__ */ jsxDEV("p", { className: "hardware-calibration", children: [
+      data.approximateVoltage ? "APPROXIMATE VOLTAGE — " : "DEVICE CALIBRATION — ",
+      data.voltageSource,
+      ". Hardware ADC: 12-bit counts, 0–4095. Educational output: selected 4 or 8 bits. ESP32 internal ADC Vref is not a 3.3 V input full-scale reference."
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 33,
+      columnNumber: 5
+    }, this),
+    data.calibrationMessage && /* @__PURE__ */ jsxDEV("p", { className: "hardware-footnote", children: data.calibrationMessage }, void 0, false, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 34,
+      columnNumber: 33
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "hardware-values", children: [
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "Raw hardware ADC", value: raw, detail: "Original 12-bit count · never replaced", accent: "green" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 36,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "Hardware voltage estimate", value: voltage?.toFixed(4) ?? null, unit: "V", detail: data.approximateVoltage ? "Approximate · attenuation-dependent" : "Device-provided calibration lookup", accent: "green" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 37,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "Hardware sample rate", value: data.hardwareSampleRate, unit: "Sa/s", detail: "Nominal device acquisition rate" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 38,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "BLE notification rate", value: notificationHz.toFixed(1), unit: "Hz", detail: "Measured arrivals · target ~25 Hz" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 39,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "Browser rendering rate", value: renderFps.toFixed(0), unit: "FPS", detail: "Measured rAF cycles · separate from sampling" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 40,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "Received samples", value: data.receivedSamples.toLocaleString(), detail: "Accepted samples this connection" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 41,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "Packet loss events", value: data.gapEvents.toLocaleString(), detail: "Detected sequence discontinuities", warning: data.lostSamples > 0, accent: "amber" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 42,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "Missing samples", value: data.lostSamples.toLocaleString(), detail: "Exact missing sequence slots · not packet count", warning: data.lostSamples > 0, accent: "amber" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 43,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(MeasurementCard, { label: "Last packet age", value: ageSeconds?.toFixed(2) ?? null, unit: "s", detail: "Browser arrival age · not BLE latency" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+        lineNumber: 44,
+        columnNumber: 7
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 35,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("p", { className: "hardware-footnote", children: [
+      "Invalid packets: ",
+      data.invalidPackets,
+      " · Duplicate / old packets: ",
+      data.duplicatePackets,
+      ". No generated waveform is used in this mode. Lines only connect received voltage estimates; gaps remain visible. Browser DAC output is calculated software output, separate from any optional physical GPIO25 voltage."
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+      lineNumber: 46,
+      columnNumber: 5
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx",
+    lineNumber: 26,
+    columnNumber: 10
+  }, this);
+}
+_s(HardwarePanel, "Ce2wCoh9sxHevH2Squ9BW6UdcqE=");
+_c = HardwarePanel;
+var _c;
+$RefreshReg$(_c, "HardwarePanel");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/hardware/HardwarePanel.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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Nkk7QUFBQSxNQUM3SSx1QkFBQyxtQkFBZ0IsT0FBTSxvQkFBbUIsT0FBTzNCLEtBQUs2QixnQkFBZ0JDLGVBQWUsR0FBRyxRQUFPLHNDQUEvRjtBQUFBO0FBQUE7QUFBQTtBQUFBLGFBQWlJO0FBQUEsTUFDakksdUJBQUMsbUJBQWdCLE9BQU0sc0JBQXFCLE9BQU85QixLQUFLK0IsVUFBVUQsZUFBZSxHQUFHLFFBQU8scUNBQW9DLFNBQVM5QixLQUFLZ0MsY0FBYyxHQUFHLFFBQU8sV0FBcks7QUFBQTtBQUFBO0FBQUE7QUFBQSxhQUE0SztBQUFBLE1BQzVLLHVCQUFDLG1CQUFnQixPQUFNLG1CQUFrQixPQUFPaEMsS0FBS2dDLFlBQVlGLGVBQWUsR0FBRyxRQUFPLG1EQUFrRCxTQUFTOUIsS0FBS2dDLGNBQWMsR0FBRyxRQUFPLFdBQWxMO0FBQUE7QUFBQTtBQUFBO0FBQUEsYUFBeUw7QUFBQSxNQUN6TCx1QkFBQyxtQkFBZ0IsT0FBTSxtQkFBa0IsT0FBTzlCLFlBQVl5QixRQUFRLENBQUMsS0FBSyxNQUFNLE1BQUssS0FBSSxRQUFPLDJDQUFoRztBQUFBO0FBQUE7QUFBQTtBQUFBLGFBQXVJO0FBQUEsU0FUekk7QUFBQTtBQUFBO0FBQUE7QUFBQSxXQVVBO0FBQUEsSUFDQSx1QkFBQyxPQUFFLFdBQVUscUJBQW9CO0FBQUE7QUFBQSxNQUFrQjNCLEtBQUtpQztBQUFBQSxNQUFlO0FBQUEsTUFBNkJqQyxLQUFLa0M7QUFBQUEsTUFBaUI7QUFBQSxTQUExSDtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBQWlWO0FBQUEsT0FwQjVVO0FBQUE7QUFBQTtBQUFBO0FBQUEsU0FxQlA7QUFDRjtBQUFDcEMsR0FqQ2VOLGVBQWE7QUFBQSxLQUFiQTtBQUFhLElBQUEyQztBQUFBLGFBQUFBLElBQUEiLCJuYW1lcyI6WyJ1c2VFZmZlY3QiLCJ1c2VSZWYiLCJ1c2VTdGF0ZSIsIk1lYXN1cmVtZW50Q2FyZCIsIlN0YXR1c0luZGljYXRvciIsIkhhcmR3YXJlUGFuZWwiLCJibHVldG9vdGgiLCJyYXciLCJ2b2x0YWdlIiwicmVuZGVyRnBzIiwib25Db25uZWN0IiwiX3MiLCJzbmFwc2hvdCIsImRhdGEiLCJzdXBwb3J0IiwiYWdlU2Vjb25kcyIsInJlY2VpdmluZyIsImNsaWVudCIsIm5vdGlmaWNhdGlvbkh6Iiwic2V0Tm90aWZpY2F0aW9uSHoiLCJwcmV2aW91cyIsImNvdW50Iiwibm90aWZpY2F0aW9uQ291bnQiLCJ0aW1lIiwicGVyZm9ybWFuY2UiLCJub3ciLCJlbGFwc2VkIiwiY3VycmVudCIsIk1hdGgiLCJtYXgiLCJzdGF0dXMiLCJzdXBwb3J0ZWQiLCJkaXNjb25uZWN0IiwiZGV2aWNlTmFtZSIsIm1lc3NhZ2UiLCJlcnJvciIsImxhc3RQYWNrZXRBdCIsImFwcHJveGltYXRlVm9sdGFnZSIsInZvbHRhZ2VTb3VyY2UiLCJjYWxpYnJhdGlvbk1lc3NhZ2UiLCJ0b0ZpeGVkIiwiaGFyZHdhcmVTYW1wbGVSYXRlIiwicmVjZWl2ZWRTYW1wbGVzIiwidG9Mb2NhbGVTdHJpbmciLCJnYXBFdmVudHMiLCJsb3N0U2FtcGxlcyIsImludmFsaWRQYWNrZXRzIiwiZHVwbGljYXRlUGFja2V0cyIsIl9jIl0sImlnbm9yZUxpc3QiOltdLCJzb3VyY2VzIjpbIkhhcmR3YXJlUGFuZWwudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHVzZUVmZmVjdCwgdXNlUmVmLCB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0J1xuaW1wb3J0IHR5cGUgeyB1c2VCbHVldG9vdGggfSBmcm9tICcuLi8uLi9ob29rcy91c2VCbHVldG9vdGgnXG5pbXBvcnQgeyBNZWFzdXJlbWVudENhcmQgfSBmcm9tICcuLi9NZWFzdXJlbWVudENhcmQnXG5pbXBvcnQgeyBTdGF0dXNJbmRpY2F0b3IgfSBmcm9tICcuLi9TdGF0dXNJbmRpY2F0b3InXG5pbXBvcnQgJy4vaGFyZHdhcmUuY3NzJ1xuXG5pbnRlcmZhY2UgUHJvcHMge1xuICBibHVldG9vdGg6IFJldHVyblR5cGU8dHlwZW9mIHVzZUJsdWV0b290aD5cbiAgcmF3OiBudW1iZXIgfCBudWxsXG4gIHZvbHRhZ2U6IG51bWJlciB8IG51bGxcbiAgcmVuZGVyRnBzOiBudW1iZXJcbiAgb25Db25uZWN0OiAoKSA9PiB2b2lkXG59XG5cbmV4cG9ydCBmdW5jdGlvbiBIYXJkd2FyZVBhbmVsKHsgYmx1ZXRvb3RoLCByYXcsIHZvbHRhZ2UsIHJlbmRlckZwcywgb25Db25uZWN0IH06IFByb3BzKSB7XG4gIGNvbnN0IHsgc25hcHNob3Q6IGRhdGEsIHN1cHBvcnQsIGFnZVNlY29uZHMsIHJlY2VpdmluZywgY2xpZW50IH0gPSBibHVldG9vdGhcbiAgY29uc3QgW25vdGlmaWNhdGlvbkh6LCBzZXROb3RpZmljYXRpb25Iel0gPSB1c2VTdGF0ZSgwKVxuICBjb25zdCBwcmV2aW91cyA9IHVzZVJlZih7IGNvdW50OiBkYXRhLm5vdGlmaWNhdGlvbkNvdW50LCB0aW1lOiBwZXJmb3JtYW5jZS5ub3coKSB9KVxuICB1c2VFZmZlY3QoKCkgPT4ge1xuICAgIGNvbnN0IG5vdyA9IHBlcmZvcm1hbmNlLm5vdygpLCBlbGFwc2VkID0gKG5vdyAtIHByZXZpb3VzLmN1cnJlbnQudGltZSkgLyAxMDAwXG4gICAgaWYgKGVsYXBzZWQgPj0gMSkge1xuICAgICAgc2V0Tm90aWZpY2F0aW9uSHooTWF0aC5tYXgoMCwgKGRhdGEubm90aWZpY2F0aW9uQ291bnQgLSBwcmV2aW91cy5jdXJyZW50LmNvdW50KSAvIGVsYXBzZWQpKVxuICAgICAgcHJldmlvdXMuY3VycmVudCA9IHsgY291bnQ6IGRhdGEubm90aWZpY2F0aW9uQ291bnQsIHRpbWU6IG5vdyB9XG4gICAgfVxuICB9LCBbZGF0YS5ub3RpZmljYXRpb25Db3VudCwgYWdlU2Vjb25kc10pXG4gIHJldHVybiA8c2VjdGlvbiBjbGFzc05hbWU9XCJoYXJkd2FyZS1wYW5lbFwiIGFyaWEtbGFiZWxsZWRieT1cImhhcmR3YXJlLXRpdGxlXCI+XG4gICAgPGRpdiBjbGFzc05hbWU9XCJoYXJkd2FyZS1oZWFkaW5nXCI+PGgzIGlkPVwiaGFyZHdhcmUtdGl0bGVcIj5FU1AzMiBsaXZlIGlucHV0IMK3IEJMRSBHQVRUPC9oMz48U3RhdHVzSW5kaWNhdG9yIGxhYmVsPXtkYXRhLnN0YXR1c30gdG9uZT17ZGF0YS5zdGF0dXMgPT09ICdjb25uZWN0ZWQnID8gJ2N5YW4nIDogJ25ldXRyYWwnfSAvPjwvZGl2PlxuICAgIDxkaXYgY2xhc3NOYW1lPVwiaGFyZHdhcmUtYWN0aW9uc1wiPjxidXR0b24gY2xhc3NOYW1lPVwicHJpbWFyeS1idXR0b25cIiB0eXBlPVwiYnV0dG9uXCIgZGlzYWJsZWQ9eyFzdXBwb3J0LnN1cHBvcnRlZCB8fCBkYXRhLnN0YXR1cyAhPT0gJ2Rpc2Nvbm5lY3RlZCd9IG9uQ2xpY2s9e29uQ29ubmVjdH0+e2RhdGEuc3RhdHVzID09PSAnY29ubmVjdGluZycgPyAnU2VsZWN0aW5nIC8gY29ubmVjdGluZ+KApicgOiAnQ29ubmVjdCBFU1AzMid9PC9idXR0b24+PGJ1dHRvbiBjbGFzc05hbWU9XCJzZWNvbmRhcnktYnV0dG9uXCIgdHlwZT1cImJ1dHRvblwiIGRpc2FibGVkPXtkYXRhLnN0YXR1cyA9PT0gJ2Rpc2Nvbm5lY3RlZCd9IG9uQ2xpY2s9eygpID0+IGNsaWVudC5kaXNjb25uZWN0KCl9PkRpc2Nvbm5lY3QgRVNQMzI8L2J1dHRvbj48L2Rpdj5cbiAgICA8cCBjbGFzc05hbWU9XCJoYXJkd2FyZS1kZXZpY2VcIj5EZXZpY2U6IDxzdHJvbmc+e2RhdGEuZGV2aWNlTmFtZSA/PyAnTm9uZSBzZWxlY3RlZCd9PC9zdHJvbmc+IMK3IDxTdGF0dXNJbmRpY2F0b3IgbGFiZWw9e3JlY2VpdmluZyA/ICdSZWNlaXZpbmcnIDogJ05vdCByZWNlaXZpbmcnfSB0b25lPXtyZWNlaXZpbmcgPyAnZ3JlZW4nIDogJ2FtYmVyJ30gLz48L3A+XG4gICAgeyFzdXBwb3J0LnN1cHBvcnRlZCAmJiA8cCBjbGFzc05hbWU9XCJoYXJkd2FyZS1tZXNzYWdlXCIgcm9sZT1cInN0YXR1c1wiPntzdXBwb3J0Lm1lc3NhZ2V9PC9wPn1cbiAgICB7ZGF0YS5lcnJvciAmJiA8cCBjbGFzc05hbWU9XCJoYXJkd2FyZS1tZXNzYWdlXCIgcm9sZT1cInN0YXR1c1wiPntkYXRhLmVycm9yfTwvcD59XG4gICAge2RhdGEuc3RhdHVzID09PSAnY29ubmVjdGVkJyAmJiAhcmVjZWl2aW5nICYmIDxwIGNsYXNzTmFtZT1cImhhcmR3YXJlLW1lc3NhZ2VcIiByb2xlPVwic3RhdHVzXCI+e2RhdGEubGFzdFBhY2tldEF0ID09PSBudWxsID8gJ05vIGRhdGEgcmVjZWl2ZWQuIFZlcmlmeSBmaXJtd2FyZSwgbm90aWZpY2F0aW9uIHN1YnNjcmlwdGlvbiBhbmQgdGhlIGFkdmVydGlzZWQgc2VydmljZSBVVUlELicgOiAnTm8gZnJlc2ggZGF0YSByZWNlaXZlZC4gVGhlIGxhc3QgY2FwdHVyZSBpcyBmcm96ZW47IGNoZWNrIHRoZSBFU1AzMiBhbmQgQkxFIGxpbmsuJ308L3A+fVxuICAgIDxwIGNsYXNzTmFtZT1cImhhcmR3YXJlLWNhbGlicmF0aW9uXCI+e2RhdGEuYXBwcm94aW1hdGVWb2x0YWdlID8gJ0FQUFJPWElNQVRFIFZPTFRBR0Ug4oCUICcgOiAnREVWSUNFIENBTElCUkFUSU9OIOKAlCAnfXtkYXRhLnZvbHRhZ2VTb3VyY2V9LiBIYXJkd2FyZSBBREM6IDEyLWJpdCBjb3VudHMsIDDigJM0MDk1LiBFZHVjYXRpb25hbCBvdXRwdXQ6IHNlbGVjdGVkIDQgb3IgOCBiaXRzLiBFU1AzMiBpbnRlcm5hbCBBREMgVnJlZiBpcyBub3QgYSAzLjMgViBpbnB1dCBmdWxsLXNjYWxlIHJlZmVyZW5jZS48L3A+XG4gICAge2RhdGEuY2FsaWJyYXRpb25NZXNzYWdlICYmIDxwIGNsYXNzTmFtZT1cImhhcmR3YXJlLWZvb3Rub3RlXCI+e2RhdGEuY2FsaWJyYXRpb25NZXNzYWdlfTwvcD59XG4gICAgPGRpdiBjbGFzc05hbWU9XCJoYXJkd2FyZS12YWx1ZXNcIj5cbiAgICAgIDxNZWFzdXJlbWVudENhcmQgbGFiZWw9XCJSYXcgaGFyZHdhcmUgQURDXCIgdmFsdWU9e3Jhd30gZGV0YWlsPVwiT3JpZ2luYWwgMTItYml0IGNvdW50IMK3IG5ldmVyIHJlcGxhY2VkXCIgYWNjZW50PVwiZ3JlZW5cIiAvPlxuICAgICAgPE1lYXN1cmVtZW50Q2FyZCBsYWJlbD1cIkhhcmR3YXJlIHZvbHRhZ2UgZXN0aW1hdGVcIiB2YWx1ZT17dm9sdGFnZT8udG9GaXhlZCg0KSA/PyBudWxsfSB1bml0PVwiVlwiIGRldGFpbD17ZGF0YS5hcHByb3hpbWF0ZVZvbHRhZ2UgPyAnQXBwcm94aW1hdGUgwrcgYXR0ZW51YXRpb24tZGVwZW5kZW50JyA6ICdEZXZpY2UtcHJvdmlkZWQgY2FsaWJyYXRpb24gbG9va3VwJ30gYWNjZW50PVwiZ3JlZW5cIiAvPlxuICAgICAgPE1lYXN1cmVtZW50Q2FyZCBsYWJlbD1cIkhhcmR3YXJlIHNhbXBsZSByYXRlXCIgdmFsdWU9e2RhdGEuaGFyZHdhcmVTYW1wbGVSYXRlfSB1bml0PVwiU2Evc1wiIGRldGFpbD1cIk5vbWluYWwgZGV2aWNlIGFjcXVpc2l0aW9uIHJhdGVcIiAvPlxuICAgICAgPE1lYXN1cmVtZW50Q2FyZCBsYWJlbD1cIkJMRSBub3RpZmljYXRpb24gcmF0ZVwiIHZhbHVlPXtub3RpZmljYXRpb25Iei50b0ZpeGVkKDEpfSB1bml0PVwiSHpcIiBkZXRhaWw9XCJNZWFzdXJlZCBhcnJpdmFscyDCtyB0YXJnZXQgfjI1IEh6XCIgLz5cbiAgICAgIDxNZWFzdXJlbWVudENhcmQgbGFiZWw9XCJCcm93c2VyIHJlbmRlcmluZyByYXRlXCIgdmFsdWU9e3JlbmRlckZwcy50b0ZpeGVkKDApfSB1bml0PVwiRlBTXCIgZGV0YWlsPVwiTWVhc3VyZWQgckFGIGN5Y2xlcyDCtyBzZXBhcmF0ZSBmcm9tIHNhbXBsaW5nXCIgLz5cbiAgICAgIDxNZWFzdXJlbWVudENhcmQgbGFiZWw9XCJSZWNlaXZlZCBzYW1wbGVzXCIgdmFsdWU9e2RhdGEucmVjZWl2ZWRTYW1wbGVzLnRvTG9jYWxlU3RyaW5nKCl9IGRldGFpbD1cIkFjY2VwdGVkIHNhbXBsZXMgdGhpcyBjb25uZWN0aW9uXCIgLz5cbiAgICAgIDxNZWFzdXJlbWVudENhcmQgbGFiZWw9XCJQYWNrZXQgbG9zcyBldmVudHNcIiB2YWx1ZT17ZGF0YS5nYXBFdmVudHMudG9Mb2NhbGVTdHJpbmcoKX0gZGV0YWlsPVwiRGV0ZWN0ZWQgc2VxdWVuY2UgZGlzY29udGludWl0aWVzXCIgd2FybmluZz17ZGF0YS5sb3N0U2FtcGxlcyA+IDB9IGFjY2VudD1cImFtYmVyXCIgLz5cbiAgICAgIDxNZWFzdXJlbWVudENhcmQgbGFiZWw9XCJNaXNzaW5nIHNhbXBsZXNcIiB2YWx1ZT17ZGF0YS5sb3N0U2FtcGxlcy50b0xvY2FsZVN0cmluZygpfSBkZXRhaWw9XCJFeGFjdCBtaXNzaW5nIHNlcXVlbmNlIHNsb3RzIMK3IG5vdCBwYWNrZXQgY291bnRcIiB3YXJuaW5nPXtkYXRhLmxvc3RTYW1wbGVzID4gMH0gYWNjZW50PVwiYW1iZXJcIiAvPlxuICAgICAgPE1lYXN1cmVtZW50Q2FyZCBsYWJlbD1cIkxhc3QgcGFja2V0IGFnZVwiIHZhbHVlPXthZ2VTZWNvbmRzPy50b0ZpeGVkKDIpID8/IG51bGx9IHVuaXQ9XCJzXCIgZGV0YWlsPVwiQnJvd3NlciBhcnJpdmFsIGFnZSDCtyBub3QgQkxFIGxhdGVuY3lcIiAvPlxuICAgIDwvZGl2PlxuICAgIDxwIGNsYXNzTmFtZT1cImhhcmR3YXJlLWZvb3Rub3RlXCI+SW52YWxpZCBwYWNrZXRzOiB7ZGF0YS5pbnZhbGlkUGFja2V0c30gwrcgRHVwbGljYXRlIC8gb2xkIHBhY2tldHM6IHtkYXRhLmR1cGxpY2F0ZVBhY2tldHN9LiBObyBnZW5lcmF0ZWQgd2F2ZWZvcm0gaXMgdXNlZCBpbiB0aGlzIG1vZGUuIExpbmVzIG9ubHkgY29ubmVjdCByZWNlaXZlZCB2b2x0YWdlIGVzdGltYXRlczsgZ2FwcyByZW1haW4gdmlzaWJsZS4gQnJvd3NlciBEQUMgb3V0cHV0IGlzIGNhbGN1bGF0ZWQgc29mdHdhcmUgb3V0cHV0LCBzZXBhcmF0ZSBmcm9tIGFueSBvcHRpb25hbCBwaHlzaWNhbCBHUElPMjUgdm9sdGFnZS48L3A+XG4gIDwvc2VjdGlvbj5cbn1cbiJdLCJmaWxlIjoiQzovVXNlcnMvSGFzYW4gWmVpbmVkZGluL09uZURyaXZlL0Rlc2t0b3AvUHJvamVjdHMvRGlnaXRhbCBiaW9lbGVjdHJvbmljcy9zcmMvY29tcG9uZW50cy9oYXJkd2FyZS9IYXJkd2FyZVBhbmVsLnRzeCJ9

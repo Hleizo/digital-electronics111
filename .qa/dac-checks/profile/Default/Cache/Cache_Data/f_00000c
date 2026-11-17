@@ -1,0 +1,343 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/dac/R2rLadder.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=759d7589"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+export function R2rLadder({ model, result }) {
+  return /* @__PURE__ */ jsxDEV("section", { className: "r2r-panel", "aria-labelledby": "r2r-title", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "adc-section-heading", children: [
+      /* @__PURE__ */ jsxDEV("h3", { id: "r2r-title", children: "R-2R ladder · educational circuit explanation" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 6,
+        columnNumber: 42
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { children: "Static conceptual schematic. The browser runs equations, not a physical resistor network." }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 6,
+        columnNumber: 111
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+      lineNumber: 6,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "r2r-schematic", children: /* @__PURE__ */ jsxDEV("svg", { viewBox: "0 0 900 310", role: "img", "aria-labelledby": "r2r-svg-title r2r-svg-description", children: [
+      /* @__PURE__ */ jsxDEV("title", { id: "r2r-svg-title", children: "Conceptual 4-bit voltage-mode R-2R ladder and buffer" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 7,
+        columnNumber: 126
+      }, this),
+      /* @__PURE__ */ jsxDEV("desc", { id: "r2r-svg-description", children: "Four bit-controlled 2R branches are joined by R resistors. Each switch chooses reference or ground. A terminating 2R branch completes the ladder. The output node feeds an op-amp voltage follower, which drives an optional low-pass filter." }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 7,
+        columnNumber: 212
+      }, this),
+      /* @__PURE__ */ jsxDEV("g", { fill: "none", stroke: "currentColor", strokeWidth: "2", children: [
+        [110, 230, 350, 470].map((x, index) => /* @__PURE__ */ jsxDEV("g", { children: [
+          index < 3 && /* @__PURE__ */ jsxDEV(Fragment, { children: [
+            /* @__PURE__ */ jsxDEV("path", { d: `M${x} 120h30m60 0h30` }, void 0, false, {
+              fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+              lineNumber: 10,
+              columnNumber: 27
+            }, this),
+            /* @__PURE__ */ jsxDEV("rect", { x: x + 30, y: "110", width: "60", height: "20" }, void 0, false, {
+              fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+              lineNumber: 10,
+              columnNumber: 62
+            }, this)
+          ] }, void 0, true, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 10,
+            columnNumber: 25
+          }, this),
+          /* @__PURE__ */ jsxDEV("circle", { cx: x, cy: "120", r: "3", fill: "currentColor" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 11,
+            columnNumber: 11
+          }, this),
+          /* @__PURE__ */ jsxDEV("path", { d: `M${x} 120v25m0 60v20m0 0-18 20` }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 12,
+            columnNumber: 11
+          }, this),
+          /* @__PURE__ */ jsxDEV("rect", { x: x - 10, y: "145", width: "20", height: "60" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 12,
+            columnNumber: 56
+          }, this),
+          /* @__PURE__ */ jsxDEV("circle", { cx: x - 18, cy: "250", r: "3" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 13,
+            columnNumber: 11
+          }, this),
+          /* @__PURE__ */ jsxDEV("circle", { cx: x + 18, cy: "250", r: "3" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 13,
+            columnNumber: 48
+          }, this)
+        ] }, x, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 9,
+          columnNumber: 49
+        }, this)),
+        /* @__PURE__ */ jsxDEV("path", { d: "M470 120h30m60 0h30v40m-12 0h24m-20 5h16m-12 5h8" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 15,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("rect", { x: "500", y: "110", width: "60", height: "20" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 15,
+          columnNumber: 70
+        }, this),
+        /* @__PURE__ */ jsxDEV("path", { d: "M110 120V35h535v45h25m0-30v60l60-30-60-30m60 30h50m-20 0v-65H650v45h20m110 0h22" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 16,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("rect", { x: "802", y: "65", width: "75", height: "30", rx: "4" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 17,
+          columnNumber: 9
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 8,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV("g", { fill: "currentColor", fontFamily: "Consolas, monospace", fontSize: "13", children: [
+        [110, 230, 350, 470].map((x, index) => /* @__PURE__ */ jsxDEV("g", { children: [
+          /* @__PURE__ */ jsxDEV("text", { x: x + 50, y: "100", children: index < 3 ? "R" : "2R" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 20,
+            columnNumber: 60
+          }, this),
+          /* @__PURE__ */ jsxDEV("text", { x: x + 16, y: "181", children: "2R" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 20,
+            columnNumber: 116
+          }, this),
+          /* @__PURE__ */ jsxDEV("text", { x: x - 36, y: "277", children: "Vref" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 20,
+            columnNumber: 150
+          }, this),
+          /* @__PURE__ */ jsxDEV("text", { x: x + 5, y: "277", children: "GND" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 20,
+            columnNumber: 186
+          }, this),
+          /* @__PURE__ */ jsxDEV("text", { x: x - 20, y: "300", children: [
+            "b",
+            3 - index,
+            index === 0 ? " MSB" : index === 3 ? " LSB" : ""
+          ] }, void 0, true, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 20,
+            columnNumber: 220
+          }, this)
+        ] }, x, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 20,
+          columnNumber: 49
+        }, this)),
+        /* @__PURE__ */ jsxDEV("text", { x: "120", y: "24", children: "Vladder" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 21,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("text", { x: "680", y: "91", children: "+" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 21,
+          columnNumber: 44
+        }, this),
+        /* @__PURE__ */ jsxDEV("text", { x: "680", y: "63", children: "−" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 21,
+          columnNumber: 73
+        }, this),
+        /* @__PURE__ */ jsxDEV("text", { x: "725", y: "119", children: "Buffer" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 21,
+          columnNumber: 102
+        }, this),
+        /* @__PURE__ */ jsxDEV("text", { x: "811", y: "85", children: "RC LPF" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 21,
+          columnNumber: 137
+        }, this),
+        /* @__PURE__ */ jsxDEV("text", { x: "605", y: "192", children: "R = 10 kΩ, 2R = 20 kΩ" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 21,
+          columnNumber: 171
+        }, this),
+        /* @__PURE__ */ jsxDEV("text", { x: "605", y: "216", children: "Illustrative values only" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 21,
+          columnNumber: 221
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 19,
+        columnNumber: 7
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+      lineNumber: 7,
+      columnNumber: 36
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+      lineNumber: 7,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "r2r-explanation", children: [
+      /* @__PURE__ */ jsxDEV("p", { children: [
+        "R and 2R form repeated 2:1 ratios. Bit switches select Vref or ground, producing binary-weighted contributions. A voltage follower isolates the ladder from its load. A low-pass filter reduces staircase transitions, with settling and phase lag. ",
+        /* @__PURE__ */ jsxDEV("a", { href: "https://www.analog.com/media/en/training-seminars/tutorials/MT-015.pdf", target: "_blank", rel: "noreferrer", children: "Analog Devices: binary DAC architectures" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 24,
+          columnNumber: 285
+        }, this),
+        "; ",
+        /* @__PURE__ */ jsxDEV("a", { href: "https://www.analog.com/en/resources/analog-dialogue/articles/buffering-the-output-of-high-speed-dacs.html", target: "_blank", rel: "noreferrer", children: "DAC output buffers" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 24,
+          columnNumber: 445
+        }, this),
+        "."
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 24,
+        columnNumber: 38
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { children: "A conventional unloaded voltage-mode ladder uses Vref × Code / 2^N. BioScope uses the requested endpoint mapping, Vref × Code / (2^N − 1), equivalent to a normalization gain of 2^N / (2^N − 1). The table below shows these normalized software-model contributions, not measured circuit voltages." }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 25,
+        columnNumber: 7
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+      lineNumber: 24,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "adc-table-scroll", role: "region", "aria-label": "Binary weighted DAC contributions", tabIndex: 0, children: /* @__PURE__ */ jsxDEV("table", { className: "adc-table dac-bit-table", children: [
+      /* @__PURE__ */ jsxDEV("caption", { children: [
+        "Endpoint-model bit contributions · sum = ",
+        result ? result.outputVoltage.toFixed(6) : "—",
+        " V"
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 27,
+        columnNumber: 156
+      }, this),
+      /* @__PURE__ */ jsxDEV("thead", { children: /* @__PURE__ */ jsxDEV("tr", { children: [
+        /* @__PURE__ */ jsxDEV("th", { scope: "col", children: "Bit" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 27,
+          columnNumber: 277
+        }, this),
+        /* @__PURE__ */ jsxDEV("th", { scope: "col", children: "State" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 27,
+          columnNumber: 301
+        }, this),
+        /* @__PURE__ */ jsxDEV("th", { scope: "col", children: "Normalized weight" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 27,
+          columnNumber: 327
+        }, this),
+        /* @__PURE__ */ jsxDEV("th", { scope: "col", children: "Contribution (V)" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 27,
+          columnNumber: 365
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 27,
+        columnNumber: 273
+      }, this) }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 27,
+        columnNumber: 266
+      }, this),
+      /* @__PURE__ */ jsxDEV("tbody", { children: Array.from({ length: model.resolution }, (_, index) => {
+        const bit = model.resolution - 1 - index;
+        const state = result ? result.code >> bit & 1 : null;
+        return /* @__PURE__ */ jsxDEV("tr", { children: [
+          /* @__PURE__ */ jsxDEV("th", { scope: "row", children: [
+            "b",
+            bit,
+            index === 0 ? " · MSB" : bit === 0 ? " · LSB" : ""
+          ] }, void 0, true, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 30,
+            columnNumber: 34
+          }, this),
+          /* @__PURE__ */ jsxDEV("td", { children: state ?? "—" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 30,
+            columnNumber: 113
+          }, this),
+          /* @__PURE__ */ jsxDEV("td", { children: [
+            2 ** bit,
+            " / ",
+            model.maximumCode
+          ] }, void 0, true, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 30,
+            columnNumber: 136
+          }, this),
+          /* @__PURE__ */ jsxDEV("td", { children: state === null ? "—" : (state * 2 ** bit / model.maximumCode * model.referenceVoltage).toFixed(6) }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+            lineNumber: 30,
+            columnNumber: 177
+          }, this)
+        ] }, bit, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+          lineNumber: 30,
+          columnNumber: 20
+        }, this);
+      }) }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+        lineNumber: 27,
+        columnNumber: 415
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+      lineNumber: 27,
+      columnNumber: 113
+    }, this) }, void 0, false, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+      lineNumber: 27,
+      columnNumber: 5
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx",
+    lineNumber: 5,
+    columnNumber: 10
+  }, this);
+}
+_c = R2rLadder;
+var _c;
+$RefreshReg$(_c, "R2rLadder");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/dac/R2rLadder.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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QUFBO0FBQUE7QUFBQSxlQUF5UTtBQUFBLE1BQ2xSLENBQUMsS0FKeVo7QUFBQTtBQUFBO0FBQUE7QUFBQSxhQUl2WjtBQUFBLFNBSnlHO0FBQUE7QUFBQTtBQUFBO0FBQUEsV0FJakcsS0FKWDtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBSW1CO0FBQUEsT0ExQmQ7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQTJCUDtBQUNGO0FBQUNLLEtBN0JlbEI7QUFBUyxJQUFBa0I7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsiUjJyTGFkZGVyIiwibW9kZWwiLCJyZXN1bHQiLCJtYXAiLCJ4IiwiaW5kZXgiLCJvdXRwdXRWb2x0YWdlIiwidG9GaXhlZCIsIkFycmF5IiwiZnJvbSIsImxlbmd0aCIsInJlc29sdXRpb24iLCJfIiwiYml0Iiwic3RhdGUiLCJjb2RlIiwibWF4aW11bUNvZGUiLCJyZWZlcmVuY2VWb2x0YWdlIiwiX2MiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiUjJyTGFkZGVyLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgdHlwZSB7IERhY01vZGVsIH0gZnJvbSAnLi4vLi4vY29yZS9kYWMnXG5pbXBvcnQgdHlwZSB7IERhY1Jlc3VsdCB9IGZyb20gJy4uLy4uL3R5cGVzJ1xuXG5leHBvcnQgZnVuY3Rpb24gUjJyTGFkZGVyKHsgbW9kZWwsIHJlc3VsdCB9OiB7IG1vZGVsOiBEYWNNb2RlbDsgcmVzdWx0OiBEYWNSZXN1bHQgfCBudWxsIH0pIHtcbiAgcmV0dXJuIDxzZWN0aW9uIGNsYXNzTmFtZT1cInIyci1wYW5lbFwiIGFyaWEtbGFiZWxsZWRieT1cInIyci10aXRsZVwiPlxuICAgIDxkaXYgY2xhc3NOYW1lPVwiYWRjLXNlY3Rpb24taGVhZGluZ1wiPjxoMyBpZD1cInIyci10aXRsZVwiPlItMlIgbGFkZGVyIMK3IGVkdWNhdGlvbmFsIGNpcmN1aXQgZXhwbGFuYXRpb248L2gzPjxwPlN0YXRpYyBjb25jZXB0dWFsIHNjaGVtYXRpYy4gVGhlIGJyb3dzZXIgcnVucyBlcXVhdGlvbnMsIG5vdCBhIHBoeXNpY2FsIHJlc2lzdG9yIG5ldHdvcmsuPC9wPjwvZGl2PlxuICAgIDxkaXYgY2xhc3NOYW1lPVwicjJyLXNjaGVtYXRpY1wiPjxzdmcgdmlld0JveD1cIjAgMCA5MDAgMzEwXCIgcm9sZT1cImltZ1wiIGFyaWEtbGFiZWxsZWRieT1cInIyci1zdmctdGl0bGUgcjJyLXN2Zy1kZXNjcmlwdGlvblwiPjx0aXRsZSBpZD1cInIyci1zdmctdGl0bGVcIj5Db25jZXB0dWFsIDQtYml0IHZvbHRhZ2UtbW9kZSBSLTJSIGxhZGRlciBhbmQgYnVmZmVyPC90aXRsZT48ZGVzYyBpZD1cInIyci1zdmctZGVzY3JpcHRpb25cIj5Gb3VyIGJpdC1jb250cm9sbGVkIDJSIGJyYW5jaGVzIGFyZSBqb2luZWQgYnkgUiByZXNpc3RvcnMuIEVhY2ggc3dpdGNoIGNob29zZXMgcmVmZXJlbmNlIG9yIGdyb3VuZC4gQSB0ZXJtaW5hdGluZyAyUiBicmFuY2ggY29tcGxldGVzIHRoZSBsYWRkZXIuIFRoZSBvdXRwdXQgbm9kZSBmZWVkcyBhbiBvcC1hbXAgdm9sdGFnZSBmb2xsb3dlciwgd2hpY2ggZHJpdmVzIGFuIG9wdGlvbmFsIGxvdy1wYXNzIGZpbHRlci48L2Rlc2M+XG4gICAgICA8ZyBmaWxsPVwibm9uZVwiIHN0cm9rZT1cImN1cnJlbnRDb2xvclwiIHN0cm9rZVdpZHRoPVwiMlwiPlxuICAgICAgICB7WzExMCwgMjMwLCAzNTAsIDQ3MF0ubWFwKCh4LCBpbmRleCkgPT4gPGcga2V5PXt4fT5cbiAgICAgICAgICB7aW5kZXggPCAzICYmIDw+PHBhdGggZD17YE0ke3h9IDEyMGgzMG02MCAwaDMwYH0gLz48cmVjdCB4PXt4ICsgMzB9IHk9XCIxMTBcIiB3aWR0aD1cIjYwXCIgaGVpZ2h0PVwiMjBcIiAvPjwvPn1cbiAgICAgICAgICA8Y2lyY2xlIGN4PXt4fSBjeT1cIjEyMFwiIHI9XCIzXCIgZmlsbD1cImN1cnJlbnRDb2xvclwiIC8+XG4gICAgICAgICAgPHBhdGggZD17YE0ke3h9IDEyMHYyNW0wIDYwdjIwbTAgMC0xOCAyMGB9IC8+PHJlY3QgeD17eCAtIDEwfSB5PVwiMTQ1XCIgd2lkdGg9XCIyMFwiIGhlaWdodD1cIjYwXCIgLz5cbiAgICAgICAgICA8Y2lyY2xlIGN4PXt4IC0gMTh9IGN5PVwiMjUwXCIgcj1cIjNcIiAvPjxjaXJjbGUgY3g9e3ggKyAxOH0gY3k9XCIyNTBcIiByPVwiM1wiIC8+XG4gICAgICAgIDwvZz4pfVxuICAgICAgICA8cGF0aCBkPVwiTTQ3MCAxMjBoMzBtNjAgMGgzMHY0MG0tMTIgMGgyNG0tMjAgNWgxNm0tMTIgNWg4XCIgLz48cmVjdCB4PVwiNTAwXCIgeT1cIjExMFwiIHdpZHRoPVwiNjBcIiBoZWlnaHQ9XCIyMFwiIC8+XG4gICAgICAgIDxwYXRoIGQ9XCJNMTEwIDEyMFYzNWg1MzV2NDVoMjVtMC0zMHY2MGw2MC0zMC02MC0zMG02MCAzMGg1MG0tMjAgMHYtNjVINjUwdjQ1aDIwbTExMCAwaDIyXCIgLz5cbiAgICAgICAgPHJlY3QgeD1cIjgwMlwiIHk9XCI2NVwiIHdpZHRoPVwiNzVcIiBoZWlnaHQ9XCIzMFwiIHJ4PVwiNFwiIC8+XG4gICAgICA8L2c+XG4gICAgICA8ZyBmaWxsPVwiY3VycmVudENvbG9yXCIgZm9udEZhbWlseT1cIkNvbnNvbGFzLCBtb25vc3BhY2VcIiBmb250U2l6ZT1cIjEzXCI+XG4gICAgICAgIHtbMTEwLCAyMzAsIDM1MCwgNDcwXS5tYXAoKHgsIGluZGV4KSA9PiA8ZyBrZXk9e3h9Pjx0ZXh0IHg9e3ggKyA1MH0geT1cIjEwMFwiPntpbmRleCA8IDMgPyAnUicgOiAnMlInfTwvdGV4dD48dGV4dCB4PXt4ICsgMTZ9IHk9XCIxODFcIj4yUjwvdGV4dD48dGV4dCB4PXt4IC0gMzZ9IHk9XCIyNzdcIj5WcmVmPC90ZXh0Pjx0ZXh0IHg9e3ggKyA1fSB5PVwiMjc3XCI+R05EPC90ZXh0Pjx0ZXh0IHg9e3ggLSAyMH0geT1cIjMwMFwiPmJ7MyAtIGluZGV4fXtpbmRleCA9PT0gMCA/ICcgTVNCJyA6IGluZGV4ID09PSAzID8gJyBMU0InIDogJyd9PC90ZXh0PjwvZz4pfVxuICAgICAgICA8dGV4dCB4PVwiMTIwXCIgeT1cIjI0XCI+VmxhZGRlcjwvdGV4dD48dGV4dCB4PVwiNjgwXCIgeT1cIjkxXCI+KzwvdGV4dD48dGV4dCB4PVwiNjgwXCIgeT1cIjYzXCI+4oiSPC90ZXh0Pjx0ZXh0IHg9XCI3MjVcIiB5PVwiMTE5XCI+QnVmZmVyPC90ZXh0Pjx0ZXh0IHg9XCI4MTFcIiB5PVwiODVcIj5SQyBMUEY8L3RleHQ+PHRleHQgeD1cIjYwNVwiIHk9XCIxOTJcIj5SID0gMTAga86pLCAyUiA9IDIwIGvOqTwvdGV4dD48dGV4dCB4PVwiNjA1XCIgeT1cIjIxNlwiPklsbHVzdHJhdGl2ZSB2YWx1ZXMgb25seTwvdGV4dD5cbiAgICAgIDwvZz5cbiAgICA8L3N2Zz48L2Rpdj5cbiAgICA8ZGl2IGNsYXNzTmFtZT1cInIyci1leHBsYW5hdGlvblwiPjxwPlIgYW5kIDJSIGZvcm0gcmVwZWF0ZWQgMjoxIHJhdGlvcy4gQml0IHN3aXRjaGVzIHNlbGVjdCBWcmVmIG9yIGdyb3VuZCwgcHJvZHVjaW5nIGJpbmFyeS13ZWlnaHRlZCBjb250cmlidXRpb25zLiBBIHZvbHRhZ2UgZm9sbG93ZXIgaXNvbGF0ZXMgdGhlIGxhZGRlciBmcm9tIGl0cyBsb2FkLiBBIGxvdy1wYXNzIGZpbHRlciByZWR1Y2VzIHN0YWlyY2FzZSB0cmFuc2l0aW9ucywgd2l0aCBzZXR0bGluZyBhbmQgcGhhc2UgbGFnLiA8YSBocmVmPVwiaHR0cHM6Ly93d3cuYW5hbG9nLmNvbS9tZWRpYS9lbi90cmFpbmluZy1zZW1pbmFycy90dXRvcmlhbHMvTVQtMDE1LnBkZlwiIHRhcmdldD1cIl9ibGFua1wiIHJlbD1cIm5vcmVmZXJyZXJcIj5BbmFsb2cgRGV2aWNlczogYmluYXJ5IERBQyBhcmNoaXRlY3R1cmVzPC9hPjsgPGEgaHJlZj1cImh0dHBzOi8vd3d3LmFuYWxvZy5jb20vZW4vcmVzb3VyY2VzL2FuYWxvZy1kaWFsb2d1ZS9hcnRpY2xlcy9idWZmZXJpbmctdGhlLW91dHB1dC1vZi1oaWdoLXNwZWVkLWRhY3MuaHRtbFwiIHRhcmdldD1cIl9ibGFua1wiIHJlbD1cIm5vcmVmZXJyZXJcIj5EQUMgb3V0cHV0IGJ1ZmZlcnM8L2E+LjwvcD5cbiAgICAgIDxwPkEgY29udmVudGlvbmFsIHVubG9hZGVkIHZvbHRhZ2UtbW9kZSBsYWRkZXIgdXNlcyBWcmVmIMOXIENvZGUgLyAyXk4uIEJpb1Njb3BlIHVzZXMgdGhlIHJlcXVlc3RlZCBlbmRwb2ludCBtYXBwaW5nLCBWcmVmIMOXIENvZGUgLyAoMl5OIOKIkiAxKSwgZXF1aXZhbGVudCB0byBhIG5vcm1hbGl6YXRpb24gZ2FpbiBvZiAyXk4gLyAoMl5OIOKIkiAxKS4gVGhlIHRhYmxlIGJlbG93IHNob3dzIHRoZXNlIG5vcm1hbGl6ZWQgc29mdHdhcmUtbW9kZWwgY29udHJpYnV0aW9ucywgbm90IG1lYXN1cmVkIGNpcmN1aXQgdm9sdGFnZXMuPC9wPlxuICAgIDwvZGl2PlxuICAgIDxkaXYgY2xhc3NOYW1lPVwiYWRjLXRhYmxlLXNjcm9sbFwiIHJvbGU9XCJyZWdpb25cIiBhcmlhLWxhYmVsPVwiQmluYXJ5IHdlaWdodGVkIERBQyBjb250cmlidXRpb25zXCIgdGFiSW5kZXg9ezB9Pjx0YWJsZSBjbGFzc05hbWU9XCJhZGMtdGFibGUgZGFjLWJpdC10YWJsZVwiPjxjYXB0aW9uPkVuZHBvaW50LW1vZGVsIGJpdCBjb250cmlidXRpb25zIMK3IHN1bSA9IHtyZXN1bHQgPyByZXN1bHQub3V0cHV0Vm9sdGFnZS50b0ZpeGVkKDYpIDogJ+KAlCd9IFY8L2NhcHRpb24+PHRoZWFkPjx0cj48dGggc2NvcGU9XCJjb2xcIj5CaXQ8L3RoPjx0aCBzY29wZT1cImNvbFwiPlN0YXRlPC90aD48dGggc2NvcGU9XCJjb2xcIj5Ob3JtYWxpemVkIHdlaWdodDwvdGg+PHRoIHNjb3BlPVwiY29sXCI+Q29udHJpYnV0aW9uIChWKTwvdGg+PC90cj48L3RoZWFkPjx0Ym9keT57QXJyYXkuZnJvbSh7IGxlbmd0aDogbW9kZWwucmVzb2x1dGlvbiB9LCAoXywgaW5kZXgpID0+IHtcbiAgICAgIGNvbnN0IGJpdCA9IG1vZGVsLnJlc29sdXRpb24gLSAxIC0gaW5kZXhcbiAgICAgIGNvbnN0IHN0YXRlID0gcmVzdWx0ID8gKHJlc3VsdC5jb2RlID4+IGJpdCkgJiAxIDogbnVsbFxuICAgICAgcmV0dXJuIDx0ciBrZXk9e2JpdH0+PHRoIHNjb3BlPVwicm93XCI+YntiaXR9e2luZGV4ID09PSAwID8gJyDCtyBNU0InIDogYml0ID09PSAwID8gJyDCtyBMU0InIDogJyd9PC90aD48dGQ+e3N0YXRlID8/ICfigJQnfTwvdGQ+PHRkPnsyICoqIGJpdH0gLyB7bW9kZWwubWF4aW11bUNvZGV9PC90ZD48dGQ+e3N0YXRlID09PSBudWxsID8gJ+KAlCcgOiAoc3RhdGUgKiAyICoqIGJpdCAvIG1vZGVsLm1heGltdW1Db2RlICogbW9kZWwucmVmZXJlbmNlVm9sdGFnZSkudG9GaXhlZCg2KX08L3RkPjwvdHI+XG4gICAgfSl9PC90Ym9keT48L3RhYmxlPjwvZGl2PlxuICA8L3NlY3Rpb24+XG59XG4iXSwiZmlsZSI6IkM6L1VzZXJzL0hhc2FuIFplaW5lZGRpbi9PbmVEcml2ZS9EZXNrdG9wL1Byb2plY3RzL0RpZ2l0YWwgYmlvZWxlY3Ryb25pY3Mvc3JjL2NvbXBvbmVudHMvZGFjL1IyckxhZGRlci50c3gifQ==

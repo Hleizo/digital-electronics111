@@ -1,0 +1,260 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/OscilloscopePanel.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=759d7589"; const Fragment = __vite__cjsImport0_react_jsxDevRuntime["Fragment"]; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+var _s = $RefreshSig$();
+import __vite__cjsImport1_react from "/node_modules/.vite/deps/react.js?v=759d7589"; const useEffect = __vite__cjsImport1_react["useEffect"]; const useRef = __vite__cjsImport1_react["useRef"];
+import { TIME_WINDOW_MS } from "/src/config/defaults.ts";
+import { GraphAxisLabel, GraphLegend } from "/src/components/GraphLegend.tsx";
+import { drawAnalog, drawGrid } from "/src/components/oscilloscope/draw.ts";
+import { drawAdc } from "/src/components/oscilloscope/drawAdc.ts";
+import { drawDac } from "/src/components/oscilloscope/drawDac.ts";
+export function OscilloscopePanel({ channel, title, subtitle, accent, legend, emptyLabel, footer, referenceVoltage, analog, controls, adc, details, dac }) {
+  _s();
+  const canvasRef = useRef(null);
+  const id = `panel-${channel}`;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    let width = 0;
+    let height = 0;
+    let frame = 0;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    const render = () => {
+      drawGrid(context, width, height);
+      if (analog) drawAnalog(context, width, height, analog.engine, analog.scale, referenceVoltage);
+      if (adc) drawAdc(context, width, height, adc.engine, adc.model, 10 * adc.timePerDivision, adc.metric ?? "code", accent === "cyan" ? "#4ddbd1" : "#f0bd67");
+      if (dac) drawDac(context, width, height, dac.engine, dac.trace, dac.scale);
+    };
+    const resize = () => {
+      const bounds = canvas.getBoundingClientRect();
+      width = bounds.width;
+      height = bounds.height;
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.round(bounds.width * ratio);
+      canvas.height = Math.round(bounds.height * ratio);
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      render();
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+    window.addEventListener("resize", resize);
+    resize();
+    if (analog?.status === "live" || adc?.status === "live" && adc.animate !== false || dac?.status === "live" && dac.animate !== false) {
+      const tick = () => {
+        render();
+        frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    }
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("resize", resize);
+    };
+  }, [analog?.engine, analog?.status, analog?.scale, analog?.signalConfig, referenceVoltage, footer, adc?.engine, adc?.status, adc?.model, adc?.timePerDivision, adc?.metric, adc?.animate, adc?.refreshTime, dac?.engine, dac?.status, dac?.trace, dac?.scale, dac?.settings, dac?.referenceConfig, dac?.animate, dac?.refreshTime, accent]);
+  const voltageScale = analog?.scale ?? dac?.scale;
+  const voltageMaximum = voltageScale ? referenceVoltage / 2 + 2 * voltageScale.voltsPerDivision : referenceVoltage;
+  const voltageSpan = voltageScale ? 4 * voltageScale.voltsPerDivision : referenceVoltage;
+  const timeWindow = voltageScale ? voltageScale.timePerDivision * 10 : adc ? adc.timePerDivision * 10 : TIME_WINDOW_MS;
+  const status = analog?.status ?? adc?.status ?? dac?.status;
+  const hasSignal = status && status !== "idle";
+  const timeIsSeconds = !!(analog || adc || dac);
+  const metric = adc?.metric ?? "code";
+  const hardwareInput = analog?.engine.inputSource === "hardware" || dac?.engine.inputSource === "hardware";
+  const description = analog ? `${title}: ${analog.status}, ${hardwareInput ? "received voltage estimates joined only across adjacent samples" : "continuous synthetic analog model"}, cyan captured sample points. ${analog.scale.timePerDivision} s/div, ${analog.scale.voltsPerDivision} V/div.` : adc ? `${title}: ${adc.status}, ${adc.model.resolution}-bit ${metric === "code" ? `digital staircase, codes 0 to ${adc.model.maximumCode}` : `quantization error bounded by ${(adc.model.errorBound * 1e3).toFixed(3)} mV for in-range inputs`}. Synchronized ${timeWindow}-second window. Clipping is red.` : dac ? `${title}: ${dac.status}, ${hardwareInput ? "received voltage estimates" : "original synthetic model"} green, captured ADC points cyan, calculated DAC staircase purple${dac.trace.enabled ? ", RC output amber" : ", filter bypassed"}. Same voltage and time scales as input.` : `${title}: empty voltage/time grid.`;
+  const ticks = [0, 0.25, 0.5, 0.75, 1].map((fraction) => adc ? metric === "code" ? String(Math.round((1 - fraction) * adc.model.maximumCode)) : ((adc.model.errorBound - fraction * adc.model.delta) * 1e3).toFixed(3) : (voltageMaximum - fraction * voltageSpan).toFixed(2));
+  return /* @__PURE__ */ jsxDEV("section", { className: `scope-panel accent-${accent}${dac ? " scope-panel--dac" : ""}`, "aria-labelledby": id, children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "scope-heading", children: [
+      /* @__PURE__ */ jsxDEV("div", { className: "scope-title", children: [
+        /* @__PURE__ */ jsxDEV("span", { className: "channel-badge", children: channel }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+          lineNumber: 109,
+          columnNumber: 65
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { children: [
+          /* @__PURE__ */ jsxDEV("h3", { id, children: title }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+            lineNumber: 109,
+            columnNumber: 118
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { children: subtitle }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+            lineNumber: 109,
+            columnNumber: 142
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+          lineNumber: 109,
+          columnNumber: 113
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 109,
+        columnNumber: 36
+      }, this),
+      /* @__PURE__ */ jsxDEV("span", { className: `panel-state${hasSignal ? " panel-state--active" : ""}`, children: hasSignal ? status.toUpperCase() : "NO DATA" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 109,
+        columnNumber: 171
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+      lineNumber: 109,
+      columnNumber: 5
+    }, this),
+    controls,
+    /* @__PURE__ */ jsxDEV("div", { className: "scope-plot", children: [
+      /* @__PURE__ */ jsxDEV(GraphAxisLabel, { axis: "voltage", children: adc ? metric === "code" ? "Digital code" : "Error (mV)" : "Voltage (V)" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 112,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "voltage-ticks", "aria-hidden": "true", children: ticks.map((tick, index) => /* @__PURE__ */ jsxDEV("span", { children: tick }, index, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 113,
+        columnNumber: 85
+      }, this)) }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 113,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: `plot-canvas${analog ? " plot-canvas--analog" : adc ? " plot-canvas--adc" : dac ? " plot-canvas--dac" : ""}`, children: [
+        /* @__PURE__ */ jsxDEV("canvas", { ref: canvasRef, role: "img", "aria-label": description }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+          lineNumber: 114,
+          columnNumber: 133
+        }, this),
+        !hasSignal && /* @__PURE__ */ jsxDEV("div", { className: "plot-empty", children: [
+          /* @__PURE__ */ jsxDEV("span", { className: "empty-crosshair", "aria-hidden": "true", children: "+" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+            lineNumber: 114,
+            columnNumber: 238
+          }, this),
+          /* @__PURE__ */ jsxDEV("span", { children: emptyLabel }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+            lineNumber: 114,
+            columnNumber: 299
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+          lineNumber: 114,
+          columnNumber: 210
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 114,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV("div", { className: "time-ticks", "aria-hidden": "true", children: [0, 0.2, 0.4, 0.6, 0.8, 1].map((fraction) => /* @__PURE__ */ jsxDEV("span", { children: timeIsSeconds ? ((fraction - 1) * timeWindow).toFixed(2) : fraction * timeWindow }, fraction, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 115,
+        columnNumber: 100
+      }, this)) }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 115,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(GraphAxisLabel, { axis: "time", children: timeIsSeconds ? "Time from present (s)" : "Time (ms)" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 116,
+        columnNumber: 7
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+      lineNumber: 111,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "scope-footer", children: [
+      /* @__PURE__ */ jsxDEV(GraphLegend, { label: legend, accent }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 118,
+        columnNumber: 35
+      }, this),
+      analog && /* @__PURE__ */ jsxDEV(GraphLegend, { label: "Sampled points", accent: "cyan", points: true }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 118,
+        columnNumber: 92
+      }, this),
+      dac && /* @__PURE__ */ jsxDEV(Fragment, { children: [
+        /* @__PURE__ */ jsxDEV(GraphLegend, { label: "Original analog", accent: "green" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+          lineNumber: 118,
+          columnNumber: 162
+        }, this),
+        /* @__PURE__ */ jsxDEV(GraphLegend, { label: "ADC samples", accent: "cyan", points: true }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+          lineNumber: 118,
+          columnNumber: 216
+        }, this),
+        dac.trace.enabled && /* @__PURE__ */ jsxDEV(GraphLegend, { label: "RC filtered", accent: "amber" }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+          lineNumber: 118,
+          columnNumber: 294
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 118,
+        columnNumber: 160
+      }, this),
+      adc && /* @__PURE__ */ jsxDEV("span", { className: "clipped-legend", children: [
+        /* @__PURE__ */ jsxDEV("span", {}, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+          lineNumber: 118,
+          columnNumber: 390
+        }, this),
+        "Clipped"
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 118,
+        columnNumber: 357
+      }, this),
+      /* @__PURE__ */ jsxDEV("span", { children: footer }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 118,
+        columnNumber: 413
+      }, this),
+      /* @__PURE__ */ jsxDEV("span", { className: "division-label", children: voltageScale ? `${voltageScale.timePerDivision} s/div · ${voltageScale.voltsPerDivision} V/div` : adc ? `${adc.timePerDivision} s/div` : `${TIME_WINDOW_MS / 10} ms/div` }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+        lineNumber: 118,
+        columnNumber: 434
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+      lineNumber: 118,
+      columnNumber: 5
+    }, this),
+    details
+  ] }, void 0, true, {
+    fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx",
+    lineNumber: 108,
+    columnNumber: 10
+  }, this);
+}
+_s(OscilloscopePanel, "UJgi7ynoup7eqypjnwyX/s32POg=");
+_c = OscilloscopePanel;
+var _c;
+$RefreshReg$(_c, "OscilloscopePanel");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/OscilloscopePanel.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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VzlDLE1BQU0sR0FBR0EsSUFBSWlCLGVBQWUsV0FBVyxHQUFHbkMsaUJBQWlCLEVBQUUsYUFBak07QUFBQTtBQUFBO0FBQUE7QUFBQSxhQUEyTTtBQUFBLFNBQXhuQjtBQUFBO0FBQUE7QUFBQTtBQUFBLFdBQStuQjtBQUFBLElBQzluQm1CO0FBQUFBLE9BWEk7QUFBQTtBQUFBO0FBQUE7QUFBQSxTQVlQO0FBQ0Y7QUFBQ0UsR0FyRWVkLG1CQUFpQjtBQUFBLEtBQWpCQTtBQUFpQixJQUFBNkU7QUFBQSxhQUFBQSxJQUFBIiwibmFtZXMiOlsidXNlRWZmZWN0IiwidXNlUmVmIiwiVElNRV9XSU5ET1dfTVMiLCJHcmFwaEF4aXNMYWJlbCIsIkdyYXBoTGVnZW5kIiwiZHJhd0FuYWxvZyIsImRyYXdHcmlkIiwiZHJhd0FkYyIsImRyYXdEYWMiLCJPc2NpbGxvc2NvcGVQYW5lbCIsImNoYW5uZWwiLCJ0aXRsZSIsInN1YnRpdGxlIiwiYWNjZW50IiwibGVnZW5kIiwiZW1wdHlMYWJlbCIsImZvb3RlciIsInJlZmVyZW5jZVZvbHRhZ2UiLCJhbmFsb2ciLCJjb250cm9scyIsImFkYyIsImRldGFpbHMiLCJkYWMiLCJfcyIsImNhbnZhc1JlZiIsImlkIiwiY2FudmFzIiwiY3VycmVudCIsIndpZHRoIiwiaGVpZ2h0IiwiZnJhbWUiLCJjb250ZXh0IiwiZ2V0Q29udGV4dCIsInJlbmRlciIsImVuZ2luZSIsInNjYWxlIiwibW9kZWwiLCJ0aW1lUGVyRGl2aXNpb24iLCJtZXRyaWMiLCJ0cmFjZSIsInJlc2l6ZSIsImJvdW5kcyIsImdldEJvdW5kaW5nQ2xpZW50UmVjdCIsInJhdGlvIiwid2luZG93IiwiZGV2aWNlUGl4ZWxSYXRpbyIsIk1hdGgiLCJyb3VuZCIsInNldFRyYW5zZm9ybSIsIm9ic2VydmVyIiwiUmVzaXplT2JzZXJ2ZXIiLCJvYnNlcnZlIiwiYWRkRXZlbnRMaXN0ZW5lciIsInN0YXR1cyIsImFuaW1hdGUiLCJ0aWNrIiwicmVxdWVzdEFuaW1hdGlvbkZyYW1lIiwiY2FuY2VsQW5pbWF0aW9uRnJhbWUiLCJkaXNjb25uZWN0IiwicmVtb3ZlRXZlbnRMaXN0ZW5lciIsInNpZ25hbENvbmZpZyIsInJlZnJlc2hUaW1lIiwic2V0dGluZ3MiLCJyZWZlcmVuY2VDb25maWciLCJ2b2x0YWdlU2NhbGUiLCJ2b2x0YWdlTWF4aW11bSIsInZvbHRzUGVyRGl2aXNpb24iLCJ2b2x0YWdlU3BhbiIsInRpbWVXaW5kb3ciLCJoYXNTaWduYWwiLCJ0aW1lSXNTZWNvbmRzIiwiaGFyZHdhcmVJbnB1dCIsImlucHV0U291cmNlIiwiZGVzY3JpcHRpb24iLCJyZXNvbHV0aW9uIiwibWF4aW11bUNvZGUiLCJlcnJvckJvdW5kIiwidG9GaXhlZCIsImVuYWJsZWQiLCJ0aWNrcyIsIm1hcCIsImZyYWN0aW9uIiwiU3RyaW5nIiwiZGVsdGEiLCJ0b1VwcGVyQ2FzZSIsImluZGV4IiwiX2MiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiT3NjaWxsb3Njb3BlUGFuZWwudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHVzZUVmZmVjdCwgdXNlUmVmIH0gZnJvbSAncmVhY3QnXG5pbXBvcnQgdHlwZSB7IEFjY2VudCB9IGZyb20gJy4uL3R5cGVzJ1xuaW1wb3J0IHsgVElNRV9XSU5ET1dfTVMgfSBmcm9tICcuLi9jb25maWcvZGVmYXVsdHMnXG5pbXBvcnQgeyBHcmFwaEF4aXNMYWJlbCwgR3JhcGhMZWdlbmQgfSBmcm9tICcuL0dyYXBoTGVnZW5kJ1xuaW1wb3J0IHR5cGUgeyBBbmFsb2dBY3F1aXNpdGlvbiB9IGZyb20gJy4uL2NvcmUvc2lnbmFsJ1xuaW1wb3J0IHR5cGUgeyBBY3F1aXNpdGlvblN0YXR1cywgU2NvcGVDb25maWcsIFNpZ25hbENvbmZpZyB9IGZyb20gJy4uL3R5cGVzJ1xuaW1wb3J0IHR5cGUgeyBSZWFjdE5vZGUgfSBmcm9tICdyZWFjdCdcbmltcG9ydCB7IGRyYXdBbmFsb2csIGRyYXdHcmlkIH0gZnJvbSAnLi9vc2NpbGxvc2NvcGUvZHJhdydcbmltcG9ydCB7IGRyYXdBZGMgfSBmcm9tICcuL29zY2lsbG9zY29wZS9kcmF3QWRjJ1xuaW1wb3J0IHR5cGUgeyBBZGNNb2RlbCB9IGZyb20gJy4uL2NvcmUvYWRjJ1xuaW1wb3J0IHR5cGUgeyBEYWNSZWNvbnN0cnVjdGlvbiB9IGZyb20gJy4uL2NvcmUvZGFjL3JlY29uc3RydWN0aW9uJ1xuaW1wb3J0IHsgZHJhd0RhYyB9IGZyb20gJy4vb3NjaWxsb3Njb3BlL2RyYXdEYWMnXG5cbmV4cG9ydCBpbnRlcmZhY2UgRGFjUGxvdENvbmZpZyB7XG4gIGVuZ2luZTogQW5hbG9nQWNxdWlzaXRpb25cbiAgc3RhdHVzOiBBY3F1aXNpdGlvblN0YXR1c1xuICB0cmFjZTogRGFjUmVjb25zdHJ1Y3Rpb25cbiAgc2NhbGU6IFNjb3BlQ29uZmlnXG4gIHNldHRpbmdzOiBvYmplY3RcbiAgcmVmZXJlbmNlQ29uZmlnPzogU2lnbmFsQ29uZmlnXG4gIGFuaW1hdGU/OiBib29sZWFuXG4gIHJlZnJlc2hUaW1lPzogbnVtYmVyXG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgQWRjUGxvdENvbmZpZyB7XG4gIGVuZ2luZTogQW5hbG9nQWNxdWlzaXRpb25cbiAgc3RhdHVzOiBBY3F1aXNpdGlvblN0YXR1c1xuICBtb2RlbDogQWRjTW9kZWxcbiAgdGltZVBlckRpdmlzaW9uOiBudW1iZXJcbiAgbWV0cmljPzogJ2NvZGUnIHwgJ2Vycm9yJ1xuICBhbmltYXRlPzogYm9vbGVhblxuICByZWZyZXNoVGltZT86IG51bWJlclxufVxuXG5pbnRlcmZhY2UgT3NjaWxsb3Njb3BlUGFuZWxQcm9wcyB7XG4gIGNoYW5uZWw6IHN0cmluZ1xuICB0aXRsZTogc3RyaW5nXG4gIHN1YnRpdGxlOiBzdHJpbmdcbiAgYWNjZW50OiBBY2NlbnRcbiAgbGVnZW5kOiBzdHJpbmdcbiAgZW1wdHlMYWJlbDogc3RyaW5nXG4gIGZvb3Rlcjogc3RyaW5nXG4gIHJlZmVyZW5jZVZvbHRhZ2U6IG51bWJlclxuICBhbmFsb2c/OiB7IGVuZ2luZTogQW5hbG9nQWNxdWlzaXRpb247IHN0YXR1czogQWNxdWlzaXRpb25TdGF0dXM7IHNjYWxlOiBTY29wZUNvbmZpZzsgc2lnbmFsQ29uZmlnOiBTaWduYWxDb25maWcgfVxuICBjb250cm9scz86IFJlYWN0Tm9kZVxuICBhZGM/OiBBZGNQbG90Q29uZmlnXG4gIGRldGFpbHM/OiBSZWFjdE5vZGVcbiAgZGFjPzogRGFjUGxvdENvbmZpZ1xufVxuXG4vKiogU2hhcmVkIGluc3RydW1lbnQgZnJhbWUgZm9yIGFuYWxvZy9BREMgdHJhY2VzIGFuZCB0aGUgZnV0dXJlIERBQyBwbGFjZWhvbGRlci4gKi9cbmV4cG9ydCBmdW5jdGlvbiBPc2NpbGxvc2NvcGVQYW5lbCh7IGNoYW5uZWwsIHRpdGxlLCBzdWJ0aXRsZSwgYWNjZW50LCBsZWdlbmQsIGVtcHR5TGFiZWwsIGZvb3RlciwgcmVmZXJlbmNlVm9sdGFnZSwgYW5hbG9nLCBjb250cm9scywgYWRjLCBkZXRhaWxzLCBkYWMgfTogT3NjaWxsb3Njb3BlUGFuZWxQcm9wcykge1xuICBjb25zdCBjYW52YXNSZWYgPSB1c2VSZWY8SFRNTENhbnZhc0VsZW1lbnQ+KG51bGwpXG4gIGNvbnN0IGlkID0gYHBhbmVsLSR7Y2hhbm5lbH1gXG5cbiAgdXNlRWZmZWN0KCgpID0+IHtcbiAgICBjb25zdCBjYW52YXMgPSBjYW52YXNSZWYuY3VycmVudFxuICAgIGlmICghY2FudmFzKSByZXR1cm5cbiAgICBsZXQgd2lkdGggPSAwXG4gICAgbGV0IGhlaWdodCA9IDBcbiAgICBsZXQgZnJhbWUgPSAwXG4gICAgY29uc3QgY29udGV4dCA9IGNhbnZhcy5nZXRDb250ZXh0KCcyZCcpXG4gICAgaWYgKCFjb250ZXh0KSByZXR1cm5cbiAgICBjb25zdCByZW5kZXIgPSAoKSA9PiB7XG4gICAgICBkcmF3R3JpZChjb250ZXh0LCB3aWR0aCwgaGVpZ2h0KVxuICAgICAgaWYgKGFuYWxvZykgZHJhd0FuYWxvZyhjb250ZXh0LCB3aWR0aCwgaGVpZ2h0LCBhbmFsb2cuZW5naW5lLCBhbmFsb2cuc2NhbGUsIHJlZmVyZW5jZVZvbHRhZ2UpXG4gICAgICBpZiAoYWRjKSBkcmF3QWRjKGNvbnRleHQsIHdpZHRoLCBoZWlnaHQsIGFkYy5lbmdpbmUsIGFkYy5tb2RlbCwgMTAgKiBhZGMudGltZVBlckRpdmlzaW9uLCBhZGMubWV0cmljID8/ICdjb2RlJywgYWNjZW50ID09PSAnY3lhbicgPyAnIzRkZGJkMScgOiAnI2YwYmQ2NycpXG4gICAgICBpZiAoZGFjKSBkcmF3RGFjKGNvbnRleHQsIHdpZHRoLCBoZWlnaHQsIGRhYy5lbmdpbmUsIGRhYy50cmFjZSwgZGFjLnNjYWxlKVxuICAgIH1cbiAgICBjb25zdCByZXNpemUgPSAoKSA9PiB7XG4gICAgICBjb25zdCBib3VuZHMgPSBjYW52YXMuZ2V0Qm91bmRpbmdDbGllbnRSZWN0KClcbiAgICAgIHdpZHRoID0gYm91bmRzLndpZHRoXG4gICAgICBoZWlnaHQgPSBib3VuZHMuaGVpZ2h0XG4gICAgICBjb25zdCByYXRpbyA9IHdpbmRvdy5kZXZpY2VQaXhlbFJhdGlvIHx8IDFcbiAgICAgIGNhbnZhcy53aWR0aCA9IE1hdGgucm91bmQoYm91bmRzLndpZHRoICogcmF0aW8pXG4gICAgICBjYW52YXMuaGVpZ2h0ID0gTWF0aC5yb3VuZChib3VuZHMuaGVpZ2h0ICogcmF0aW8pXG4gICAgICBjb250ZXh0LnNldFRyYW5zZm9ybShyYXRpbywgMCwgMCwgcmF0aW8sIDAsIDApXG4gICAgICByZW5kZXIoKVxuICAgIH1cbiAgICBjb25zdCBvYnNlcnZlciA9IG5ldyBSZXNpemVPYnNlcnZlcihyZXNpemUpXG4gICAgb2JzZXJ2ZXIub2JzZXJ2ZShjYW52YXMpXG4gICAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoJ3Jlc2l6ZScsIHJlc2l6ZSlcbiAgICByZXNpemUoKVxuICAgIGlmIChhbmFsb2c/LnN0YXR1cyA9PT0gJ2xpdmUnIHx8IChhZGM/LnN0YXR1cyA9PT0gJ2xpdmUnICYmIGFkYy5hbmltYXRlICE9PSBmYWxzZSkgfHwgKGRhYz8uc3RhdHVzID09PSAnbGl2ZScgJiYgZGFjLmFuaW1hdGUgIT09IGZhbHNlKSkge1xuICAgICAgY29uc3QgdGljayA9ICgpID0+IHsgcmVuZGVyKCk7IGZyYW1lID0gcmVxdWVzdEFuaW1hdGlvbkZyYW1lKHRpY2spIH1cbiAgICAgIGZyYW1lID0gcmVxdWVzdEFuaW1hdGlvbkZyYW1lKHRpY2spXG4gICAgfVxuICAgIHJldHVybiAoKSA9PiB7IGNhbmNlbEFuaW1hdGlvbkZyYW1lKGZyYW1lKTsgb2JzZXJ2ZXIuZGlzY29ubmVjdCgpOyB3aW5kb3cucmVtb3ZlRXZlbnRMaXN0ZW5lcigncmVzaXplJywgcmVzaXplKSB9XG4gIH0sIFthbmFsb2c/LmVuZ2luZSwgYW5hbG9nPy5zdGF0dXMsIGFuYWxvZz8uc2NhbGUsIGFuYWxvZz8uc2lnbmFsQ29uZmlnLCByZWZlcmVuY2VWb2x0YWdlLCBmb290ZXIsIGFkYz8uZW5naW5lLCBhZGM/LnN0YXR1cywgYWRjPy5tb2RlbCwgYWRjPy50aW1lUGVyRGl2aXNpb24sIGFkYz8ubWV0cmljLCBhZGM/LmFuaW1hdGUsIGFkYz8ucmVmcmVzaFRpbWUsIGRhYz8uZW5naW5lLCBkYWM/LnN0YXR1cywgZGFjPy50cmFjZSwgZGFjPy5zY2FsZSwgZGFjPy5zZXR0aW5ncywgZGFjPy5yZWZlcmVuY2VDb25maWcsIGRhYz8uYW5pbWF0ZSwgZGFjPy5yZWZyZXNoVGltZSwgYWNjZW50XSlcblxuICBjb25zdCB2b2x0YWdlU2NhbGUgPSBhbmFsb2c/LnNjYWxlID8/IGRhYz8uc2NhbGVcbiAgY29uc3Qgdm9sdGFnZU1heGltdW0gPSB2b2x0YWdlU2NhbGUgPyByZWZlcmVuY2VWb2x0YWdlIC8gMiArIDIgKiB2b2x0YWdlU2NhbGUudm9sdHNQZXJEaXZpc2lvbiA6IHJlZmVyZW5jZVZvbHRhZ2VcbiAgY29uc3Qgdm9sdGFnZVNwYW4gPSB2b2x0YWdlU2NhbGUgPyA0ICogdm9sdGFnZVNjYWxlLnZvbHRzUGVyRGl2aXNpb24gOiByZWZlcmVuY2VWb2x0YWdlXG4gIGNvbnN0IHRpbWVXaW5kb3cgPSB2b2x0YWdlU2NhbGUgPyB2b2x0YWdlU2NhbGUudGltZVBlckRpdmlzaW9uICogMTAgOiBhZGMgPyBhZGMudGltZVBlckRpdmlzaW9uICogMTAgOiBUSU1FX1dJTkRPV19NU1xuICBjb25zdCBzdGF0dXMgPSBhbmFsb2c/LnN0YXR1cyA/PyBhZGM/LnN0YXR1cyA/PyBkYWM/LnN0YXR1c1xuICBjb25zdCBoYXNTaWduYWwgPSBzdGF0dXMgJiYgc3RhdHVzICE9PSAnaWRsZSdcbiAgY29uc3QgdGltZUlzU2Vjb25kcyA9ICEhKGFuYWxvZyB8fCBhZGMgfHwgZGFjKVxuICBjb25zdCBtZXRyaWMgPSBhZGM/Lm1ldHJpYyA/PyAnY29kZSdcbiAgY29uc3QgaGFyZHdhcmVJbnB1dCA9IGFuYWxvZz8uZW5naW5lLmlucHV0U291cmNlID09PSAnaGFyZHdhcmUnIHx8IGRhYz8uZW5naW5lLmlucHV0U291cmNlID09PSAnaGFyZHdhcmUnXG4gIGNvbnN0IGRlc2NyaXB0aW9uID0gYW5hbG9nXG4gICAgPyBgJHt0aXRsZX06ICR7YW5hbG9nLnN0YXR1c30sICR7aGFyZHdhcmVJbnB1dCA/ICdyZWNlaXZlZCB2b2x0YWdlIGVzdGltYXRlcyBqb2luZWQgb25seSBhY3Jvc3MgYWRqYWNlbnQgc2FtcGxlcycgOiAnY29udGludW91cyBzeW50aGV0aWMgYW5hbG9nIG1vZGVsJ30sIGN5YW4gY2FwdHVyZWQgc2FtcGxlIHBvaW50cy4gJHthbmFsb2cuc2NhbGUudGltZVBlckRpdmlzaW9ufSBzL2RpdiwgJHthbmFsb2cuc2NhbGUudm9sdHNQZXJEaXZpc2lvbn0gVi9kaXYuYFxuICAgIDogYWRjID8gYCR7dGl0bGV9OiAke2FkYy5zdGF0dXN9LCAke2FkYy5tb2RlbC5yZXNvbHV0aW9ufS1iaXQgJHttZXRyaWMgPT09ICdjb2RlJyA/IGBkaWdpdGFsIHN0YWlyY2FzZSwgY29kZXMgMCB0byAke2FkYy5tb2RlbC5tYXhpbXVtQ29kZX1gIDogYHF1YW50aXphdGlvbiBlcnJvciBib3VuZGVkIGJ5ICR7KGFkYy5tb2RlbC5lcnJvckJvdW5kICogMTAwMCkudG9GaXhlZCgzKX0gbVYgZm9yIGluLXJhbmdlIGlucHV0c2B9LiBTeW5jaHJvbml6ZWQgJHt0aW1lV2luZG93fS1zZWNvbmQgd2luZG93LiBDbGlwcGluZyBpcyByZWQuYFxuICAgIDogZGFjID8gYCR7dGl0bGV9OiAke2RhYy5zdGF0dXN9LCAke2hhcmR3YXJlSW5wdXQgPyAncmVjZWl2ZWQgdm9sdGFnZSBlc3RpbWF0ZXMnIDogJ29yaWdpbmFsIHN5bnRoZXRpYyBtb2RlbCd9IGdyZWVuLCBjYXB0dXJlZCBBREMgcG9pbnRzIGN5YW4sIGNhbGN1bGF0ZWQgREFDIHN0YWlyY2FzZSBwdXJwbGUke2RhYy50cmFjZS5lbmFibGVkID8gJywgUkMgb3V0cHV0IGFtYmVyJyA6ICcsIGZpbHRlciBieXBhc3NlZCd9LiBTYW1lIHZvbHRhZ2UgYW5kIHRpbWUgc2NhbGVzIGFzIGlucHV0LmAgOiBgJHt0aXRsZX06IGVtcHR5IHZvbHRhZ2UvdGltZSBncmlkLmBcbiAgY29uc3QgdGlja3MgPSBbMCwgMC4yNSwgMC41LCAwLjc1LCAxXS5tYXAoZnJhY3Rpb24gPT4gYWRjXG4gICAgPyBtZXRyaWMgPT09ICdjb2RlJyA/IFN0cmluZyhNYXRoLnJvdW5kKCgxIC0gZnJhY3Rpb24pICogYWRjLm1vZGVsLm1heGltdW1Db2RlKSkgOiAoKGFkYy5tb2RlbC5lcnJvckJvdW5kIC0gZnJhY3Rpb24gKiBhZGMubW9kZWwuZGVsdGEpICogMTAwMCkudG9GaXhlZCgzKVxuICAgIDogKHZvbHRhZ2VNYXhpbXVtIC0gZnJhY3Rpb24gKiB2b2x0YWdlU3BhbikudG9GaXhlZCgyKSlcblxuICByZXR1cm4gPHNlY3Rpb24gY2xhc3NOYW1lPXtgc2NvcGUtcGFuZWwgYWNjZW50LSR7YWNjZW50fSR7ZGFjID8gJyBzY29wZS1wYW5lbC0tZGFjJyA6ICcnfWB9IGFyaWEtbGFiZWxsZWRieT17aWR9PlxuICAgIDxkaXYgY2xhc3NOYW1lPVwic2NvcGUtaGVhZGluZ1wiPjxkaXYgY2xhc3NOYW1lPVwic2NvcGUtdGl0bGVcIj48c3BhbiBjbGFzc05hbWU9XCJjaGFubmVsLWJhZGdlXCI+e2NoYW5uZWx9PC9zcGFuPjxkaXY+PGgzIGlkPXtpZH0+e3RpdGxlfTwvaDM+PHA+e3N1YnRpdGxlfTwvcD48L2Rpdj48L2Rpdj48c3BhbiBjbGFzc05hbWU9e2BwYW5lbC1zdGF0ZSR7aGFzU2lnbmFsID8gJyBwYW5lbC1zdGF0ZS0tYWN0aXZlJyA6ICcnfWB9PntoYXNTaWduYWwgPyBzdGF0dXMudG9VcHBlckNhc2UoKSA6ICdOTyBEQVRBJ308L3NwYW4+PC9kaXY+XG4gICAge2NvbnRyb2xzfVxuICAgIDxkaXYgY2xhc3NOYW1lPVwic2NvcGUtcGxvdFwiPlxuICAgICAgPEdyYXBoQXhpc0xhYmVsIGF4aXM9XCJ2b2x0YWdlXCI+e2FkYyA/IG1ldHJpYyA9PT0gJ2NvZGUnID8gJ0RpZ2l0YWwgY29kZScgOiAnRXJyb3IgKG1WKScgOiAnVm9sdGFnZSAoViknfTwvR3JhcGhBeGlzTGFiZWw+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cInZvbHRhZ2UtdGlja3NcIiBhcmlhLWhpZGRlbj1cInRydWVcIj57dGlja3MubWFwKCh0aWNrLCBpbmRleCkgPT4gPHNwYW4ga2V5PXtpbmRleH0+e3RpY2t9PC9zcGFuPil9PC9kaXY+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT17YHBsb3QtY2FudmFzJHthbmFsb2cgPyAnIHBsb3QtY2FudmFzLS1hbmFsb2cnIDogYWRjID8gJyBwbG90LWNhbnZhcy0tYWRjJyA6IGRhYyA/ICcgcGxvdC1jYW52YXMtLWRhYycgOiAnJ31gfT48Y2FudmFzIHJlZj17Y2FudmFzUmVmfSByb2xlPVwiaW1nXCIgYXJpYS1sYWJlbD17ZGVzY3JpcHRpb259IC8+eyFoYXNTaWduYWwgJiYgPGRpdiBjbGFzc05hbWU9XCJwbG90LWVtcHR5XCI+PHNwYW4gY2xhc3NOYW1lPVwiZW1wdHktY3Jvc3NoYWlyXCIgYXJpYS1oaWRkZW49XCJ0cnVlXCI+Kzwvc3Bhbj48c3Bhbj57ZW1wdHlMYWJlbH08L3NwYW4+PC9kaXY+fTwvZGl2PlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0aW1lLXRpY2tzXCIgYXJpYS1oaWRkZW49XCJ0cnVlXCI+e1swLCAwLjIsIDAuNCwgMC42LCAwLjgsIDFdLm1hcChmcmFjdGlvbiA9PiA8c3BhbiBrZXk9e2ZyYWN0aW9ufT57dGltZUlzU2Vjb25kcyA/ICgoZnJhY3Rpb24gLSAxKSAqIHRpbWVXaW5kb3cpLnRvRml4ZWQoMikgOiBmcmFjdGlvbiAqIHRpbWVXaW5kb3d9PC9zcGFuPil9PC9kaXY+XG4gICAgICA8R3JhcGhBeGlzTGFiZWwgYXhpcz1cInRpbWVcIj57dGltZUlzU2Vjb25kcyA/ICdUaW1lIGZyb20gcHJlc2VudCAocyknIDogJ1RpbWUgKG1zKSd9PC9HcmFwaEF4aXNMYWJlbD5cbiAgICA8L2Rpdj5cbiAgICA8ZGl2IGNsYXNzTmFtZT1cInNjb3BlLWZvb3RlclwiPjxHcmFwaExlZ2VuZCBsYWJlbD17bGVnZW5kfSBhY2NlbnQ9e2FjY2VudH0gLz57YW5hbG9nICYmIDxHcmFwaExlZ2VuZCBsYWJlbD1cIlNhbXBsZWQgcG9pbnRzXCIgYWNjZW50PVwiY3lhblwiIHBvaW50cyAvPn17ZGFjICYmIDw+PEdyYXBoTGVnZW5kIGxhYmVsPVwiT3JpZ2luYWwgYW5hbG9nXCIgYWNjZW50PVwiZ3JlZW5cIiAvPjxHcmFwaExlZ2VuZCBsYWJlbD1cIkFEQyBzYW1wbGVzXCIgYWNjZW50PVwiY3lhblwiIHBvaW50cyAvPntkYWMudHJhY2UuZW5hYmxlZCAmJiA8R3JhcGhMZWdlbmQgbGFiZWw9XCJSQyBmaWx0ZXJlZFwiIGFjY2VudD1cImFtYmVyXCIgLz59PC8+fXthZGMgJiYgPHNwYW4gY2xhc3NOYW1lPVwiY2xpcHBlZC1sZWdlbmRcIj48c3BhbiAvPkNsaXBwZWQ8L3NwYW4+fTxzcGFuPntmb290ZXJ9PC9zcGFuPjxzcGFuIGNsYXNzTmFtZT1cImRpdmlzaW9uLWxhYmVsXCI+e3ZvbHRhZ2VTY2FsZSA/IGAke3ZvbHRhZ2VTY2FsZS50aW1lUGVyRGl2aXNpb259IHMvZGl2IMK3ICR7dm9sdGFnZVNjYWxlLnZvbHRzUGVyRGl2aXNpb259IFYvZGl2YCA6IGFkYyA/IGAke2FkYy50aW1lUGVyRGl2aXNpb259IHMvZGl2YCA6IGAke1RJTUVfV0lORE9XX01TIC8gMTB9IG1zL2RpdmB9PC9zcGFuPjwvZGl2PlxuICAgIHtkZXRhaWxzfVxuICA8L3NlY3Rpb24+XG59XG4iXSwiZmlsZSI6IkM6L1VzZXJzL0hhc2FuIFplaW5lZGRpbi9PbmVEcml2ZS9EZXNrdG9wL1Byb2plY3RzL0RpZ2l0YWwgYmlvZWxlY3Ryb25pY3Mvc3JjL2NvbXBvbmVudHMvT3NjaWxsb3Njb3BlUGFuZWwudHN4In0=

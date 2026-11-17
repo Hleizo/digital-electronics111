@@ -117,7 +117,7 @@ export function OscilloscopePanel({ channel, title, subtitle, accent, legend, em
     ? metric === 'code' ? String(Math.round((1 - fraction) * adc.model.maximumCode)) : ((adc.model.errorBound - fraction * adc.model.delta) * 1000).toFixed(3)
     : (voltageMaximum - fraction * voltageSpan).toFixed(2))
 
-  return <section className={`scope-panel accent-${accent}${dac ? ' scope-panel--dac' : ''}`} aria-labelledby={id}>
+  return <section className={`scope-panel accent-${accent}${dac ? ' scope-panel--dac' : ''}`} aria-labelledby={id} data-acquisition={status ?? 'idle'}>
     <div className="scope-heading"><div className="scope-title"><span className="channel-badge">{channel}</span><div><h3 id={id}>{title}</h3><p>{subtitle}</p></div></div><span className={`panel-state${hasSignal ? ' panel-state--active' : ''}`}>{hasSignal ? status.toUpperCase() : 'NO DATA'}</span></div>
     {controls}
     <div className="scope-plot">

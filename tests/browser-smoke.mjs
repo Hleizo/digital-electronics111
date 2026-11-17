@@ -38,6 +38,11 @@ async function evaluate(expression) {
 }
 const select = (label, value) => evaluate(`window.qa.select(${JSON.stringify(label)}, ${JSON.stringify(String(value))})`)
 const slider = (label, value) => evaluate(`window.qa.slider(${JSON.stringify(label)}, ${value})`)
+async function number(label, value) {
+  await evaluate(`window.qa.number(${JSON.stringify(label)}).focus()`)
+  await evaluate(`(() => { const e=window.qa.number(${JSON.stringify(label)}); Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(e,${JSON.stringify(String(value))}); e.dispatchEvent(new Event('input',{bubbles:true})); })()`)
+  await delay(50)
+}
 const toggle = label => evaluate(`window.qa.control(${JSON.stringify(label)}).click()`)
 const metric = label => evaluate(`window.qa.metric(${JSON.stringify(label)})`)
 const click = selector => evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`)
@@ -77,6 +82,7 @@ const instrumentation = `
 const helpers = `
   window.qa={};
   window.qa.control=label=>{const node=Array.from(document.querySelectorAll('label')).find(e=>e.textContent===label);if(!node)throw Error('Missing control '+label);return document.getElementById(node.htmlFor)};
+  window.qa.number=label=>document.querySelector('input[aria-label="'+label+' value"]');
   window.qa.select=(label,value)=>{const e=window.qa.control(label);e.value=value;e.dispatchEvent(new Event('change',{bubbles:true}))};
   window.qa.slider=(label,value)=>{const e=window.qa.control(label);Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(e,String(value));e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}))};
   window.qa.card=label=>Array.from(document.querySelectorAll('.measurement-card')).find(e=>e.querySelector('.measurement-label').textContent===label);
@@ -103,6 +109,7 @@ try {
   await cdp('Page.addScriptToEvaluateOnNewDocument',{source:instrumentation})
   await cdp('Emulation.setDeviceMetricsOverride',{width:1440,height:1100,deviceScaleFactor:1,mobile:false})
   await cdp('Page.navigate',{url:baseURL})
+  await cdp('Page.bringToFront')
   for(let i=0;i<60;i++){if(await evaluate('document.querySelectorAll("canvas").length===9'))break;await delay(150)}
   await evaluate(helpers)
   check(await evaluate('document.querySelectorAll("canvas").length===9&&window.qa.control("Waveform").options.length===7'),'all oscilloscope/comparison canvases and seven source choices render')
@@ -165,18 +172,36 @@ try {
   for(const source of ['sine','triangle','square','sawtooth','dc','ecg','ppg']) {await select('Waveform',source);await resume();await delay(150);await pause();check(await evaluate('Number.isFinite(window.qa.metric("Input voltage"))&&Number.isFinite(window.qa.metric("ADC digital code"))&&Number.isFinite(window.qa.metric("Reconstructed voltage"))'),`${source} runs through all three stages`)}
   await select('Waveform','sine');await slider('Amplitude',.5);await slider('DC offset',1.5);await resume();await delay(600);await pause()
   check(Math.abs(await metric('Maximum voltage')-2)<.005&&Math.abs(await metric('Minimum voltage')-1)<.005,'amplitude and DC offset adjust measured extrema')
+  await number('Amplitude',.75);await number('Frequency',3.25);await number('DC offset',1.5);await resume();await delay(700);await pause()
+  check(await metric('Signal frequency')===3.25&&Math.abs(await metric('Maximum voltage')-2.25)<.005&&Math.abs(await metric('Minimum voltage')-.75)<.005,'precise numerical amplitude, frequency and offset entries update actual signal measurements')
+  await number('Amplitude',-1)
+  const invalidEntry=await evaluate('({value:window.qa.number("Amplitude").value,invalid:window.qa.number("Amplitude").getAttribute("aria-invalid"),message:document.querySelector(".input-error")?.textContent})')
+  check(invalidEntry.invalid==='true'&&invalidEntry.message?.includes('last valid'),`out-of-range numerical entries show an inline validation message: ${JSON.stringify(invalidEntry)}`)
+  await evaluate('document.activeElement.blur()')
+  check(await evaluate('window.qa.number("Amplitude").value==="0.75"'),'invalid numerical entry restores the last valid parameter on blur')
+  await select('Waveform','dc');await number('DC voltage',2.375);await resume();await delay(150);await pause()
+  check(Math.abs(await metric('Input voltage')-2.375)<.000001&&await evaluate('window.qa.number("Amplitude").disabled'),'precise DC entry preserves voltage precision and disables inapplicable numerical controls')
+  await number('DC voltage','');await evaluate('document.activeElement.blur()')
+  check(await evaluate('window.qa.number("DC voltage").value==="2.375"'),'clearing a numerical field does not silently replace its setting with zero')
+  await toggle('Enable reconstruction filter');await number('Filter cutoff',2.75)
+  check(await evaluate('document.querySelector(".filter-state").textContent.includes("2.75 Hz")&&Array.from(document.querySelectorAll(".toggle-field")).find(e=>e.textContent.includes("Enable reconstruction filter")).querySelector(".toggle-state").textContent==="ON"'),'filter numerical cutoff is reflected by the calculated reconstruction status')
+  await toggle('Enable reconstruction filter')
+  check(await evaluate('window.qa.number("Filter cutoff").disabled&&window.qa.control("Filter cutoff").disabled&&Array.from(document.querySelectorAll(".toggle-field")).find(e=>e.textContent.includes("Enable reconstruction filter")).querySelector(".toggle-state").textContent==="OFF"'),'filter OFF state is explicit and disables both cutoff inputs')
   await select('Waveform','dc');await slider('DC voltage',2.37);await resume();await delay(180);await pause()
   check(Math.abs(await metric('Input voltage')-2.37)<.00001,'virtual potentiometer changes actual DC input')
   await evaluate('document.querySelector(".potentiometer-dial").dispatchEvent(new KeyboardEvent("keydown",{key:"ArrowUp",bubbles:true}))');await resume();await delay(180);await pause()
   check(Math.abs(await metric('Input voltage')-2.38)<.00001,'potentiometer keyboard control works')
 
-  for(const [width,height] of [[1440,1100],[1024,900],[768,1024],[390,844]]) {
+  for(const [width,height] of [[1440,1100],[1024,900],[768,1024],[390,844],[360,800]]) {
     await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});await delay(120)
-    check(await evaluate(`document.documentElement.scrollWidth<=${width}`),`page fits ${width}px without horizontal overflow`)
+    check(await evaluate('document.documentElement.scrollWidth<=document.documentElement.clientWidth+1'),`page fits ${width}px without horizontal overflow, including scrollbar space`)
     const overflow=await evaluate('Array.from(document.querySelectorAll(".measurement-value, .field-heading, .controls-heading")).filter(e=>e.scrollWidth>e.clientWidth+2).map(e=>e.textContent)')
     check(overflow.length===0,`numeric values and control headings remain readable at ${width}px`)
-    const clipped=await evaluate('Array.from(document.querySelectorAll("button, select, input[type=range], .panel-state, .field-heading output")).filter(e=>{const r=e.getBoundingClientRect(),p=e.closest(".control-section, .scope-panel, .hardware-panel")?.getBoundingClientRect();return r.width>0&&(r.left<0||r.right>document.documentElement.clientWidth+1||(p&&(r.left<p.left-1||r.right>p.right+1)))}).map(e=>e.textContent||e.getAttribute("aria-label"))')
+    const clipped=await evaluate('Array.from(document.querySelectorAll("button, select, input[type=range], input[type=number], .panel-state")).filter(e=>{const r=e.getBoundingClientRect(),p=e.closest(".control-section, .scope-panel, .hardware-panel")?.getBoundingClientRect();return r.width>0&&(r.left<0||r.right>document.documentElement.clientWidth+1||(p&&(r.left<p.left-1||r.right>p.right+1)))}).map(e=>e.textContent||e.getAttribute("aria-label"))')
     check(clipped.length===0,`interactive controls and panel states fit ${width}px: ${clipped.join(', ')}`)
+    check(await evaluate('(() => {const r=["panel-01","panel-02","panel-03"].map(id=>window.qa.plot(id).getBoundingClientRect());return r.every(e=>e.width>200&&e.height>=130&&Math.abs(e.x-r[0].x)<1&&Math.abs(e.width-r[0].width)<1)})()'),`all primary plots preserve usable dimensions and aligned grids at ${width}px`)
+    const viewport=await cdp('Page.captureScreenshot',{format:'png'})
+    await writeFile(path.join(outputDirectory,`instrument-${width}.png`),Buffer.from(viewport.data,'base64'))
     await screenshot(`simulation-${width}.png`)
   }
 

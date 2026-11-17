@@ -6,12 +6,14 @@ export function drawGrid(context: CanvasRenderingContext2D, width: number, heigh
   context.clearRect(0, 0, width, height)
   context.lineWidth = 1
   for (let column = 0; column <= 40; column++) {
-    context.strokeStyle = column % 4 === 0 ? '#243142' : '#151f2d'
+    context.strokeStyle = column % 4 === 0 ? '#2a394b' : '#182333'
+    context.lineWidth = column % 4 === 0 ? 1 : 0.5
     const x = Math.min(Math.round(column * width / 40) + 0.5, width - 0.5)
     context.beginPath(); context.moveTo(x, 0); context.lineTo(x, height); context.stroke()
   }
   for (let row = 0; row <= 16; row++) {
-    context.strokeStyle = row % 4 === 0 ? '#243142' : '#151f2d'
+    context.strokeStyle = row % 4 === 0 ? '#2a394b' : '#182333'
+    context.lineWidth = row % 4 === 0 ? 1 : 0.5
     const y = Math.min(Math.round(row * height / 16) + 0.5, height - 0.5)
     context.beginPath(); context.moveTo(0, y); context.lineTo(width, y); context.stroke()
   }
@@ -38,7 +40,7 @@ export function drawAnalog(context: CanvasRenderingContext2D, width: number, hei
   context.setLineDash([])
   if (engine.active) {
     context.strokeStyle = '#50dca0'
-    context.lineWidth = 1.6
+    context.lineWidth = 1.2
     if (engine.inputSource === 'hardware') {
       let previous = -Infinity
       context.beginPath()
@@ -73,8 +75,8 @@ export function drawAnalog(context: CanvasRenderingContext2D, width: number, hei
     const dot = (time: number, voltage: number) => {
       const x = xAt(time)
       const y = yAt(voltage)
-      context.moveTo(x + 2.3, y)
-      context.arc(x, y, 2.3, 0, Math.PI * 2)
+      context.moveTo(x + 1.7, y)
+      context.arc(x, y, 1.7, 0, Math.PI * 2)
     }
     if (!reduceDensePoints) engine.samples.forEach(windowStart, engine.elapsed, dot)
     else {

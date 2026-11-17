@@ -1,0 +1,359 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/components/ControlPanel.tsx");import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=759d7589"; const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import { getSpectrum, SIGNAL_OPTIONS } from "/src/core/signal/index.ts";
+import { BLUETOOTH_AVAILABLE } from "/src/services/bluetooth/index.ts";
+import { Icon } from "/src/components/Icon.tsx";
+import { InputSlider } from "/src/components/controls/InputSlider.tsx";
+import { SelectControl } from "/src/components/controls/SelectControl.tsx";
+import { Potentiometer } from "/src/components/controls/Potentiometer.tsx";
+import { AcquisitionControls } from "/src/components/AcquisitionControls.tsx";
+import { createAdcModel } from "/src/core/adc/index.ts";
+import { DacControls } from "/src/components/dac/DacControls.tsx";
+function ControlSection({ title, number, children }) {
+  return /* @__PURE__ */ jsxDEV("section", { className: "control-section", children: [
+    /* @__PURE__ */ jsxDEV("h3", { children: [
+      /* @__PURE__ */ jsxDEV("span", { children: number }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 14,
+        columnNumber: 51
+      }, this),
+      title
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+      lineNumber: 14,
+      columnNumber: 47
+    }, this),
+    children
+  ] }, void 0, true, {
+    fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+    lineNumber: 14,
+    columnNumber: 10
+  }, this);
+}
+_c = ControlSection;
+export function ControlPanel({ config, status, onChange, onReset, onStart, onPause, onAcquisitionReset }) {
+  const setSignal = (values) => onChange({ ...config, signal: { ...config.signal, ...values } });
+  const setAdc = (values) => onChange({ ...config, adc: { ...config.adc, ...values } });
+  const simulation = config.mode === "simulation";
+  const dc = config.signal.source === "dc";
+  const synthetic = config.signal.source === "ecg" || config.signal.source === "ppg";
+  const spectrum = getSpectrum(config.signal, config.adc.samplingFrequency);
+  const adc = createAdcModel(config.adc);
+  const setScale = (values) => onChange({ ...config, scope: { ...config.scope, ...values } });
+  return /* @__PURE__ */ jsxDEV("aside", { className: "control-panel", "aria-labelledby": "controls-title", children: [
+    /* @__PURE__ */ jsxDEV("div", { className: "controls-heading", children: [
+      /* @__PURE__ */ jsxDEV(Icon, { name: "sliders" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 38,
+        columnNumber: 39
+      }, this),
+      /* @__PURE__ */ jsxDEV("h2", { id: "controls-title", children: "Instrument controls" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 38,
+        columnNumber: 62
+      }, this),
+      /* @__PURE__ */ jsxDEV("span", { children: "SETUP" }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 38,
+        columnNumber: 110
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+      lineNumber: 38,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "controls-body", children: [
+      /* @__PURE__ */ jsxDEV(ControlSection, { number: "01", title: "Signal Source", children: [
+        /* @__PURE__ */ jsxDEV(SelectControl, { label: "Waveform", value: config.signal.source, onChange: (source) => setSignal({ source }), options: SIGNAL_OPTIONS, disabled: !simulation }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 41,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "control-hint", children: !simulation ? "ESP32 input is unavailable; Bluetooth is not implemented." : synthetic ? "Educational synthetic signal. Not an actual patient measurement." : "Continuous-time educational simulation." }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 42,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV(SelectControl, { label: "Educational input range", value: String(config.scope.inputMaximum), disabled: !simulation, onChange: (value) => {
+          const maximum = Number(value);
+          onChange({ ...config, signal: { ...config.signal, offset: Math.min(config.signal.offset, maximum), amplitude: Math.min(config.signal.amplitude, maximum) }, scope: { ...config.scope, inputMaximum: maximum, voltsPerDivision: maximum === 5 ? 1.5 : 1 } });
+        }, options: simulation ? [{ value: "3.3", label: "0–3.3 V" }, { value: "5", label: "0–5 V · simulation only" }] : [{ value: "3.3", label: "0–3.3 V · no device input" }] }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 43,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "control-hint input-range-note", children: "5 V is simulation only. Never connect 5 V directly to an ESP32 input." }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 47,
+          columnNumber: 9
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 40,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(ControlSection, { number: "02", title: "Signal Parameters", children: [
+        /* @__PURE__ */ jsxDEV(InputSlider, { label: "Amplitude", value: config.signal.amplitude, min: 0, max: config.scope.inputMaximum, step: 0.05, unit: "V", onChange: (amplitude) => setSignal({ amplitude }), disabled: dc || !simulation }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 50,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV(InputSlider, { label: "Frequency", value: config.signal.frequency, min: 0.1, max: 20, step: 0.1, unit: "Hz", onChange: (frequency) => setSignal({ frequency }), disabled: dc || !simulation }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 51,
+          columnNumber: 9
+        }, this),
+        dc ? /* @__PURE__ */ jsxDEV(Potentiometer, { value: config.signal.offset, maximum: config.scope.inputMaximum, onChange: (offset) => setSignal({ offset }), disabled: !simulation }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 52,
+          columnNumber: 15
+        }, this) : /* @__PURE__ */ jsxDEV(InputSlider, { label: "DC offset", value: config.signal.offset, min: 0, max: config.scope.inputMaximum, step: 0.05, unit: "V", onChange: (offset) => setSignal({ offset }), disabled: !simulation }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 52,
+          columnNumber: 168
+        }, this),
+        /* @__PURE__ */ jsxDEV(InputSlider, { label: "Phase", value: config.signal.phaseDegrees, min: 0, max: 360, step: 1, unit: "°", onChange: (phaseDegrees) => setSignal({ phaseDegrees }), disabled: dc || !simulation }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 53,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV(InputSlider, { label: "Noise amplitude", value: config.signal.noiseAmplitude, min: 0, max: 0.5, step: 0.01, unit: "V", onChange: (noiseAmplitude) => setSignal({ noiseAmplitude }), disabled: !simulation }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 54,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "control-hint", children: [
+          dc ? "DC voltage sets the offset directly; amplitude, frequency and phase do not apply." : "Amplitude is peak excursion (pulse height for ECG/PPG).",
+          " Noise uses reproducible 37, 61 and 89 Hz components."
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 55,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV(SelectControl, { label: "Sampling frequency (samples/s)", value: String(config.adc.samplingFrequency), disabled: !simulation, onChange: (value) => setAdc({ samplingFrequency: Number(value) }), options: [1, 2, 5, 10, 20, 50, 100, 200, 500, 1e3, 2e3].map((value) => ({ value: String(value), label: `${value.toLocaleString()} samples/s` })) }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 56,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: "control-pair scale-controls", children: [
+          /* @__PURE__ */ jsxDEV(SelectControl, { label: "Time (s/div)", value: String(config.scope.timePerDivision), onChange: (value) => setScale({ timePerDivision: Number(value) }), options: [0.02, 0.05, 0.1, 0.2, 0.5, 1].map((value) => ({ value: String(value), label: `${value} s/div` })) }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 58,
+            columnNumber: 11
+          }, this),
+          /* @__PURE__ */ jsxDEV(SelectControl, { label: "Voltage (V/div)", value: String(config.scope.voltsPerDivision), onChange: (value) => setScale({ voltsPerDivision: Number(value) }), options: [0.1, 0.25, 0.5, 1, 1.5, 2].map((value) => ({ value: String(value), label: `${value} V/div` })) }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 59,
+            columnNumber: 11
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 57,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "control-hint", children: "Display refresh follows the browser (~60 FPS); it does not set the sampling frequency." }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 61,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("div", { className: `sampling-notice${spectrum.aliasing ? " sampling-notice--warning" : ""}`, role: "status", children: [
+          /* @__PURE__ */ jsxDEV("strong", { children: [
+            "Nyquist: ",
+            spectrum.nyquist.toLocaleString(),
+            " Hz"
+          ] }, void 0, true, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 62,
+            columnNumber: 113
+          }, this),
+          /* @__PURE__ */ jsxDEV("p", { children: [
+            spectrum.aliasing ? "Aliasing warning: signal components reach or exceed fs/2." : "Known signal components are below fs/2.",
+            " ",
+            spectrum.description,
+            "."
+          ] }, void 0, true, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 62,
+            columnNumber: 177
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 62,
+          columnNumber: 9
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 49,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(ControlSection, { number: "03", title: "ADC Configuration", children: [
+        /* @__PURE__ */ jsxDEV("fieldset", { className: "resolution-field", children: [
+          /* @__PURE__ */ jsxDEV("legend", { children: "Resolution" }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 65,
+            columnNumber: 48
+          }, this),
+          /* @__PURE__ */ jsxDEV("div", { className: "segmented resolution-selector", children: [4, 8].map((resolution) => /* @__PURE__ */ jsxDEV("button", { type: "button", "aria-pressed": config.adc.resolution === resolution, onClick: () => setAdc({ resolution }), children: [
+            resolution,
+            "-bit",
+            /* @__PURE__ */ jsxDEV("span", { children: [
+              2 ** resolution,
+              " levels"
+            ] }, void 0, true, {
+              fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+              lineNumber: 65,
+              columnNumber: 314
+            }, this)
+          ] }, resolution, true, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 65,
+            columnNumber: 168
+          }, this)) }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 65,
+            columnNumber: 75
+          }, this)
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 65,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV(SelectControl, { label: "ADC reference Vref", value: String(config.adc.referenceVoltage), onChange: (value) => setAdc({ referenceVoltage: Number(value) }), options: (simulation ? [1, 2.5, 3.3, 5] : [1, 2.5, 3.3]).map((value) => ({ value: String(value), label: `${value.toFixed(1)} V${value === 5 ? " · simulation only" : ""}` })) }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 66,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "control-hint", children: [
+          adc.levels,
+          " levels · codes 0–",
+          adc.maximumCode,
+          /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 67,
+            columnNumber: 84
+          }, this),
+          "LSB: ",
+          adc.delta.toFixed(6),
+          " V / ",
+          (adc.delta * 1e3).toFixed(3),
+          " mV.",
+          /* @__PURE__ */ jsxDEV("br", {}, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 67,
+            columnNumber: 157
+          }, this),
+          "Vref changes quantization, not the signal or sample clock. Uniform bins use midpoint voltages."
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 67,
+          columnNumber: 9
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 64,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(ControlSection, { number: "04", title: "DAC Configuration", children: /* @__PURE__ */ jsxDEV(DacControls, { config, onChange }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 70,
+        columnNumber: 9
+      }, this) }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 69,
+        columnNumber: 7
+      }, this),
+      /* @__PURE__ */ jsxDEV(ControlSection, { number: "05", title: "Acquisition Controls", children: [
+        /* @__PURE__ */ jsxDEV(AcquisitionControls, { status, available: simulation, onStart, onPause, onReset: onAcquisitionReset }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 73,
+          columnNumber: 9
+        }, this),
+        config.mode === "esp32" && /* @__PURE__ */ jsxDEV("button", { className: "secondary-button connection-button", type: "button", disabled: !BLUETOOTH_AVAILABLE, children: [
+          /* @__PURE__ */ jsxDEV(Icon, { name: "bluetooth", size: 15 }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 74,
+            columnNumber: 138
+          }, this),
+          "Connect ESP32 · unavailable"
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 74,
+          columnNumber: 37
+        }, this),
+        /* @__PURE__ */ jsxDEV("button", { className: "secondary-button reset-button", type: "button", onClick: onReset, children: [
+          /* @__PURE__ */ jsxDEV(Icon, { name: "reset", size: 14 }, void 0, false, {
+            fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+            lineNumber: 75,
+            columnNumber: 91
+          }, this),
+          "Reset configuration"
+        ] }, void 0, true, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 75,
+          columnNumber: 9
+        }, this),
+        /* @__PURE__ */ jsxDEV("p", { className: "control-hint", children: simulation ? "Analog → ADC → DAC simulation. Pause freezes the clock and all traces; reset clears acquisition history." : "Switch to Simulation to start. No device data is available." }, void 0, false, {
+          fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+          lineNumber: 76,
+          columnNumber: 9
+        }, this)
+      ] }, void 0, true, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 72,
+        columnNumber: 7
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+      lineNumber: 39,
+      columnNumber: 5
+    }, this),
+    /* @__PURE__ */ jsxDEV("div", { className: "controls-note", children: [
+      /* @__PURE__ */ jsxDEV(Icon, { name: "info", size: 15 }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 79,
+        columnNumber: 36
+      }, this),
+      /* @__PURE__ */ jsxDEV("p", { children: "Educational ADC/DAC software simulation. Bluetooth and ESP32 communication remain unimplemented." }, void 0, false, {
+        fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+        lineNumber: 79,
+        columnNumber: 66
+      }, this)
+    ] }, void 0, true, {
+      fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+      lineNumber: 79,
+      columnNumber: 5
+    }, this)
+  ] }, void 0, true, {
+    fileName: "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx",
+    lineNumber: 37,
+    columnNumber: 10
+  }, this);
+}
+_c2 = ControlPanel;
+var _c, _c2;
+$RefreshReg$(_c, "ControlSection");
+$RefreshReg$(_c2, "ControlPanel");
+import * as RefreshRuntime from "/@react-refresh";
+const inWebWorker = typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope;
+if (import.meta.hot && !inWebWorker) {
+  if (!window.$RefreshReg$) {
+    throw new Error(
+      "@vitejs/plugin-react can't detect preamble. Something is wrong."
+    );
+  }
+  RefreshRuntime.__hmr_import(import.meta.url).then((currentExports) => {
+    RefreshRuntime.registerExportsForReactRefresh("C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx", currentExports);
+    import.meta.hot.accept((nextExports) => {
+      if (!nextExports) return;
+      const invalidateMessage = RefreshRuntime.validateRefreshBoundaryAndEnqueueUpdate("C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx", currentExports, nextExports);
+      if (invalidateMessage) import.meta.hot.invalidate(invalidateMessage);
+    });
+  });
+}
+function $RefreshReg$(type, id) {
+  return RefreshRuntime.register(type, "C:/Users/Hasan Zeineddin/OneDrive/Desktop/Projects/Digital bioelectronics/src/components/ControlPanel.tsx " + id);
+}
+function $RefreshSig$() {
+  return RefreshRuntime.createSignatureFunctionForTransform();
+}
+
+//# sourceMappingURL=data:application/json;base64,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QUFBO0FBQUEsU0EyQ1A7QUFDRjtBQUFDbUMsTUF0RGVoRDtBQUFZLElBQUFELElBQUFpRDtBQUFBLGFBQUFqRCxJQUFBO0FBQUEsYUFBQWlELEtBQUEiLCJuYW1lcyI6WyJnZXRTcGVjdHJ1bSIsIlNJR05BTF9PUFRJT05TIiwiQkxVRVRPT1RIX0FWQUlMQUJMRSIsIkljb24iLCJJbnB1dFNsaWRlciIsIlNlbGVjdENvbnRyb2wiLCJQb3RlbnRpb21ldGVyIiwiQWNxdWlzaXRpb25Db250cm9scyIsImNyZWF0ZUFkY01vZGVsIiwiRGFjQ29udHJvbHMiLCJDb250cm9sU2VjdGlvbiIsInRpdGxlIiwibnVtYmVyIiwiY2hpbGRyZW4iLCJfYyIsIkNvbnRyb2xQYW5lbCIsImNvbmZpZyIsInN0YXR1cyIsIm9uQ2hhbmdlIiwib25SZXNldCIsIm9uU3RhcnQiLCJvblBhdXNlIiwib25BY3F1aXNpdGlvblJlc2V0Iiwic2V0U2lnbmFsIiwidmFsdWVzIiwic2lnbmFsIiwic2V0QWRjIiwiYWRjIiwic2ltdWxhdGlvbiIsIm1vZGUiLCJkYyIsInNvdXJjZSIsInN5bnRoZXRpYyIsInNwZWN0cnVtIiwic2FtcGxpbmdGcmVxdWVuY3kiLCJzZXRTY2FsZSIsInNjb3BlIiwiU3RyaW5nIiwiaW5wdXRNYXhpbXVtIiwidmFsdWUiLCJtYXhpbXVtIiwiTnVtYmVyIiwib2Zmc2V0IiwiTWF0aCIsIm1pbiIsImFtcGxpdHVkZSIsInZvbHRzUGVyRGl2aXNpb24iLCJsYWJlbCIsImZyZXF1ZW5jeSIsInBoYXNlRGVncmVlcyIsIm5vaXNlQW1wbGl0dWRlIiwibWFwIiwidG9Mb2NhbGVTdHJpbmciLCJ0aW1lUGVyRGl2aXNpb24iLCJhbGlhc2luZyIsIm55cXVpc3QiLCJkZXNjcmlwdGlvbiIsInJlc29sdXRpb24iLCJyZWZlcmVuY2VWb2x0YWdlIiwidG9GaXhlZCIsImxldmVscyIsIm1heGltdW1Db2RlIiwiZGVsdGEiLCJfYzIiXSwiaWdub3JlTGlzdCI6W10sInNvdXJjZXMiOlsiQ29udHJvbFBhbmVsLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgdHlwZSB7IFJlYWN0Tm9kZSB9IGZyb20gJ3JlYWN0J1xuaW1wb3J0IHR5cGUgeyBBY3F1aXNpdGlvblN0YXR1cywgRGFzaGJvYXJkQ29uZmlnLCBSZXNvbHV0aW9uIH0gZnJvbSAnLi4vdHlwZXMnXG5pbXBvcnQgeyBnZXRTcGVjdHJ1bSwgU0lHTkFMX09QVElPTlMgfSBmcm9tICcuLi9jb3JlL3NpZ25hbCdcbmltcG9ydCB7IEJMVUVUT09USF9BVkFJTEFCTEUgfSBmcm9tICcuLi9zZXJ2aWNlcy9ibHVldG9vdGgnXG5pbXBvcnQgeyBJY29uIH0gZnJvbSAnLi9JY29uJ1xuaW1wb3J0IHsgSW5wdXRTbGlkZXIgfSBmcm9tICcuL2NvbnRyb2xzL0lucHV0U2xpZGVyJ1xuaW1wb3J0IHsgU2VsZWN0Q29udHJvbCB9IGZyb20gJy4vY29udHJvbHMvU2VsZWN0Q29udHJvbCdcbmltcG9ydCB7IFBvdGVudGlvbWV0ZXIgfSBmcm9tICcuL2NvbnRyb2xzL1BvdGVudGlvbWV0ZXInXG5pbXBvcnQgeyBBY3F1aXNpdGlvbkNvbnRyb2xzIH0gZnJvbSAnLi9BY3F1aXNpdGlvbkNvbnRyb2xzJ1xuaW1wb3J0IHsgY3JlYXRlQWRjTW9kZWwgfSBmcm9tICcuLi9jb3JlL2FkYydcbmltcG9ydCB7IERhY0NvbnRyb2xzIH0gZnJvbSAnLi9kYWMvRGFjQ29udHJvbHMnXG5cbmZ1bmN0aW9uIENvbnRyb2xTZWN0aW9uKHsgdGl0bGUsIG51bWJlciwgY2hpbGRyZW4gfTogeyB0aXRsZTogc3RyaW5nOyBudW1iZXI6IHN0cmluZzsgY2hpbGRyZW46IFJlYWN0Tm9kZSB9KSB7XG4gIHJldHVybiA8c2VjdGlvbiBjbGFzc05hbWU9XCJjb250cm9sLXNlY3Rpb25cIj48aDM+PHNwYW4+e251bWJlcn08L3NwYW4+e3RpdGxlfTwvaDM+e2NoaWxkcmVufTwvc2VjdGlvbj5cbn1cblxuaW50ZXJmYWNlIENvbnRyb2xQYW5lbFByb3BzIHtcbiAgY29uZmlnOiBEYXNoYm9hcmRDb25maWdcbiAgc3RhdHVzOiBBY3F1aXNpdGlvblN0YXR1c1xuICBvbkNoYW5nZTogKGNvbmZpZzogRGFzaGJvYXJkQ29uZmlnKSA9PiB2b2lkXG4gIG9uUmVzZXQ6ICgpID0+IHZvaWRcbiAgb25TdGFydDogKCkgPT4gdm9pZFxuICBvblBhdXNlOiAoKSA9PiB2b2lkXG4gIG9uQWNxdWlzaXRpb25SZXNldDogKCkgPT4gdm9pZFxufVxuXG5leHBvcnQgZnVuY3Rpb24gQ29udHJvbFBhbmVsKHsgY29uZmlnLCBzdGF0dXMsIG9uQ2hhbmdlLCBvblJlc2V0LCBvblN0YXJ0LCBvblBhdXNlLCBvbkFjcXVpc2l0aW9uUmVzZXQgfTogQ29udHJvbFBhbmVsUHJvcHMpIHtcbiAgY29uc3Qgc2V0U2lnbmFsID0gKHZhbHVlczogUGFydGlhbDxEYXNoYm9hcmRDb25maWdbJ3NpZ25hbCddPikgPT4gb25DaGFuZ2UoeyAuLi5jb25maWcsIHNpZ25hbDogeyAuLi5jb25maWcuc2lnbmFsLCAuLi52YWx1ZXMgfSB9KVxuICBjb25zdCBzZXRBZGMgPSAodmFsdWVzOiBQYXJ0aWFsPERhc2hib2FyZENvbmZpZ1snYWRjJ10+KSA9PiBvbkNoYW5nZSh7IC4uLmNvbmZpZywgYWRjOiB7IC4uLmNvbmZpZy5hZGMsIC4uLnZhbHVlcyB9IH0pXG4gIGNvbnN0IHNpbXVsYXRpb24gPSBjb25maWcubW9kZSA9PT0gJ3NpbXVsYXRpb24nXG4gIGNvbnN0IGRjID0gY29uZmlnLnNpZ25hbC5zb3VyY2UgPT09ICdkYydcbiAgY29uc3Qgc3ludGhldGljID0gY29uZmlnLnNpZ25hbC5zb3VyY2UgPT09ICdlY2cnIHx8IGNvbmZpZy5zaWduYWwuc291cmNlID09PSAncHBnJ1xuICBjb25zdCBzcGVjdHJ1bSA9IGdldFNwZWN0cnVtKGNvbmZpZy5zaWduYWwsIGNvbmZpZy5hZGMuc2FtcGxpbmdGcmVxdWVuY3kpXG4gIGNvbnN0IGFkYyA9IGNyZWF0ZUFkY01vZGVsKGNvbmZpZy5hZGMpXG4gIGNvbnN0IHNldFNjYWxlID0gKHZhbHVlczogUGFydGlhbDxEYXNoYm9hcmRDb25maWdbJ3Njb3BlJ10+KSA9PiBvbkNoYW5nZSh7IC4uLmNvbmZpZywgc2NvcGU6IHsgLi4uY29uZmlnLnNjb3BlLCAuLi52YWx1ZXMgfSB9KVxuXG4gIHJldHVybiA8YXNpZGUgY2xhc3NOYW1lPVwiY29udHJvbC1wYW5lbFwiIGFyaWEtbGFiZWxsZWRieT1cImNvbnRyb2xzLXRpdGxlXCI+XG4gICAgPGRpdiBjbGFzc05hbWU9XCJjb250cm9scy1oZWFkaW5nXCI+PEljb24gbmFtZT1cInNsaWRlcnNcIiAvPjxoMiBpZD1cImNvbnRyb2xzLXRpdGxlXCI+SW5zdHJ1bWVudCBjb250cm9sczwvaDI+PHNwYW4+U0VUVVA8L3NwYW4+PC9kaXY+XG4gICAgPGRpdiBjbGFzc05hbWU9XCJjb250cm9scy1ib2R5XCI+XG4gICAgICA8Q29udHJvbFNlY3Rpb24gbnVtYmVyPVwiMDFcIiB0aXRsZT1cIlNpZ25hbCBTb3VyY2VcIj5cbiAgICAgICAgPFNlbGVjdENvbnRyb2wgbGFiZWw9XCJXYXZlZm9ybVwiIHZhbHVlPXtjb25maWcuc2lnbmFsLnNvdXJjZX0gb25DaGFuZ2U9e3NvdXJjZSA9PiBzZXRTaWduYWwoeyBzb3VyY2UgfSl9IG9wdGlvbnM9e1NJR05BTF9PUFRJT05TfSBkaXNhYmxlZD17IXNpbXVsYXRpb259IC8+XG4gICAgICAgIDxwIGNsYXNzTmFtZT1cImNvbnRyb2wtaGludFwiPnshc2ltdWxhdGlvbiA/ICdFU1AzMiBpbnB1dCBpcyB1bmF2YWlsYWJsZTsgQmx1ZXRvb3RoIGlzIG5vdCBpbXBsZW1lbnRlZC4nIDogc3ludGhldGljID8gJ0VkdWNhdGlvbmFsIHN5bnRoZXRpYyBzaWduYWwuIE5vdCBhbiBhY3R1YWwgcGF0aWVudCBtZWFzdXJlbWVudC4nIDogJ0NvbnRpbnVvdXMtdGltZSBlZHVjYXRpb25hbCBzaW11bGF0aW9uLid9PC9wPlxuICAgICAgICA8U2VsZWN0Q29udHJvbCBsYWJlbD1cIkVkdWNhdGlvbmFsIGlucHV0IHJhbmdlXCIgdmFsdWU9e1N0cmluZyhjb25maWcuc2NvcGUuaW5wdXRNYXhpbXVtKX0gZGlzYWJsZWQ9eyFzaW11bGF0aW9ufSBvbkNoYW5nZT17dmFsdWUgPT4ge1xuICAgICAgICAgIGNvbnN0IG1heGltdW0gPSBOdW1iZXIodmFsdWUpXG4gICAgICAgICAgb25DaGFuZ2UoeyAuLi5jb25maWcsIHNpZ25hbDogeyAuLi5jb25maWcuc2lnbmFsLCBvZmZzZXQ6IE1hdGgubWluKGNvbmZpZy5zaWduYWwub2Zmc2V0LCBtYXhpbXVtKSwgYW1wbGl0dWRlOiBNYXRoLm1pbihjb25maWcuc2lnbmFsLmFtcGxpdHVkZSwgbWF4aW11bSkgfSwgc2NvcGU6IHsgLi4uY29uZmlnLnNjb3BlLCBpbnB1dE1heGltdW06IG1heGltdW0sIHZvbHRzUGVyRGl2aXNpb246IG1heGltdW0gPT09IDUgPyAxLjUgOiAxIH0gfSlcbiAgICAgICAgfX0gb3B0aW9ucz17c2ltdWxhdGlvbiA/IFt7IHZhbHVlOiAnMy4zJywgbGFiZWw6ICcw4oCTMy4zIFYnIH0sIHsgdmFsdWU6ICc1JywgbGFiZWw6ICcw4oCTNSBWIMK3IHNpbXVsYXRpb24gb25seScgfV0gOiBbeyB2YWx1ZTogJzMuMycsIGxhYmVsOiAnMOKAkzMuMyBWIMK3IG5vIGRldmljZSBpbnB1dCcgfV19IC8+XG4gICAgICAgIDxwIGNsYXNzTmFtZT1cImNvbnRyb2wtaGludCBpbnB1dC1yYW5nZS1ub3RlXCI+NSBWIGlzIHNpbXVsYXRpb24gb25seS4gTmV2ZXIgY29ubmVjdCA1IFYgZGlyZWN0bHkgdG8gYW4gRVNQMzIgaW5wdXQuPC9wPlxuICAgICAgPC9Db250cm9sU2VjdGlvbj5cbiAgICAgIDxDb250cm9sU2VjdGlvbiBudW1iZXI9XCIwMlwiIHRpdGxlPVwiU2lnbmFsIFBhcmFtZXRlcnNcIj5cbiAgICAgICAgPElucHV0U2xpZGVyIGxhYmVsPVwiQW1wbGl0dWRlXCIgdmFsdWU9e2NvbmZpZy5zaWduYWwuYW1wbGl0dWRlfSBtaW49ezB9IG1heD17Y29uZmlnLnNjb3BlLmlucHV0TWF4aW11bX0gc3RlcD17MC4wNX0gdW5pdD1cIlZcIiBvbkNoYW5nZT17YW1wbGl0dWRlID0+IHNldFNpZ25hbCh7IGFtcGxpdHVkZSB9KX0gZGlzYWJsZWQ9e2RjIHx8ICFzaW11bGF0aW9ufSAvPlxuICAgICAgICA8SW5wdXRTbGlkZXIgbGFiZWw9XCJGcmVxdWVuY3lcIiB2YWx1ZT17Y29uZmlnLnNpZ25hbC5mcmVxdWVuY3l9IG1pbj17MC4xfSBtYXg9ezIwfSBzdGVwPXswLjF9IHVuaXQ9XCJIelwiIG9uQ2hhbmdlPXtmcmVxdWVuY3kgPT4gc2V0U2lnbmFsKHsgZnJlcXVlbmN5IH0pfSBkaXNhYmxlZD17ZGMgfHwgIXNpbXVsYXRpb259IC8+XG4gICAgICAgIHtkYyA/IDxQb3RlbnRpb21ldGVyIHZhbHVlPXtjb25maWcuc2lnbmFsLm9mZnNldH0gbWF4aW11bT17Y29uZmlnLnNjb3BlLmlucHV0TWF4aW11bX0gb25DaGFuZ2U9e29mZnNldCA9PiBzZXRTaWduYWwoeyBvZmZzZXQgfSl9IGRpc2FibGVkPXshc2ltdWxhdGlvbn0gLz4gOiA8SW5wdXRTbGlkZXIgbGFiZWw9XCJEQyBvZmZzZXRcIiB2YWx1ZT17Y29uZmlnLnNpZ25hbC5vZmZzZXR9IG1pbj17MH0gbWF4PXtjb25maWcuc2NvcGUuaW5wdXRNYXhpbXVtfSBzdGVwPXswLjA1fSB1bml0PVwiVlwiIG9uQ2hhbmdlPXtvZmZzZXQgPT4gc2V0U2lnbmFsKHsgb2Zmc2V0IH0pfSBkaXNhYmxlZD17IXNpbXVsYXRpb259IC8+fVxuICAgICAgICA8SW5wdXRTbGlkZXIgbGFiZWw9XCJQaGFzZVwiIHZhbHVlPXtjb25maWcuc2lnbmFsLnBoYXNlRGVncmVlc30gbWluPXswfSBtYXg9ezM2MH0gc3RlcD17MX0gdW5pdD1cIsKwXCIgb25DaGFuZ2U9e3BoYXNlRGVncmVlcyA9PiBzZXRTaWduYWwoeyBwaGFzZURlZ3JlZXMgfSl9IGRpc2FibGVkPXtkYyB8fCAhc2ltdWxhdGlvbn0gLz5cbiAgICAgICAgPElucHV0U2xpZGVyIGxhYmVsPVwiTm9pc2UgYW1wbGl0dWRlXCIgdmFsdWU9e2NvbmZpZy5zaWduYWwubm9pc2VBbXBsaXR1ZGV9IG1pbj17MH0gbWF4PXswLjV9IHN0ZXA9ezAuMDF9IHVuaXQ9XCJWXCIgb25DaGFuZ2U9e25vaXNlQW1wbGl0dWRlID0+IHNldFNpZ25hbCh7IG5vaXNlQW1wbGl0dWRlIH0pfSBkaXNhYmxlZD17IXNpbXVsYXRpb259IC8+XG4gICAgICAgIDxwIGNsYXNzTmFtZT1cImNvbnRyb2wtaGludFwiPntkYyA/ICdEQyB2b2x0YWdlIHNldHMgdGhlIG9mZnNldCBkaXJlY3RseTsgYW1wbGl0dWRlLCBmcmVxdWVuY3kgYW5kIHBoYXNlIGRvIG5vdCBhcHBseS4nIDogJ0FtcGxpdHVkZSBpcyBwZWFrIGV4Y3Vyc2lvbiAocHVsc2UgaGVpZ2h0IGZvciBFQ0cvUFBHKS4nfSBOb2lzZSB1c2VzIHJlcHJvZHVjaWJsZSAzNywgNjEgYW5kIDg5IEh6IGNvbXBvbmVudHMuPC9wPlxuICAgICAgICA8U2VsZWN0Q29udHJvbCBsYWJlbD1cIlNhbXBsaW5nIGZyZXF1ZW5jeSAoc2FtcGxlcy9zKVwiIHZhbHVlPXtTdHJpbmcoY29uZmlnLmFkYy5zYW1wbGluZ0ZyZXF1ZW5jeSl9IGRpc2FibGVkPXshc2ltdWxhdGlvbn0gb25DaGFuZ2U9e3ZhbHVlID0+IHNldEFkYyh7IHNhbXBsaW5nRnJlcXVlbmN5OiBOdW1iZXIodmFsdWUpIH0pfSBvcHRpb25zPXtbMSwgMiwgNSwgMTAsIDIwLCA1MCwgMTAwLCAyMDAsIDUwMCwgMTAwMCwgMjAwMF0ubWFwKHZhbHVlID0+ICh7IHZhbHVlOiBTdHJpbmcodmFsdWUpLCBsYWJlbDogYCR7dmFsdWUudG9Mb2NhbGVTdHJpbmcoKX0gc2FtcGxlcy9zYCB9KSl9IC8+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiY29udHJvbC1wYWlyIHNjYWxlLWNvbnRyb2xzXCI+XG4gICAgICAgICAgPFNlbGVjdENvbnRyb2wgbGFiZWw9XCJUaW1lIChzL2RpdilcIiB2YWx1ZT17U3RyaW5nKGNvbmZpZy5zY29wZS50aW1lUGVyRGl2aXNpb24pfSBvbkNoYW5nZT17dmFsdWUgPT4gc2V0U2NhbGUoeyB0aW1lUGVyRGl2aXNpb246IE51bWJlcih2YWx1ZSkgfSl9IG9wdGlvbnM9e1swLjAyLCAwLjA1LCAwLjEsIDAuMiwgMC41LCAxXS5tYXAodmFsdWUgPT4gKHsgdmFsdWU6IFN0cmluZyh2YWx1ZSksIGxhYmVsOiBgJHt2YWx1ZX0gcy9kaXZgIH0pKX0gLz5cbiAgICAgICAgICA8U2VsZWN0Q29udHJvbCBsYWJlbD1cIlZvbHRhZ2UgKFYvZGl2KVwiIHZhbHVlPXtTdHJpbmcoY29uZmlnLnNjb3BlLnZvbHRzUGVyRGl2aXNpb24pfSBvbkNoYW5nZT17dmFsdWUgPT4gc2V0U2NhbGUoeyB2b2x0c1BlckRpdmlzaW9uOiBOdW1iZXIodmFsdWUpIH0pfSBvcHRpb25zPXtbMC4xLCAwLjI1LCAwLjUsIDEsIDEuNSwgMl0ubWFwKHZhbHVlID0+ICh7IHZhbHVlOiBTdHJpbmcodmFsdWUpLCBsYWJlbDogYCR7dmFsdWV9IFYvZGl2YCB9KSl9IC8+XG4gICAgICAgIDwvZGl2PlxuICAgICAgICA8cCBjbGFzc05hbWU9XCJjb250cm9sLWhpbnRcIj5EaXNwbGF5IHJlZnJlc2ggZm9sbG93cyB0aGUgYnJvd3NlciAofjYwIEZQUyk7IGl0IGRvZXMgbm90IHNldCB0aGUgc2FtcGxpbmcgZnJlcXVlbmN5LjwvcD5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9e2BzYW1wbGluZy1ub3RpY2Uke3NwZWN0cnVtLmFsaWFzaW5nID8gJyBzYW1wbGluZy1ub3RpY2UtLXdhcm5pbmcnIDogJyd9YH0gcm9sZT1cInN0YXR1c1wiPjxzdHJvbmc+TnlxdWlzdDoge3NwZWN0cnVtLm55cXVpc3QudG9Mb2NhbGVTdHJpbmcoKX0gSHo8L3N0cm9uZz48cD57c3BlY3RydW0uYWxpYXNpbmcgPyAnQWxpYXNpbmcgd2FybmluZzogc2lnbmFsIGNvbXBvbmVudHMgcmVhY2ggb3IgZXhjZWVkIGZzLzIuJyA6ICdLbm93biBzaWduYWwgY29tcG9uZW50cyBhcmUgYmVsb3cgZnMvMi4nfSB7c3BlY3RydW0uZGVzY3JpcHRpb259LjwvcD48L2Rpdj5cbiAgICAgIDwvQ29udHJvbFNlY3Rpb24+XG4gICAgICA8Q29udHJvbFNlY3Rpb24gbnVtYmVyPVwiMDNcIiB0aXRsZT1cIkFEQyBDb25maWd1cmF0aW9uXCI+XG4gICAgICAgIDxmaWVsZHNldCBjbGFzc05hbWU9XCJyZXNvbHV0aW9uLWZpZWxkXCI+PGxlZ2VuZD5SZXNvbHV0aW9uPC9sZWdlbmQ+PGRpdiBjbGFzc05hbWU9XCJzZWdtZW50ZWQgcmVzb2x1dGlvbi1zZWxlY3RvclwiPnsoWzQsIDhdIGFzIFJlc29sdXRpb25bXSkubWFwKHJlc29sdXRpb24gPT4gPGJ1dHRvbiBrZXk9e3Jlc29sdXRpb259IHR5cGU9XCJidXR0b25cIiBhcmlhLXByZXNzZWQ9e2NvbmZpZy5hZGMucmVzb2x1dGlvbiA9PT0gcmVzb2x1dGlvbn0gb25DbGljaz17KCkgPT4gc2V0QWRjKHsgcmVzb2x1dGlvbiB9KX0+e3Jlc29sdXRpb259LWJpdDxzcGFuPnsyICoqIHJlc29sdXRpb259IGxldmVsczwvc3Bhbj48L2J1dHRvbj4pfTwvZGl2PjwvZmllbGRzZXQ+XG4gICAgICAgIDxTZWxlY3RDb250cm9sIGxhYmVsPVwiQURDIHJlZmVyZW5jZSBWcmVmXCIgdmFsdWU9e1N0cmluZyhjb25maWcuYWRjLnJlZmVyZW5jZVZvbHRhZ2UpfSBvbkNoYW5nZT17dmFsdWUgPT4gc2V0QWRjKHsgcmVmZXJlbmNlVm9sdGFnZTogTnVtYmVyKHZhbHVlKSB9KX0gb3B0aW9ucz17KHNpbXVsYXRpb24gPyBbMSwgMi41LCAzLjMsIDVdIDogWzEsIDIuNSwgMy4zXSkubWFwKHZhbHVlID0+ICh7IHZhbHVlOiBTdHJpbmcodmFsdWUpLCBsYWJlbDogYCR7dmFsdWUudG9GaXhlZCgxKX0gViR7dmFsdWUgPT09IDUgPyAnIMK3IHNpbXVsYXRpb24gb25seScgOiAnJ31gIH0pKX0gLz5cbiAgICAgICAgPHAgY2xhc3NOYW1lPVwiY29udHJvbC1oaW50XCI+e2FkYy5sZXZlbHN9IGxldmVscyDCtyBjb2RlcyAw4oCTe2FkYy5tYXhpbXVtQ29kZX08YnIgLz5MU0I6IHthZGMuZGVsdGEudG9GaXhlZCg2KX0gViAvIHsoYWRjLmRlbHRhICogMTAwMCkudG9GaXhlZCgzKX0gbVYuPGJyIC8+VnJlZiBjaGFuZ2VzIHF1YW50aXphdGlvbiwgbm90IHRoZSBzaWduYWwgb3Igc2FtcGxlIGNsb2NrLiBVbmlmb3JtIGJpbnMgdXNlIG1pZHBvaW50IHZvbHRhZ2VzLjwvcD5cbiAgICAgIDwvQ29udHJvbFNlY3Rpb24+XG4gICAgICA8Q29udHJvbFNlY3Rpb24gbnVtYmVyPVwiMDRcIiB0aXRsZT1cIkRBQyBDb25maWd1cmF0aW9uXCI+XG4gICAgICAgIDxEYWNDb250cm9scyBjb25maWc9e2NvbmZpZ30gb25DaGFuZ2U9e29uQ2hhbmdlfSAvPlxuICAgICAgPC9Db250cm9sU2VjdGlvbj5cbiAgICAgIDxDb250cm9sU2VjdGlvbiBudW1iZXI9XCIwNVwiIHRpdGxlPVwiQWNxdWlzaXRpb24gQ29udHJvbHNcIj5cbiAgICAgICAgPEFjcXVpc2l0aW9uQ29udHJvbHMgc3RhdHVzPXtzdGF0dXN9IGF2YWlsYWJsZT17c2ltdWxhdGlvbn0gb25TdGFydD17b25TdGFydH0gb25QYXVzZT17b25QYXVzZX0gb25SZXNldD17b25BY3F1aXNpdGlvblJlc2V0fSAvPlxuICAgICAgICB7Y29uZmlnLm1vZGUgPT09ICdlc3AzMicgJiYgPGJ1dHRvbiBjbGFzc05hbWU9XCJzZWNvbmRhcnktYnV0dG9uIGNvbm5lY3Rpb24tYnV0dG9uXCIgdHlwZT1cImJ1dHRvblwiIGRpc2FibGVkPXshQkxVRVRPT1RIX0FWQUlMQUJMRX0+PEljb24gbmFtZT1cImJsdWV0b290aFwiIHNpemU9ezE1fSAvPkNvbm5lY3QgRVNQMzIgwrcgdW5hdmFpbGFibGU8L2J1dHRvbj59XG4gICAgICAgIDxidXR0b24gY2xhc3NOYW1lPVwic2Vjb25kYXJ5LWJ1dHRvbiByZXNldC1idXR0b25cIiB0eXBlPVwiYnV0dG9uXCIgb25DbGljaz17b25SZXNldH0+PEljb24gbmFtZT1cInJlc2V0XCIgc2l6ZT17MTR9IC8+UmVzZXQgY29uZmlndXJhdGlvbjwvYnV0dG9uPlxuICAgICAgICA8cCBjbGFzc05hbWU9XCJjb250cm9sLWhpbnRcIj57c2ltdWxhdGlvbiA/ICdBbmFsb2cg4oaSIEFEQyDihpIgREFDIHNpbXVsYXRpb24uIFBhdXNlIGZyZWV6ZXMgdGhlIGNsb2NrIGFuZCBhbGwgdHJhY2VzOyByZXNldCBjbGVhcnMgYWNxdWlzaXRpb24gaGlzdG9yeS4nIDogJ1N3aXRjaCB0byBTaW11bGF0aW9uIHRvIHN0YXJ0LiBObyBkZXZpY2UgZGF0YSBpcyBhdmFpbGFibGUuJ308L3A+XG4gICAgICA8L0NvbnRyb2xTZWN0aW9uPlxuICAgIDwvZGl2PlxuICAgIDxkaXYgY2xhc3NOYW1lPVwiY29udHJvbHMtbm90ZVwiPjxJY29uIG5hbWU9XCJpbmZvXCIgc2l6ZT17MTV9IC8+PHA+RWR1Y2F0aW9uYWwgQURDL0RBQyBzb2Z0d2FyZSBzaW11bGF0aW9uLiBCbHVldG9vdGggYW5kIEVTUDMyIGNvbW11bmljYXRpb24gcmVtYWluIHVuaW1wbGVtZW50ZWQuPC9wPjwvZGl2PlxuICA8L2FzaWRlPlxufVxuIl0sImZpbGUiOiJDOi9Vc2Vycy9IYXNhbiBaZWluZWRkaW4vT25lRHJpdmUvRGVza3RvcC9Qcm9qZWN0cy9EaWdpdGFsIGJpb2VsZWN0cm9uaWNzL3NyYy9jb21wb25lbnRzL0NvbnRyb2xQYW5lbC50c3gifQ==

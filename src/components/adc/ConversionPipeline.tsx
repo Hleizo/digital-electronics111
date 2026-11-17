@@ -9,9 +9,13 @@ export function ConversionPipeline({ inputVoltage, sample, result, samplingFrequ
       <li><span>Quantization</span><strong>{volts(result?.quantizedVoltage)}</strong><small>{result ? `Code ${result.code} · bin midpoint` : 'Uniform ADC bins'}</small></li>
       <li><span>Binary Code</span><strong>{result?.binary ?? '—'}</strong><small>MSB → LSB</small></li>
     </ol>
-    <div className={`clipping-indicator${result?.clipped ? ' clipping-indicator--active' : ''}`}>
-      <strong role="status">{!result ? 'CLIPPING: awaiting sample' : result.clipped ? `CLIPPING: ${result.clipping === 'low' ? 'LOW · Vin < 0 V' : 'HIGH · Vin ≥ Vref'}` : 'CLIPPING: none · 0 ≤ Vin < Vref'}</strong>
-      <span>{result?.clipped ? `Raw input ${volts(result.inputVoltage)} · range excess ${signed(result.overrangeVoltage)} V · total error ${signed(result.conversionError)} V. The normal ±½-LSB bound does not apply.` : 'ADC readouts and binary LEDs use the latest captured sample; the analog input is never clamped.'}</span>
-    </div>
   </div>
+}
+
+export function ClippingIndicator({ result }: { result: AdcResult | null }) {
+  const detail = result?.clipped ? `Raw input ${volts(result.inputVoltage)} · range excess ${signed(result.overrangeVoltage)} V · total error ${signed(result.conversionError)} V. The normal ±½-LSB bound does not apply.` : 'ADC readouts and binary LEDs use the latest captured sample; the analog input is never clamped.'
+  return <div className={`clipping-indicator${result?.clipped ? ' clipping-indicator--active' : ''}`} title={detail}>
+      <strong role="status">{!result ? 'CLIPPING: awaiting sample' : result.clipped ? `CLIPPING: ${result.clipping === 'low' ? 'LOW · Vin < 0 V' : 'HIGH · Vin ≥ Vref'}` : 'CLIPPING: none · 0 ≤ Vin < Vref'}</strong>
+      {result?.clipped && <span>{detail}</span>}
+    </div>
 }
